@@ -54,6 +54,12 @@ const store = MongoStore.create({
 });
 store.on("error", (err) => console.error("Session Store Error:", err));
 
+store.on("set", (sessionId) => {
+    console.log("Session saved:", sessionId);
+});
+store.on("get", (sessionId) => {
+    console.log("Session retrieved:", sessionId);
+});
 // Session options
 const sessionOptions = {
     store,
@@ -75,8 +81,20 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+passport.deserializeUser(async (id, done) => {
+    try {
+        console.log("Deserializing user with ID:", id); // Log the user ID
+        const user = await User.findById(id);
+        console.log("Deserialized User:", user); // Log the retrieved user
+        done(null, user);
+    } catch (err) {
+        console.error("Deserialization error:", err); // Log any errors
+        done(err);
+    }
+});
 
 // Middleware to make flash messages available in views
 app.use((req, res, next) => {

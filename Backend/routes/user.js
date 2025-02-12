@@ -16,10 +16,7 @@ router.post('/login', saveRedirectUrl, (req, res, next) => {
         }
         req.logIn(user, (err) => {
             if (err) return next(err);
-            console.log("Authenticated User:", user);
-
-          
-
+            console.log("Authenticated User:", user); // Log the authenticated user
             res.json({ success: true, user, authenticated: true, redirectUrl: res.locals.redirectUrl || "/talk" });
         });
     })(req, res, next);

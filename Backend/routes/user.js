@@ -10,12 +10,22 @@ router.post('/signup', upload, wrapAsync(userRouter.signup));
 router.get('/login', userRouter.renderLogin);
 router.post('/login', saveRedirectUrl, (req, res, next) => {
     passport.authenticate("local", (err, user, info) => {
-        if (err) return next(err);
+        if (err) {
+            console.error("Authentication error:", err); // Log any errors
+            return next(err);
+        }
         if (!user) {
+            console.log("Authentication failed:", info.message); // Log failure reason
             return res.status(401).json({ message: info.message || "Invalid credentials", authenticated: false });
         }
+
+        console.log("User before req.logIn:", user); // Log the user object before req.logIn
+
         req.logIn(user, (err) => {
-            if (err) return next(err);
+            if (err) {
+                console.error("req.logIn error:", err); // Log any errors in req.logIn
+                return next(err);
+            }
             console.log("Authenticated User:", user); // Log the authenticated user
             res.json({ success: true, user, authenticated: true, redirectUrl: res.locals.redirectUrl || "/talk" });
         });

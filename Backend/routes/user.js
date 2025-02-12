@@ -22,6 +22,8 @@ router.post('/login', saveRedirectUrl, (req, res, next) => {
     })(req, res, next);
 });
 router.get("/auth/check", (req, res) => {
+    
+    console.log("User:", req.user);
     if (req.isAuthenticated()) {
         return res.json({ authenticated: true, user: req.user });
     } else {

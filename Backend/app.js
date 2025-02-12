@@ -61,19 +61,20 @@ store.on("get", (sessionId) => {
     console.log("Session retrieved:", sessionId);
 });
 // Session options
-const sessionOptions = {
-    store,
-    secret: process.env.SECRET || "secretKey",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // Only true in production
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // "none" for cross-origin in production
-        maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
-    },
-};
-  app.use(session(sessionOptions));
+app.use(
+    session({
+        store,
+        secret: process.env.SECRET,
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+        },
+    })
+);
   
 app.use(flash());
 

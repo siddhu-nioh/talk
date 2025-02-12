@@ -9,7 +9,10 @@ router.get('/signup', userRouter.renderSignup);
 router.post('/signup', upload, wrapAsync(userRouter.signup));
 router.get('/login', userRouter.renderLogin);
 router.post('/login', saveRedirectUrl, (req, res, next) => {
+    console.log("Login request received"); // Log the request
+
     passport.authenticate("local", (err, user, info) => {
+        console.log("Inside passport.authenticate callback"); // Log the callback
         if (err) {
             console.error("Authentication error:", err); // Log any errors
             return next(err);

@@ -1,5 +1,5 @@
 if (process.env.NODE_ENV !== "production") {
-      require("dotenv").config();
+    require("dotenv").config();
 }
 
 const express = require("express");
@@ -14,29 +14,35 @@ const User = require("./models/user");
 const flash = require("connect-flash");
 const ejsMate = require("ejs-mate");
 const Post = require("./models/posts");
+const cors = require("cors");
 
 const PORT = 8080;
-const cors = require("cors");
+
+// CORS configuration
+const allowedOrigins = [
+    "https://talk-99vcwb2mu-siddhu-niohs-projects.vercel.app",
+    "http://localhost:3000", // Add localhost for development
+];
 
 app.use(
     cors({
-        origin: "https://talk-99vcwb2mu-siddhu-niohs-projects.vercel.app", // Ensure this is correct
+        origin: function (origin, callback) {
+            if (!origin || allowedOrigins.includes(origin)) {
+                callback(null, true);
+            } else {
+                callback(new Error("Not allowed by CORS"));
+            }
+        },
         credentials: true, // Required for cookies
     })
 );
 
-
-
-// Routers
-const user = require('./routes/user');
-const talk = require('./routes/talk');
-
 // Database connection
 const dbUrl = process.env.ATLASDB_URL;
 mongoose
-      .connect(dbUrl)
-      .then(() => console.log("Connected to DB"))
-      .catch((err) => console.error("Database connection error:", err));
+    .connect(dbUrl)
+    .then(() => console.log("Connected to DB"))
+    .catch((err) => console.error("Database connection error:", err));
 
 // Middleware setup
 app.set("view engine", "ejs");
@@ -46,12 +52,23 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.engine("ejs", ejsMate);
 
-
 // Session store
 const store = MongoStore.create({
     mongoUrl: process.env.ATLASDB_URL,
     crypto: { secret: process.env.SECRET },
     touchAfter: 24 * 60 * 60,
+});
+
+store.on("set", (sessionId) => {
+    console.log("Session saved:", sessionId); // Log when a session is saved
+});
+
+store.on("get", (sessionId) => {
+    console.log("Session retrieved:", sessionId); // Log when a session is retrieved
+});
+
+store.on("error", (err) => {
+    console.error("Session store error:", err); // Log any session store errors
 });
 
 // Session configuration
@@ -63,8 +80,8 @@ app.use(
         saveUninitialized: false,
         cookie: {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            secure: process.env.NODE_ENV === "production", // Only true in production
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // "none" for cross-origin in production
             maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
         },
     })
@@ -94,39 +111,34 @@ passport.deserializeUser(async (id, done) => {
         done(err);
     }
 });
-app.use(flash());
 
+// Flash messages
+app.use(flash());
 
 // Middleware to make flash messages available in views
 app.use((req, res, next) => {
-      res.locals.success = req.flash("success");
-      res.locals.error = req.flash("error");
-      res.locals.currUser = req.user || null;
-      // console.log(res.locals.currUser);
-      next();
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    res.locals.currUser = req.user || null;
+    next();
 });
-app.get('/currUser', (req, res) => {
-      console.log("Session:", req.session);
-      if (!req.user) {
-            return res.status(401).json({ error: "User not authenticated" });
-      }
-      res.json(req.user);
-});
+
 // Routers
 app.use('/', user);
 app.use('/talk', talk);
 
 app.get("/", (req, res) => {
-      res.redirect("/talk");
+    res.redirect("/talk");
 });
+
 // Error handler middleware
 app.use((err, req, res, next) => {
-      console.error(err.stack);
-      const { status = 500, message = "Something went wrong!" } = err;
-      res.status(status).render("error", { err });
+    console.error(err.stack);
+    const { status = 500, message = "Something went wrong!" } = err;
+    res.status(status).render("error", { err });
 });
 
 // Starting the server
 app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-});  
+    console.log(`Server is running on port ${PORT}`);
+});

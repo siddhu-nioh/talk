@@ -35,8 +35,10 @@ router.post('/login', saveRedirectUrl, (req, res, next) => {
     })(req, res, next);
 });
 router.get("/auth/check", (req, res) => {
-    console.log("Session ID:", req.sessionID);
-    console.log("User:", req.user);
+    console.log("Session ID:", req.sessionID); // Log the session ID
+    console.log("Session Data:", req.session); // Log the session data
+    console.log("User:", req.user); // Log the user
+
     if (req.isAuthenticated()) {
         return res.json({ authenticated: true, user: req.user });
     } else {

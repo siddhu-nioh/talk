@@ -83,11 +83,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser((user, done) => {
+    console.log("Serializing user:", user); // Log the user being serialized
     done(null, user.id);
 });
 passport.deserializeUser(async (id, done) => {
     try {
-        console.log("Deserializing user with ID:", id); // Log the user ID
+        console.log("Deserializing user with ID:", id); // Log the user ID being deserialized
         const user = await User.findById(id);
         console.log("Deserialized User:", user); // Log the retrieved user
         done(null, user);

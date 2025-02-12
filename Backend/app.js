@@ -20,7 +20,7 @@ const cors = require("cors");
 
 app.use(
     cors({
-        origin: "https://talk-project-v7j5.vercel.app", // Ensure this is correct
+        origin: "https://talk-swart-two.vercel.app", // Ensure this is correct
         credentials: true, // Required for cookies
     })
 );

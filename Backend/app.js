@@ -1,5 +1,5 @@
 if (process.env.NODE_ENV !== "production") {
-      require("dotenv").config();
+    require("dotenv").config();
 }
 
 const express = require("express");
@@ -10,35 +10,32 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const path = require("path");
-const User = require("./models/user");
+const cors = require("cors");
 const flash = require("connect-flash");
 const ejsMate = require("ejs-mate");
+
+const User = require("./models/user");
 const Post = require("./models/posts");
 
-const PORT = 8080;
-const cors = require("cors");
 
 app.use(
     cors({
-        origin: "https://talk-99vcwb2mu-siddhu-niohs-projects.vercel.app", // Ensure this is correct
-        credentials: true, // Required for cookies
+        origin: "https://talk-99vcwb2mu-siddhu-niohs-projects.vercel.app",
+        credentials: true, 
     })
 );
 
 
-
-// Routers
-const user = require('./routes/user');
-const talk = require('./routes/talk');
-
-// Database connection
 const dbUrl = process.env.ATLASDB_URL;
 mongoose
-      .connect(dbUrl)
-      .then(() => console.log("Connected to DB"))
-      .catch((err) => console.error("Database connection error:", err));
+    .connect(dbUrl)
+    .then(() => {
+        console.log(" Connected to DB");
+        initializeSession(); 
+    })
+    .catch((err) => console.error("Database connection error:", err));
 
-// Middleware setup
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.json());
@@ -46,68 +43,89 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.engine("ejs", ejsMate);
 
-// Session store configuration
-const store = MongoStore.create({
-      mongoUrl: dbUrl,
-      crypto: { secret: "secretKey" },
-      touchAfter: 24 * 60 * 60,
-});
-store.on("error", (err) => console.error("Session Store Error:", err));
 
-// Session options
-const sessionOptions = {
-      store,
-      secret: process.env.SECRET || "secretKey",
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-          httpOnly: true, 
-          secure: true, // Ensure this is true in production (HTTPS)
-          sameSite: "none", // Required for cross-origin authentication
-          maxAge: 1000 * 60 * 60 * 24 * 7, 
-      },
-  };
-  app.use(session(sessionOptions));
-  
-app.use(flash());
+let store;
+function initializeSession() {
+    store = MongoStore.create({
+        mongoUrl: dbUrl,
+        crypto: { secret: process.env.SECRET || "secretKey" },
+        touchAfter: 24 * 60 * 60,
+    });
 
-// Passport.js setup
-app.use(passport.initialize());
-app.use(passport.session());
+    store.on("error", (err) => console.error("Session Store Error:", err));
+
+
+    const sessionOptions = {
+        store,
+        secret: process.env.SECRET || "secretKey",
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            httpOnly: true, 
+            secure: process.env.NODE_ENV === "production", 
+            sameSite: "lax", 
+            maxAge: 1000 * 60 * 60 * 24 * 7, 
+        },
+    };
+
+    app.use(session(sessionOptions));
+    app.use(passport.initialize());
+    app.use(passport.session());
+}
+
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+passport.deserializeUser((id, done) => {
+    User.findById(id, (err, user) => {
+        if (err) return done(err);
+        console.log("🔄 Restoring User from Session:", user);
+        done(null, user);
+    });
+});
 
-// Middleware to make flash messages available in views
+app.use(flash());
 app.use((req, res, next) => {
-      res.locals.success = req.flash("success");
-      res.locals.error = req.flash("error");
-      res.locals.currUser = req.user || null;
-      // console.log(res.locals.currUser);
-      next();
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    res.locals.currUser = req.user || null;
+    next();
 });
+
+
+app.get('/debug/session', (req, res) => {
+    console.log("🛠️ Debug Session Data:", req.session);
+    res.json(req.session);
+});
+
+
 app.get('/currUser', (req, res) => {
-      console.log("Session:", req.session);
-      if (!req.user) {
-            return res.status(401).json({ error: "User not authenticated" });
-      }
-      res.json(req.user);
+    console.log("🔎 Checking Logged-In User:", req.user);
+    if (!req.user) {
+        return res.status(401).json({ error: "User not authenticated" });
+    }
+    res.json(req.user);
 });
-// Routers
-app.use('/', user);
-app.use('/talk', talk);
+
+
+const userRoutes = require('./routes/user');
+const talkRoutes = require('./routes/talk');
+app.use('/', userRoutes);
+app.use('/talk', talkRoutes);
+
 
 app.get("/", (req, res) => {
-      res.redirect("/talk");
-});
-// Error handler middleware
-app.use((err, req, res, next) => {
-      console.error(err.stack);
-      const { status = 500, message = "Something went wrong!" } = err;
-      res.status(status).render("error", { err });
+    res.redirect("/talk");
 });
 
-// Starting the server
+
+app.use((err, req, res, next) => {
+    console.error("🔥 Error:", err.stack);
+    const { status = 500, message = "Something went wrong!" } = err;
+    res.status(status).render("error", { err });
+});
+
+
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+    console.log(` Server is running on port ${PORT}`);
 });

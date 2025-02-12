@@ -5,10 +5,7 @@ if (process.env.NODE_ENV !== "production") {
 const express = require("express");
 const app = express();
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
 const mongoose = require("mongoose");
-const session = require("express-session");
-const MongoStore = require("connect-mongo");
 const path = require("path");
 const User = require("./models/user");
 const flash = require("connect-flash");
@@ -50,9 +47,8 @@ app.engine("ejs", ejsMate);
 // Session store
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
-const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const User = require("./models/user");
+
 
 // Session store
 const store = MongoStore.create({

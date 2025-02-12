@@ -21,39 +21,39 @@ export default function Authmodals() {
             }
       };
 
-      const handleLogin = async (event) => {
-            event.preventDefault();
-            setLoading(true);
-            setError(null);
+     const handleLogin = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    setError(null);
 
-            const formData = new FormData(loginFormRef.current);
-            const data = {
-                  username: formData.get("username"),
-                  password: formData.get("password"),
-            };
+    const formData = new FormData(loginFormRef.current);
+    const data = {
+        username: formData.get("username"),
+        password: formData.get("password"),
+    };
 
-            try {
-                  const response = await fetch(`${Backend_Url}/login`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(data),
-                        credentials: "include",
-                  });
+    try {
+        const response = await fetch(`${Backend_Url}/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+            credentials: "include", // Include cookies
+        });
 
-                  if (response.ok) {
-                        const result = await response.json();
-                        localStorage.setItem("authToken", result.token);
-                        navigate("/talk");
-                  } else {
-                        setError("Invalid username or password.");
-                  }
-            } catch (error) {
-                  console.error("Login error:", error);
-                  setError("Something went wrong. Try again later.");
-            } finally {
-                  setLoading(false);
-            }
-      };
+        if (response.ok) {
+            const result = await response.json();
+            console.log("Login response:", result); // Log the response
+            navigate(result.redirectUrl || "/talk");
+        } else {
+            setError("Invalid username or password.");
+        }
+    } catch (error) {
+        console.error("Login error:", error);
+        setError("Something went wrong. Try again later.");
+    } finally {
+        setLoading(false);
+    }
+};
 
       const handleSignup = async (event) => {
             event.preventDefault();

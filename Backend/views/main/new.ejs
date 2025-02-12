@@ -1,0 +1,34 @@
+
+<% layout('./layouts/boilerplate.ejs') %>
+<link rel="stylesheet" href="/css/new.css">
+<body>
+      <div class="modal" id="uploadModal">
+            <div class="modal-content">
+                  <form action="/talk" method="get">
+                        <input type="submit" class="close" value="✖">
+                  </form>
+                  <form action="/talk" method="get">
+                        <input type="submit" class="btn-back" value="Back">
+                  </form>
+                  <form action="/talk" method="post" enctype="multipart/form-data">
+                        <textarea name="description" placeholder="What's on your mind?" class="text-input"
+                              required></textarea>
+                        <label class="btn-action">
+                              📷 Add Image
+                              <input type="file" name="image" accept="image/*" style="display: none;"
+                                    onchange="previewFile(this, 'image-preview')">
+                        </label>
+                        <label class="btn-action">
+                              🎥 Add Video
+                              <input type="file" name="video" accept="video/*" style="display: none;"
+                                    onchange="previewFile(this, 'video-preview')">
+                        </label>
+                        <div id="preview-section">
+                              <img id="image-preview" style="max-width: 100px; display: none;">
+                              <video id="video-preview" style="max-width: 100px; display: none;"></video>
+                        </div>
+                        <input type="submit" class="btn-action upload" value="Upload Post">
+                  </form>
+            </div>
+      </div>
+</body>

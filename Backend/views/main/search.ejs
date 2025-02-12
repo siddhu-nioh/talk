@@ -1,0 +1,49 @@
+<% layout('./layouts/boilerplate.ejs') %>
+<link rel="stylesheet" href="/css/search.css">
+
+<body>
+    <div class="search-container">
+        <input type="text"id="search-bar"class="search-bar"placeholder="Search"autocomplete="off"/>
+        <div id="suggestions" class="suggestions">
+        </div>
+    </div>
+</body>
+<script>
+document.getElementById('search-bar').addEventListener('input', async function () {
+    const query = this.value.trim();
+    const suggestionsContainer = document.getElementById('suggestions');
+
+    if (query.length >= 2) {
+        try {
+            const response = await fetch(`/talk/search/users?query=${encodeURIComponent(query)}`);
+            const users = await response.json();
+            suggestionsContainer.innerHTML = '';
+            if (users.length > 0) {
+                users.forEach(user => {
+                    const suggestion = document.createElement('div');
+                    suggestion.classList.add('suggestion-item');
+                    suggestion.innerHTML = `
+                    <a href="/user/${user._id}">
+                        <img src="${user.profile}" class="profile-pic" alt="Profile Picture" />
+                        <div class="suggestion-text">
+                            <div class="username">${user.username}</div>
+                        </div>
+                    </a>`;
+                    suggestionsContainer.appendChild(suggestion);
+                });
+                suggestionsContainer.classList.add('active');
+            } else {
+                suggestionsContainer.innerHTML = '<div class="no-suggestions">No results found</div>';
+                suggestionsContainer.classList.add('active');
+            }
+        } catch (error) {
+            console.error('Error fetching search results:', error);
+        }
+    } else {
+        suggestionsContainer.innerHTML = '';
+        suggestionsContainer.classList.remove('active');
+    }
+});
+
+    </script>
+    

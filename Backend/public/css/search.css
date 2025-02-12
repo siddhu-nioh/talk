@@ -1,0 +1,157 @@
+/* General Styles */
+html,
+body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #15202b;
+      /* Dark background */
+      color: #e1e8ed;
+      /* Light text */
+      font-family: Arial, sans-serif;
+}
+
+/* Search Container */
+.search-container {
+      background-color: #f8f9fa;
+      /* Light background for container */
+      color: #212529;
+      /* Dark text */
+      border-radius: 10px;
+      padding: 20px;
+      width: 500px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.search-container:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      transform: translateY(-5px);
+}
+
+/* Search Bar */
+.search-bar {
+      width: 100%;
+      padding: 10px 15px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      font-size: 16px;
+      outline: none;
+      box-sizing: border-box;
+      transition: border 0.3s ease, box-shadow 0.3s ease;
+      margin-top: 1rem;
+}
+
+.search-bar:focus {
+      border: 1px solid #007bff;
+      /* Blue border on focus */
+      box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+      /* Glow effect */
+}
+
+/* Suggestions Dropdown */
+.suggestions {
+      display: none;
+      /* Hide container by default */
+      background-color: #ffffff;
+      color: #212529;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      max-height: 300px;
+      overflow-y: auto;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      margin-top: 10px;
+      padding: 10px 0;
+}
+
+/* Show suggestions when active */
+.suggestions.active {
+      display: block;
+}
+
+/* Suggestion Item */
+.suggestion-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      /* Space between image and text */
+      padding: 10px 15px;
+      margin: 10px 0;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      border-radius: 5px;
+}
+
+/* Anchor link styling */
+.suggestion-item a {
+      text-decoration: none;
+      /* Remove underline from links */
+      color: inherit;
+      /* Inherit text color */
+      display: flex;
+      align-items: center;
+      width: 100%;
+      /* Ensure full item is clickable */
+}
+
+/* Hover Effect for Suggestions */
+.suggestion-item:hover {
+      background-color: #f1f3f5;
+      transform: translateY(-3px);
+}
+
+/* Profile Picture in Suggestion */
+.profile-pic {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+}
+
+/* Suggestion Text */
+.suggestion-text {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+}
+
+.username {
+      font-weight: bold;
+      font-size: 14px;
+      color: #212529;
+      margin-left: 1.5rem;
+}
+
+/* No Results Message */
+.no-suggestions {
+      text-align: center;
+      font-size: 14px;
+      color: #6c757d;
+      /* Subtle gray */
+      padding: 10px 0;
+      font-style: italic;
+}
+
+/* Debugging Container Margins */
+.search-container,
+.suggestions {
+      margin: 0;
+      padding: 0;
+}
+
+/* Smooth Scroll for Suggestions */
+.suggestions {
+      scroll-behavior: smooth;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+      .search-container {
+            width: 90%;
+      }
+}

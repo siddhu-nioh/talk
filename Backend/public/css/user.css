@@ -1,0 +1,74 @@
+html,
+body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #15202b;
+      color: #e1e8ed;
+}
+
+.profile-container {
+      background-color: #192734;
+      border-radius: 10px;
+      padding: 20px;
+      width: 400px;
+      max-width: 600px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      box-sizing: border-box;
+}
+
+.profile-container img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background-color: #ccc;
+      display: block;
+      margin: 0 auto 10px auto;
+}
+
+.profile-container h2 {
+      margin: 10px 0;
+      font-size: 24px;
+      font-weight: bold;
+}
+
+.stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 10px 0 20px 0;
+      font-size: 14px;
+      color: #8899a6;
+}
+
+.action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+}
+
+.btn-action {
+      background-color: #000000;
+      color: #25D366;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: transform 0.2s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btn-action:hover {
+      transform: scale(1.1);
+}
+
+.btn-action i {
+      font-size: 20px;
+}

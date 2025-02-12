@@ -1,0 +1,149 @@
+/* Main container that centers everything */
+.profile-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+  }
+  
+  /* Profile container styling */
+.profile-container {
+      max-width: 400px;
+      width: 100%;
+      padding: 20px;
+      background-color: #192734;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      box-sizing: border-box;
+      margin-bottom: 20px; /* Space between profile and posts */
+  }
+  /* Ensure the image is fully visible and responsive */
+.profile-container img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background-color: #ccc;
+      display: block;
+      margin: 0 auto 10px auto;
+      object-fit: cover; /* Prevent image from overflowing */
+  }
+.posts-container {
+      
+      background: #f8f9fa;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;  /* Space between profile and posts */
+  }
+
+.stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 10px 0 20px 0;
+      font-size: 14px;
+      color: #8899a6;
+  }
+
+.action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+  }
+
+.btn-actions {
+      background-color: #000000;
+      color: #25D366;
+      /* width: 50px;
+      height: 50px; */
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: transform 0.2s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+.btn-actions:hover {
+      transform: scale(1.1);
+}
+
+.btn-actions i {
+      font-size: 20px;
+}
+
+
+/* Style for individual post */
+.post-card {
+      background: white;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+.post-card img,     
+.post-card video {
+      width: 100%;
+      max-height: 300px; /* Limit the video height */
+      object-fit: cover;
+      border-radius: 8px;
+  }
+.action-buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;  /* Adds spacing between buttons */
+      flex-wrap: nowrap; /* Ensures all buttons stay in the same line */
+  }
+  
+  /* Ensure all icons are uniform in size */
+.btn-actions svg {
+      font-size: 22px;
+  }
+  
+  /* Hover effect */
+.btn-actions:hover {
+      transform: scale(1.1);
+  }
+  
+  /* Additional Fix: Set explicit sizes for FaUserPlus and FaUserMinus */
+.btn-actions.follow-btn, 
+.btn-actions.unfollow-btn {
+      font-size: 150px; /* Same size as FaUsers, FaEnvelope, FaTrash */
+}
+/* Mobile Responsive Design */
+.followers-icon {
+      font-size: 30px; /* Adjust size */
+    }
+    
+
+@media screen and (min-width: 1024px) {
+      .profile-page {
+          width: 80%;  /* Set a max width for larger devices */
+          margin: 0 auto; /* Center the content */
+      }
+  
+      .profile-container {
+          max-width: 500px;  /* Increase max-width on larger devices */
+      }
+  
+      .posts-container {
+          max-width: 800px; /* Increase width for posts */
+      }
+  }
+.btn-actionsa{
+  background-color: black;
+  color: rgb(87, 214, 87);
+  width: 45px;
+  height: 44px;
+  border-radius: 8px;
+  font-size: 25px;
+  padding: 10px;
+}

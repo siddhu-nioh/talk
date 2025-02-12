@@ -18,10 +18,9 @@ router.post('/login', saveRedirectUrl, (req, res, next) => {
             if (err) return next(err);
             console.log("Authenticated User:", user);
 
-            // Generate a token (if using token-based authentication)
-            const token = generateToken(user); // Implement this function
+          
 
-            res.json({ success: true, user, authenticated: true, redirectUrl: res.locals.redirectUrl || "/talk", token });
+            res.json({ success: true, user, authenticated: true, redirectUrl: res.locals.redirectUrl || "/talk" });
         });
     })(req, res, next);
 });

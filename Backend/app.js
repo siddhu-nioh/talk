@@ -46,21 +46,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.engine("ejs", ejsMate);
 
-// Session store configuration
-const store = MongoStore.create({
-      mongoUrl: dbUrl,
-      crypto: { secret: "secretKey" },
-      touchAfter: 24 * 60 * 60,
-});
-store.on("error", (err) => console.error("Session Store Error:", err));
 
-store.on("set", (sessionId) => {
-    console.log("Session saved:", sessionId);
+// Session store
+const store = MongoStore.create({
+    mongoUrl: process.env.ATLASDB_URL,
+    crypto: { secret: process.env.SECRET },
+    touchAfter: 24 * 60 * 60,
 });
-store.on("get", (sessionId) => {
-    console.log("Session retrieved:", sessionId);
-});
-// Session options
+
+// Session configuration
 app.use(
     session({
         store,
@@ -75,17 +69,20 @@ app.use(
         },
     })
 );
-  
-app.use(flash());
 
-// Passport.js setup
+// Passport initialization
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Local strategy
 passport.use(new LocalStrategy(User.authenticate()));
+
+// Serialization/deserialization
 passport.serializeUser((user, done) => {
     console.log("Serializing user:", user); // Log the user being serialized
     done(null, user.id);
 });
+
 passport.deserializeUser(async (id, done) => {
     try {
         console.log("Deserializing user with ID:", id); // Log the user ID being deserialized
@@ -97,6 +94,8 @@ passport.deserializeUser(async (id, done) => {
         done(err);
     }
 });
+app.use(flash());
+
 
 // Middleware to make flash messages available in views
 app.use((req, res, next) => {

@@ -56,17 +56,17 @@ store.on("error", (err) => console.error("Session Store Error:", err));
 
 // Session options
 const sessionOptions = {
-      store,
-      secret: process.env.SECRET || "secretKey",
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-          httpOnly: true, 
-          secure: true, // Ensure this is true in production (HTTPS)
-          sameSite: "none", // Required for cross-origin authentication
-          maxAge: 1000 * 60 * 60 * 24 * 7, 
-      },
-  };
+    store,
+    secret: process.env.SECRET || "secretKey",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production", // Only true in production
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // "none" for cross-origin in production
+        maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+    },
+};
   app.use(session(sessionOptions));
   
 app.use(flash());

@@ -29,7 +29,7 @@ const ProtectedRoute = ({ children }) => {
 
                 if (data.authenticated && data.user) {
                     setIsAuthenticated(true);
-                    // Optionally store user data
+                  
                     localStorage.setItem('user', JSON.stringify(data.user));
                 } else {
                     setIsAuthenticated(false);
@@ -48,8 +48,8 @@ const ProtectedRoute = ({ children }) => {
 
         checkAuth();
 
-        // Optional: Set up periodic checks
-        const interval = setInterval(checkAuth, 5 * 60 * 1000); // Check every 5 minutes
+      
+        const interval = setInterval(checkAuth, 5 * 60 * 1000); 
         return () => clearInterval(interval);
     }, [Backend_Url, navigate]);
 

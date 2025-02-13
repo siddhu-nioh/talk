@@ -29,7 +29,7 @@ router.post('/login', saveRedirectUrl, (req, res, next) => {
                 });
             });
 
-            // Force session save and wait for it
+         
             await new Promise((resolve, reject) => {
                 req.session.save((err) => {
                     if (err) reject(err);
@@ -48,7 +48,7 @@ router.post('/login', saveRedirectUrl, (req, res, next) => {
                 user,
                 authenticated: true,
                 redirectUrl: res.locals.redirectUrl || "/talk",
-                sessionID: req.sessionID // Send this for debugging
+                sessionID: req.sessionID 
             });
         } catch (error) {
             console.error("Login error:", error);
@@ -72,7 +72,7 @@ router.get("/auth/check", (req, res) => {
         });
     }
 
-    // Touch the session to prevent expiry
+   
     req.session.touch();
 
     if (req.isAuthenticated() && req.user) {

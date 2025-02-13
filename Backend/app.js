@@ -25,18 +25,7 @@ app.use(cors({
 
 
 // Add this before your routes
-app.use((req, res, next) => {
-    console.log('Incoming request:', {
-        url: req.url,
-        method: req.method,
-        sessionID: req.sessionID,
-        hasSession: !!req.session,
-        isAuthenticated: req.isAuthenticated(),
-        sessionPassport: req.session?.passport,
-        cookies: req.headers.cookie
-    });
-    next();
-});
+
 // Routers
 const user = require('./routes/user');
 const talk = require('./routes/talk');

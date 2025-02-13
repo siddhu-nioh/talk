@@ -157,7 +157,12 @@ app.use((err, req, res, next) => {
       const { status = 500, message = "Something went wrong!" } = err;
       res.status(status).render("error", { err });
 });
-
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+    console.log('Session ID:', req.sessionID);
+    console.log('Is Authenticated:', req.isAuthenticated());
+    next();
+});
 // Starting the server
 app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);

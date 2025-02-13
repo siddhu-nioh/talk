@@ -17,7 +17,7 @@ const cors = require("cors");
 
 app.use(
     cors({
-        origin: "https://talk-5cj038uxr-siddhu-niohs-projects.vercel.app/", // Ensure this is correct
+        origin: "https://talk-5cj038uxr-siddhu-niohs-projects.vercel.app", // Ensure this is correct
         credentials: true, // Required for cookies
     })
 );

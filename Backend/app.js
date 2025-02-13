@@ -16,9 +16,7 @@ const PORT = 8080;
 const cors = require("cors");
 
 app.use(cors({
-    origin: process.env.NODE_ENV === "production" 
-        ? "https://talk-5cj038uxr-siddhu-niohs-projects.vercel.app"
-        : "https://talk-5cj038uxr-siddhu-niohs-projects.vercel.app",
+    origin: "https://talk-5cj038uxr-siddhu-niohs-projects.vercel.app",
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -82,14 +80,14 @@ const store = MongoStore.create({
 const sessionConfig = {
     store,
     secret: process.env.SECRET,
-    name: 'sessionId', // Custom name for the cookie
+    name: 'sessionId',
     resave: false,
     saveUninitialized: false,
     cookie: {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // should be true in production
+        secure: process.env.NODE_ENV === "production",
         sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+        maxAge: 1000 * 60 * 60 * 24 * 7
     }
 };
 
@@ -180,6 +178,12 @@ app.use((req, res, next) => {
       // console.log(res.locals.currUser);
       next();
 });
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+    console.log('Session ID:', req.sessionID);
+    console.log('Is Authenticated:', req.isAuthenticated());
+    next();
+});
 app.get('/currUser', (req, res) => {
       console.log("Session:", req.session);
       if (!req.user) {
@@ -200,12 +204,7 @@ app.use((err, req, res, next) => {
       const { status = 500, message = "Something went wrong!" } = err;
       res.status(status).render("error", { err });
 });
-app.use((req, res, next) => {
-    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-    console.log('Session ID:', req.sessionID);
-    console.log('Is Authenticated:', req.isAuthenticated());
-    next();
-});
+
 // Starting the server
 app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);

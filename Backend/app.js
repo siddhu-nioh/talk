@@ -15,12 +15,12 @@ const Post = require("./models/posts");
 const PORT = 8080;
 const cors = require("cors");
 
-app.use(
-    cors({
-        origin: "https://talk-5cj038uxr-siddhu-niohs-projects.vercel.app", // Ensure this is correct
-        credentials: true, // Required for cookies
-    })
-);
+app.use(cors({
+    origin: "https://talk-5cj038uxr-siddhu-niohs-projects.vercel.app",
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Add explicit methods
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
 
 
@@ -48,7 +48,7 @@ app.engine("ejs", ejsMate);
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const LocalStrategy = require("passport-local").Strategy;
-
+passport.use(new LocalStrategy(User.authenticate()));
 
 // Session store
 const store = MongoStore.create({
@@ -70,45 +70,53 @@ store.on("error", (err) => {
 });
 
 // Session configuration
-app.use(
-    session({
-        store,
-        secret: process.env.SECRET,
-        resave: false,
-        saveUninitialized: false,
-        cookie: {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-            maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
-        },
-    })
-);
+const sessionConfig = {
+    store: MongoStore.create({
+        mongoUrl: process.env.ATLASDB_URL,
+        crypto: { secret: process.env.SECRET },
+        touchAfter: 24 * 60 * 60
+    }),
+    name: 'session', // Add this to be explicit about cookie name
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+    }
+};
+
 
 // Passport initialization
+app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
-
 // Local strategy
-passport.use(new LocalStrategy(User.authenticate()));
+
 
 // Serialization/deserialization
 passport.serializeUser((user, done) => {
-    console.log("Serializing user:", user); // Log the user being serialized
+    console.log("Serializing user:", user.id);
     done(null, user.id);
 });
 
 passport.deserializeUser(async (id, done) => {
     try {
-        console.log("Deserializing user with ID:", id); // Log the user ID being deserialized
-        const user = await User.findById(id);
-        console.log("Deserialized User:", user); // Log the retrieved user
+        const user = await User.findById(id).exec(); // Add .exec()
+        if (!user) {
+            console.log("No user found with ID:", id);
+            return done(null, false);
+        }
+        console.log("Deserialized user:", user.id);
         done(null, user);
     } catch (err) {
-        console.error("Deserialization error:", err); // Log any errors
-        done(err);
+        console.error("Deserialization error:", err);
+        done(err, null);
     }
 });
+
 app.use(flash());
 
 

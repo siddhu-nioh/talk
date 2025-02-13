@@ -35,17 +35,33 @@ export default function Authmodals() {
     try {
         const response = await fetch(`${Backend_Url}/login`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { 
+                "Content-Type": "application/json",
+                // Add these headers for CORS with credentials
+                "Accept": "application/json",
+            },
+            credentials: "include", // This is crucial
             body: JSON.stringify(data),
-            credentials: "include", // Include cookies
+            mode: 'cors' // Explicitly set CORS mode
         });
 
         if (response.ok) {
             const result = await response.json();
-            console.log("Login response:", result); // Log the response
-            navigate(result.redirectUrl || "/talk");
+            console.log("Login response:", result);
+            
+            // Add a small delay to ensure session is saved
+            await new Promise(resolve => setTimeout(resolve, 100));
+            
+            if (result.authenticated) {
+                // Store some user info in localStorage if needed
+                localStorage.setItem('isLoggedIn', 'true');
+                navigate(result.redirectUrl || "/talk");
+            } else {
+                setError("Authentication failed");
+            }
         } else {
-            setError("Invalid username or password.");
+            const errorData = await response.json();
+            setError(errorData.message || "Invalid username or password.");
         }
     } catch (error) {
         console.error("Login error:", error);
@@ -54,7 +70,6 @@ export default function Authmodals() {
         setLoading(false);
     }
 };
-
       const handleSignup = async (event) => {
             event.preventDefault();
             setError(null);

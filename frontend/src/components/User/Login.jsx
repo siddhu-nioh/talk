@@ -13,7 +13,7 @@ export default function Authmodals() {
       const loginFormRef = useRef(null);
       const signupFormRef = useRef(null);
 
-      // Close modals when clicking outside
+  
       const handleClose = (event, modalsType) => {
             if (event.target.classList.contains("modals")) {
                   if (modalsType === "login") setLoginOpen(false);
@@ -37,23 +37,23 @@ export default function Authmodals() {
             method: "POST",
             headers: { 
                 "Content-Type": "application/json",
-                // Add these headers for CORS with credentials
+               
                 "Accept": "application/json",
             },
-            credentials: "include", // This is crucial
+            credentials: "include", 
             body: JSON.stringify(data),
-            mode: 'cors' // Explicitly set CORS mode
+            mode: 'cors' 
         });
 
         if (response.ok) {
             const result = await response.json();
             console.log("Login response:", result);
             
-            // Add a small delay to ensure session is saved
+         
             await new Promise(resolve => setTimeout(resolve, 100));
             
             if (result.authenticated) {
-                // Store some user info in localStorage if needed
+                
                 localStorage.setItem('isLoggedIn', 'true');
                 navigate(result.redirectUrl || "/talk");
             } else {
@@ -108,7 +108,7 @@ export default function Authmodals() {
                         </button>
                   </div>
 
-                  {/* Login modals */}
+                
                   {isLoginOpen && (
                         <div id="id01" className={`modals ${isLoginOpen ? "show" : ""}`} onClick={(e) => handleClose(e, "login")}>
                               <form className="modals-content animate" ref={loginFormRef} onSubmit={handleLogin}>
@@ -158,7 +158,7 @@ export default function Authmodals() {
                         </div>
                   )}
 
-                  {/* Signup modals */}
+                 
                   {isSignupOpen && (
                         <div id="id02" className={`modals ${isSignupOpen ? "show" : ""}`} onClick={(e) => handleClose(e, "signup")}>
                               <form className="modals-content animate" ref={signupFormRef} onSubmit={handleSignup}>

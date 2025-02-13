@@ -15,16 +15,13 @@ router.post('/login', saveRedirectUrl, (req, res, next) => {
                 console.error("Authentication error:", err);
                 return next(err);
             }
-
             if (!user) {
-                console.log("Authentication failed:", info?.message);
                 return res.status(401).json({
                     message: info?.message || "Invalid credentials",
                     authenticated: false
                 });
             }
 
-            // Login using a promise wrapper
             await new Promise((resolve, reject) => {
                 req.logIn(user, (err) => {
                     if (err) reject(err);
@@ -32,10 +29,7 @@ router.post('/login', saveRedirectUrl, (req, res, next) => {
                 });
             });
 
-            // Ensure passport data is set
-            req.session.passport = { user: user._id };
-
-            // Save session explicitly
+            // Force session save and wait for it
             await new Promise((resolve, reject) => {
                 req.session.save((err) => {
                     if (err) reject(err);
@@ -43,16 +37,18 @@ router.post('/login', saveRedirectUrl, (req, res, next) => {
                 });
             });
 
-            console.log("Login successful");
-            console.log("Session ID:", req.sessionID);
-            console.log("Session data:", req.session);
-            console.log("Passport:", req.session.passport);
+            console.log("After login session:", {
+                sessionID: req.sessionID,
+                user: req.user,
+                session: req.session
+            });
 
             res.json({
                 success: true,
                 user,
                 authenticated: true,
-                redirectUrl: res.locals.redirectUrl || "/talk"
+                redirectUrl: res.locals.redirectUrl || "/talk",
+                sessionID: req.sessionID // Send this for debugging
             });
         } catch (error) {
             console.error("Login error:", error);

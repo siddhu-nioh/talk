@@ -9,75 +9,86 @@ router.get('/signup', userRouter.renderSignup);
 router.post('/signup', upload, wrapAsync(userRouter.signup));
 router.get('/login', userRouter.renderLogin);
 router.post('/login', saveRedirectUrl, (req, res, next) => {
-    passport.authenticate("local", (err, user, info) => {
-        if (err) {
-            console.error("Authentication error:", err);
-            return next(err);
-        }
-        
-        if (!user) {
-            console.log("Authentication failed:", info?.message);
-            return res.status(401).json({ 
-                message: info?.message || "Invalid credentials", 
-                authenticated: false 
-            });
-        }
-        
-        req.logIn(user, async (err) => {
+    passport.authenticate("local", async (err, user, info) => {
+        try {
             if (err) {
-                console.error("Login error:", err);
+                console.error("Authentication error:", err);
                 return next(err);
             }
-            
-            // Explicitly set passport data in session
+
+            if (!user) {
+                console.log("Authentication failed:", info?.message);
+                return res.status(401).json({
+                    message: info?.message || "Invalid credentials",
+                    authenticated: false
+                });
+            }
+
+            // Login using a promise wrapper
+            await new Promise((resolve, reject) => {
+                req.logIn(user, (err) => {
+                    if (err) reject(err);
+                    else resolve();
+                });
+            });
+
+            // Ensure passport data is set
             req.session.passport = { user: user._id };
-            
-            // Force session save and wait for it
+
+            // Save session explicitly
             await new Promise((resolve, reject) => {
                 req.session.save((err) => {
                     if (err) reject(err);
                     else resolve();
                 });
             });
-            
-            console.log("Login successful. Session ID:", req.sessionID);
+
+            console.log("Login successful");
+            console.log("Session ID:", req.sessionID);
             console.log("Session data:", req.session);
-            
-            res.json({ 
-                success: true, 
-                user, 
+            console.log("Passport:", req.session.passport);
+
+            res.json({
+                success: true,
+                user,
                 authenticated: true,
                 redirectUrl: res.locals.redirectUrl || "/talk"
             });
-        });
+        } catch (error) {
+            console.error("Login error:", error);
+            next(error);
+        }
     })(req, res, next);
 });
-
 router.get("/auth/check", (req, res) => {
-    console.log("Auth Check - Session ID:", req.sessionID);
-    console.log("Session data:", {
-        ...req.session,
-        cookie: req.session?.cookie,
-        passport: req.session?.passport
+    console.log({
+        sessionID: req.sessionID,
+        session: req.session,
+        isAuthenticated: req.isAuthenticated(),
+        user: req.user,
+        cookies: req.headers.cookie
     });
-    console.log("Is Authenticated:", req.isAuthenticated());
-    console.log("User:", req.user);
-    
-    // Touch session to prevent expiry
-    req.session.touch();
-    
-    if (req.isAuthenticated() && req.user) {
-        return res.json({ 
-            authenticated: true, 
-            user: req.user,
-            sessionID: req.sessionID 
+
+    if (!req.session) {
+        return res.status(440).json({ 
+            authenticated: false,
+            message: "Session expired"
         });
     }
-    
-    return res.json({ 
+
+    // Touch the session to prevent expiry
+    req.session.touch();
+
+    if (req.isAuthenticated() && req.user) {
+        return res.json({
+            authenticated: true,
+            user: req.user
+        });
+    }
+
+    return res.json({
         authenticated: false,
-        sessionID: req.sessionID,
-        message: "No authenticated user found"
+        message: "Not authenticated"
     });
 });
 router.get('/logout', userRouter.logout);

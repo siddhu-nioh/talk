@@ -14,7 +14,6 @@ const Post = require("./models/posts");
 
 const PORT = 8080;
 const cors = require("cors");
-// Update CORS config to only handle production
 app.use(cors({
     origin: "https://talk-5cj038uxr-siddhu-niohs-projects.vercel.app",
     credentials: true,
@@ -23,10 +22,7 @@ app.use(cors({
     exposedHeaders: ['Set-Cookie']
 }));
 
-// Update session config for production
 
-
-// Add this before your routes
 
 // Routers
 const user = require('./routes/user');
@@ -39,7 +35,7 @@ mongoose
       .then(() => console.log("Connected to DB"))
       .catch((err) => console.error("Database connection error:", err));
 
-// Middleware setup
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.json());
@@ -48,26 +44,24 @@ app.use(express.static(path.join(__dirname, "public")));
 app.engine("ejs", ejsMate);
 
 
-// Session store
+
 const session = require("express-session");
 const MongoStore = require('connect-mongo');
 
 const LocalStrategy = require("passport-local").Strategy;
 passport.use(new LocalStrategy(User.authenticate()));
 
-// Session store
-
-// Create the store first
+// Create  store first
 const store = MongoStore.create({
     mongoUrl: process.env.ATLASDB_URL,
     crypto: { secret: process.env.SECRET },
     touchAfter: 24 * 60 * 60,
     autoRemove: 'native',
-    collectionName: 'sessions', // Explicitly name the collection
-    stringify: false // Don't stringify the session
+    collectionName: 'sessions', 
+    stringify: false 
 });
 
-// Session configuration
+
 
 const sessionConfig = {
     store,
@@ -75,64 +69,33 @@ const sessionConfig = {
     name: 'sessionId',
     resave: true,
     saveUninitialized: false,
-    proxy: true, // Important for secure cookies behind a proxy
+    proxy: true,
     cookie: {
         httpOnly: true,
-        secure: true, // Always true since you're in production
-        sameSite: 'none', // Required for cross-site cookies
+        secure: true, 
+        sameSite: 'none',
         maxAge: 1000 * 60 * 60 * 24 * 7,
         path: '/'
     }
 };
-// Configure session middleware before passport
 app.use(session(sessionConfig));
 
-// Initialize passport after session
 app.use(passport.initialize());
 app.use(passport.session());
 
 store.on("set", (sessionId) => {
-    console.log("Session saved:", sessionId); // Log when a session is saved
+    console.log("Session saved:", sessionId);
 });
 
 store.on("get", (sessionId) => {
-    console.log("Session retrieved:", sessionId); // Log when a session is retrieved
+    console.log("Session retrieved:", sessionId); 
 });
 
 store.on("error", (err) => {
-    console.error("Session store error:", err); // Log any session store errors
+    console.error("Session store error:", err);
 });
 
-// // Session configuration
-// const sessionConfig = {
-//     store: MongoStore.create({
-//         mongoUrl: process.env.ATLASDB_URL,
-//         crypto: { secret: process.env.SECRET },
-//         touchAfter: 24 * 60 * 60,
-//         autoRemove: 'native',  // Add this
-//         ttl: 24 * 60 * 60      // Add this
-//     }),
-//     name: 'session',
-//     secret: process.env.SECRET,
-//     resave: true,           // Changed to true
-//     saveUninitialized: false,
-//     cookie: {
-//         httpOnly: true,
-//         secure: process.env.NODE_ENV === "production",
-//         sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-//         maxAge: 1000 * 60 * 60 * 24 * 7
-//     }
-// };
 
-// Passport initialization
-// app.use(session(sessionConfig));
-// app.use(passport.initialize());
-// app.use(passport.session());
-// Local strategy
-
-
-// Serialization/deserialization
-// 2. Update your passport configuration
 passport.serializeUser((user, done) => {
     console.log("Serializing user:", user._id);
     done(null, user._id);
@@ -142,8 +105,8 @@ passport.deserializeUser(async (id, done) => {
     try {
         console.log("Attempting to deserialize user:", id);
         const user = await User.findById(id)
-            .select('-password')  // Exclude password
-            .lean()              // Convert to plain object
+            .select('-password') 
+            .lean()             
             .exec();
         
         if (!user) {
@@ -163,7 +126,7 @@ passport.deserializeUser(async (id, done) => {
 app.use(flash());
 
 
-// Middleware to make flash messages available in views
+
 app.use((req, res, next) => {
       res.locals.success = req.flash("success");
       res.locals.error = req.flash("error");

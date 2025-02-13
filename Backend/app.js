@@ -14,14 +14,16 @@ const Post = require("./models/posts");
 
 const PORT = 8080;
 const cors = require("cors");
-
+// Update CORS config to only handle production
 app.use(cors({
     origin: "https://talk-5cj038uxr-siddhu-niohs-projects.vercel.app",
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    exposedHeaders: ['set-cookie']
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+    exposedHeaders: ['Set-Cookie']
 }));
+
+// Update session config for production
 
 
 // Add this before your routes
@@ -66,20 +68,22 @@ const store = MongoStore.create({
 });
 
 // Session configuration
+
 const sessionConfig = {
     store,
     secret: process.env.SECRET,
     name: 'sessionId',
-    resave: false,
+    resave: true,
     saveUninitialized: false,
+    proxy: true, // Important for secure cookies behind a proxy
     cookie: {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-        maxAge: 1000 * 60 * 60 * 24 * 7
+        secure: true, // Always true since you're in production
+        sameSite: 'none', // Required for cross-site cookies
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+        path: '/'
     }
 };
-
 // Configure session middleware before passport
 app.use(session(sessionConfig));
 

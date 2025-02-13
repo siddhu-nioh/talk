@@ -9,40 +9,64 @@ router.get('/signup', userRouter.renderSignup);
 router.post('/signup', upload, wrapAsync(userRouter.signup));
 router.get('/login', userRouter.renderLogin);
 router.post('/login', saveRedirectUrl, (req, res, next) => {
-    console.log("Login request received"); // Log the request
-
     passport.authenticate("local", (err, user, info) => {
-        console.log("Inside passport.authenticate callback"); // Log the callback
         if (err) {
-            console.error("Authentication error:", err); // Log any errors
+            console.error("Authentication error:", err);
             return next(err);
         }
         if (!user) {
-            console.log("Authentication failed:", info.message); // Log failure reason
-            return res.status(401).json({ message: info.message || "Invalid credentials", authenticated: false });
+            console.log("Authentication failed:", info?.message);
+            return res.status(401).json({ 
+                message: info?.message || "Invalid credentials", 
+                authenticated: false 
+            });
         }
-
-        console.log("User before req.logIn:", user); // Log the user object before req.logIn
-
+        
         req.logIn(user, (err) => {
             if (err) {
-                console.error("req.logIn error:", err); // Log any errors in req.logIn
+                console.error("Login error:", err);
                 return next(err);
             }
-            console.log("Authenticated User:", user); // Log the authenticated user
-            res.json({ success: true, user, authenticated: true, redirectUrl: res.locals.redirectUrl || "/talk" });
+            
+            // Force session save before responding
+            req.session.save((err) => {
+                if (err) {
+                    console.error("Session save error:", err);
+                    return next(err);
+                }
+                console.log("Session saved successfully:", req.sessionID);
+                res.json({ 
+                    success: true, 
+                    user, 
+                    authenticated: true,
+                    redirectUrl: res.locals.redirectUrl || "/talk"
+                });
+            });
         });
     })(req, res, next);
 });
-router.get("/auth/check", (req, res) => {
-    console.log("Session ID:", req.sessionID); // Log the session ID
-    console.log("Session Data:", req.session); // Log the session data
-    console.log("User:", req.user); // Log the user
 
-    if (req.isAuthenticated()) {
-        return res.json({ authenticated: true, user: req.user });
+router.get("/auth/check", (req, res) => {
+    console.log("Checking auth - Session ID:", req.sessionID);
+    console.log("Session data:", req.session);
+    console.log("User:", req.user);
+    
+    // Add session touch to prevent premature expiration
+    if (req.session) {
+        req.session.touch();
+    }
+    
+    if (req.isAuthenticated() && req.user) {
+        return res.json({ 
+            authenticated: true, 
+            user: req.user,
+            sessionID: req.sessionID 
+        });
     } else {
-        return res.json({ authenticated: false });
+        return res.json({ 
+            authenticated: false,
+            sessionID: req.sessionID
+        });
     }
 });
 router.get('/logout', userRouter.logout);

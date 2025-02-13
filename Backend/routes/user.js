@@ -14,6 +14,7 @@ router.post('/login', saveRedirectUrl, (req, res, next) => {
             console.error("Authentication error:", err);
             return next(err);
         }
+        
         if (!user) {
             console.log("Authentication failed:", info?.message);
             return res.status(401).json({ 
@@ -22,39 +23,48 @@ router.post('/login', saveRedirectUrl, (req, res, next) => {
             });
         }
         
-        req.logIn(user, (err) => {
+        req.logIn(user, async (err) => {
             if (err) {
                 console.error("Login error:", err);
                 return next(err);
             }
             
-            // Force session save before responding
-            req.session.save((err) => {
-                if (err) {
-                    console.error("Session save error:", err);
-                    return next(err);
-                }
-                console.log("Session saved successfully:", req.sessionID);
-                res.json({ 
-                    success: true, 
-                    user, 
-                    authenticated: true,
-                    redirectUrl: res.locals.redirectUrl || "/talk"
+            // Explicitly set passport data in session
+            req.session.passport = { user: user._id };
+            
+            // Force session save and wait for it
+            await new Promise((resolve, reject) => {
+                req.session.save((err) => {
+                    if (err) reject(err);
+                    else resolve();
                 });
+            });
+            
+            console.log("Login successful. Session ID:", req.sessionID);
+            console.log("Session data:", req.session);
+            
+            res.json({ 
+                success: true, 
+                user, 
+                authenticated: true,
+                redirectUrl: res.locals.redirectUrl || "/talk"
             });
         });
     })(req, res, next);
 });
 
 router.get("/auth/check", (req, res) => {
-    console.log("Checking auth - Session ID:", req.sessionID);
-    console.log("Session data:", req.session);
+    console.log("Auth Check - Session ID:", req.sessionID);
+    console.log("Session data:", {
+        ...req.session,
+        cookie: req.session?.cookie,
+        passport: req.session?.passport
+    });
+    console.log("Is Authenticated:", req.isAuthenticated());
     console.log("User:", req.user);
     
-    // Add session touch to prevent premature expiration
-    if (req.session) {
-        req.session.touch();
-    }
+    // Touch session to prevent expiry
+    req.session.touch();
     
     if (req.isAuthenticated() && req.user) {
         return res.json({ 
@@ -62,12 +72,13 @@ router.get("/auth/check", (req, res) => {
             user: req.user,
             sessionID: req.sessionID 
         });
-    } else {
-        return res.json({ 
-            authenticated: false,
-            sessionID: req.sessionID
-        });
     }
+    
+    return res.json({ 
+        authenticated: false,
+        sessionID: req.sessionID,
+        message: "No authenticated user found"
+    });
 });
 router.get('/logout', userRouter.logout);
 router.get('/user/:id', ensureAuthenticated, wrapAsync(userRouter.showUsers));

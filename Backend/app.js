@@ -74,20 +74,21 @@ const sessionConfig = {
     store: MongoStore.create({
         mongoUrl: process.env.ATLASDB_URL,
         crypto: { secret: process.env.SECRET },
-        touchAfter: 24 * 60 * 60
+        touchAfter: 24 * 60 * 60,
+        autoRemove: 'native',  // Add this
+        ttl: 24 * 60 * 60      // Add this
     }),
-    name: 'session', // Add this to be explicit about cookie name
+    name: 'session',
     secret: process.env.SECRET,
-    resave: false,
+    resave: true,           // Changed to true
     saveUninitialized: false,
     cookie: {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+        maxAge: 1000 * 60 * 60 * 24 * 7
     }
 };
-
 
 // Passport initialization
 app.use(session(sessionConfig));
@@ -97,25 +98,33 @@ app.use(passport.session());
 
 
 // Serialization/deserialization
+// 2. Update your passport configuration
 passport.serializeUser((user, done) => {
-    console.log("Serializing user:", user.id);
-    done(null, user.id);
+    console.log("Serializing user:", user._id);
+    done(null, user._id);
 });
 
 passport.deserializeUser(async (id, done) => {
     try {
-        const user = await User.findById(id).exec(); // Add .exec()
+        console.log("Attempting to deserialize user:", id);
+        const user = await User.findById(id)
+            .select('-password')  // Exclude password
+            .lean()              // Convert to plain object
+            .exec();
+        
         if (!user) {
-            console.log("No user found with ID:", id);
+            console.log("No user found during deserialization");
             return done(null, false);
         }
-        console.log("Deserialized user:", user.id);
+        
+        console.log("Successfully deserialized user:", user._id);
         done(null, user);
     } catch (err) {
         console.error("Deserialization error:", err);
         done(err, null);
     }
 });
+
 
 app.use(flash());
 

@@ -15,7 +15,7 @@ const Post = require("./models/posts");
 const PORT = 8080;
 const cors = require("cors");
 app.use(cors({
-    origin: "https://talk-swart-two.vercel.app",
+    origin: "https://www.thetalk.org.in",
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],

@@ -22,13 +22,13 @@
       }
 
       .media-content {
-            height: 560px;
+            height: 580px;
       }
 }
 
 @media (max-width: 480px) {
       .media-content {
-            height: 560px;
+            height: 580px;
       }
 }
 .description{

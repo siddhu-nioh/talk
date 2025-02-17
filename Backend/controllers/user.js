@@ -39,7 +39,7 @@ module.exports.logout = (req, res, next) => {
     req.logout((err) => {
         if (err) return next(err);
         req.session.destroy(() => {
-            res.clearCookie("connect.sid"); 
+            res.clearCookie("sessionId"); 
             req.flash("success", "You have successfully logged out");
             res.redirect("/talk");
         });

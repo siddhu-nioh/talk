@@ -28,7 +28,7 @@
 
 @media (max-width: 480px) {
       .media-content {
-            height: 150px;
+            height: fit-content;
       }
 }
 .description{

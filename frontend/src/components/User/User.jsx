@@ -52,7 +52,7 @@ function Profile() {
   const handleLogout = async () => {
     try {
       const response = await fetch(`${Backend_Url}/logout`, {
-        method: "GET",
+        method: "POST",
         credentials: "include",
       });
       if (!response.ok) {

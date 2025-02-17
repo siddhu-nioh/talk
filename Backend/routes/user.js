@@ -87,7 +87,7 @@ router.get("/auth/check", (req, res) => {
         message: "Not authenticated"
     });
 });
-router.get('/logout', userRouter.logout);
+router.post('/logout', userRouter.logout);
 router.get('/user/:id', ensureAuthenticated, wrapAsync(userRouter.showUsers));
 router.post('/user/follow/:id', ensureAuthenticated, wrapAsync(userRouter.followUser));
 router.post('/user/unfollow/:id', ensureAuthenticated, wrapAsync(userRouter.unFollowUser));

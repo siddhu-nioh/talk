@@ -49,6 +49,7 @@ export default function Authmodals() {
                     localStorage.setItem("token", result.token);
                     localStorage.setItem("user", JSON.stringify(result.user));
                     setLoginOpen(false);
+                    alert("Login Successful");
                     navigate("/talk");
                 } else {
                     setError("Invalid username or password.");

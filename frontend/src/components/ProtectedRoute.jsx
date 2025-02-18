@@ -1,46 +1,48 @@
 import { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const Backend_Url = import.meta.env.VITE_BACKEND_URL;
-    const navigate = useNavigate();
 
     useEffect(() => {
         const checkAuth = async () => {
             try {
                 console.log("Checking authentication...");
+                const token = localStorage.getItem("token");
+        
+                if (!token) {
+                    throw new Error("No token found");
+                }
+        
                 const response = await fetch(`${Backend_Url}/auth/check`, {
-                    method: 'GET',
-                    credentials: "include",
+                    method: "GET",
                     headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`, // Include the token in the request headers
                     },
                 });
-
+        
                 if (!response.ok) {
-                    throw new Error('Auth check failed');
+                    throw new Error("Auth check failed");
                 }
-
+        
                 const data = await response.json();
                 console.log("Auth check response:", data);
-
+        
                 if (data.authenticated && data.user) {
                     setIsAuthenticated(true);
-                  
-                    localStorage.setItem('user', JSON.stringify(data.user));
+                    localStorage.setItem("user", JSON.stringify(data.user));
                 } else {
                     setIsAuthenticated(false);
-                    localStorage.removeItem('isLoggedIn');
-                    localStorage.removeItem('user');
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("user");
                 }
             } catch (error) {
                 console.error("Auth check failed:", error);
                 setIsAuthenticated(false);
-                localStorage.removeItem('isLoggedIn');
-                localStorage.removeItem('user');
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
             } finally {
                 setIsLoading(false);
             }
@@ -48,10 +50,10 @@ const ProtectedRoute = ({ children }) => {
 
         checkAuth();
 
-      
-        const interval = setInterval(checkAuth, 5 * 60 * 1000); 
+        // Optionally, set up a periodic auth check (e.g., every 5 minutes)
+        const interval = setInterval(checkAuth, 5 * 60 * 1000);
         return () => clearInterval(interval);
-    }, [Backend_Url, navigate]);
+    }, [Backend_Url]);
 
     if (isLoading) {
         return (

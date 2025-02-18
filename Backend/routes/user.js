@@ -1,95 +1,57 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const userRouter = require("../controllers/user")
-const passport = require('passport');
-const wrapAsync = require("../utils/wrapAsync");
-const { saveRedirectUrl, ensureAuthenticated } = require("../middleware");
-const upload = require('../cloudConfig');
-router.get('/signup', userRouter.renderSignup);
-router.post('/signup', upload, wrapAsync(userRouter.signup));
-router.get('/login', userRouter.renderLogin);
-router.post('/login', saveRedirectUrl, (req, res, next) => {
-    passport.authenticate("local", async (err, user, info) => {
-        try {
-            if (err) {
-                console.error("Authentication error:", err);
-                return next(err);
-            }
-            if (!user) {
-                return res.status(401).json({
-                    message: info?.message || "Invalid credentials",
-                    authenticated: false
-                });
-            }
+const userRouter = require("../controllers/user");
+const { ensureAuthenticated } = require("../middleware");
+const upload = require("../cloudConfig");
 
-            await new Promise((resolve, reject) => {
-                req.logIn(user, (err) => {
-                    if (err) reject(err);
-                    else resolve();
-                });
-            });
+// Signup
+router.get("/signup", userRouter.renderSignup);
+router.post("/signup", upload, userRouter.signup);
 
-         
-            await new Promise((resolve, reject) => {
-                req.session.save((err) => {
-                    if (err) reject(err);
-                    else resolve();
-                });
-            });
+// Login
+router.get("/login", userRouter.renderLogin);
+router.post("/login", userRouter.login);
+const jwt = require("jsonwebtoken");
+const User = require("../staff/User");
 
-            console.log("After login session:", {
-                sessionID: req.sessionID,
-                user: req.user,
-                session: req.session
-            });
+router.get("/auth/check", async (req, res) => {
+    const token = req.headers.authorization?.split(" ")[1]; // Get the token from the Authorization header  so this is the first thing we do in this as we per session data previous samely
 
-            res.json({
-                success: true,
-                user,
-                authenticated: true,
-                redirectUrl: res.locals.redirectUrl || "/talk",
-                sessionID: req.sessionID 
-            });
-        } catch (error) {
-            console.error("Login error:", error);
-            next(error);
+    if (!token) {
+        return res.status(401).json({ authenticated: false, message: "No token provided" });
+    }
+
+    try {
+      
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        
+        const user = await User.findById(decoded._id).select("-password");
+        if (!user) {
+            return res.status(401).json({ authenticated: false, message: "User not found" });
         }
-    })(req, res, next);
-});
-router.get("/auth/check", (req, res) => {
-    console.log({
-        sessionID: req.sessionID,
-        session: req.session,
-        isAuthenticated: req.isAuthenticated(),
-        user: req.user,
-        cookies: req.headers.cookie
-    });
 
-    if (!req.session) {
-        return res.status(440).json({ 
-            authenticated: false,
-            message: "Session expired"
-        });
-    }
-
-   
-    req.session.touch();
-
-    if (req.isAuthenticated() && req.user) {
-        return res.json({
+        
+        res.status(200).json({
             authenticated: true,
-            user: req.user
+            user,
         });
+    } catch (err) {
+        console.error("Auth check error:", err);
+        res.status(401).json({ authenticated: false, message: "Invalid token" });
     }
-
-    return res.json({
-        authenticated: false,
-        message: "Not authenticated"
-    });
 });
-router.post('/logout', userRouter.logout);
-router.get('/user/:id', ensureAuthenticated, wrapAsync(userRouter.showUsers));
-router.post('/user/follow/:id', ensureAuthenticated, wrapAsync(userRouter.followUser));
-router.post('/user/unfollow/:id', ensureAuthenticated, wrapAsync(userRouter.unFollowUser));
-router.get('/user/followers/:id', ensureAuthenticated, wrapAsync(userRouter.allFollowers));
+// Logout
+router.get("/logout", userRouter.logout);
+
+// User Profile
+router.get("/user/:id", ensureAuthenticated, userRouter.showUsers);
+
+// Follow/Unfollow
+router.post("/user/follow/:id", ensureAuthenticated, userRouter.followUser);
+router.post("/user/unfollow/:id", ensureAuthenticated, userRouter.unFollowUser);
+
+// Followers
+router.get("/user/followers/:id", ensureAuthenticated, userRouter.allFollowers);
+
 module.exports = router;

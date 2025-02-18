@@ -12,7 +12,7 @@ router.post("/signup", upload, userRouter.signup);
 router.get("/login", userRouter.renderLogin);
 router.post("/login", userRouter.login);
 const jwt = require("jsonwebtoken");
-const User = require("../staff/User");
+const User = require("../models/user");
 
 router.get("/auth/check", async (req, res) => {
     const token = req.headers.authorization?.split(" ")[1]; // Get the token from the Authorization header  so this is the first thing we do in this as we per session data previous samely

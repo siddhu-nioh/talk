@@ -1,5 +1,5 @@
 const Post = require('../models/posts');
-const User = require('../models/user');
+const User = require('../models/User');
 const shuffleArray = (array) => {
       return array.sort(() => Math.random() - 0.5);
 };

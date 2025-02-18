@@ -83,8 +83,8 @@ export default function Authmodals() {
                 console.log("Signup response:", result);
 
                 if (result.success) {
-                    localStorage.setItem("token", result.token);
-                    localStorage.setItem("user", JSON.stringify(result.user));
+                    // localStorage.setItem("token", result.token);
+                    // localStorage.setItem("user", JSON.stringify(result.user));
                     setSignupOpen(false);
                     alert("Signup successful!");
                     navigate("/login");

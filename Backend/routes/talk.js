@@ -11,6 +11,5 @@ router.get('/search',ensureAuthenticated,talkRouter.renderSearch);
 router.get('/user',talkRouter.renderUser);
 router.post('/',ensureAuthenticated, upload,validateMedia, wrapAsync(talkRouter.postUpload));
 router.get('/search/users',wrapAsync(talkRouter.searchUsers));
-router.get('/user/:id',ensureAuthenticated,wrapAsync(talkRouter.showUsers));
 
 module.exports = router;

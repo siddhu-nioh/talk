@@ -38,6 +38,7 @@ function New() {
                           },
                   });
                   if (response.ok) {
+                        alert("post created succesfully");
                         navigate('/talk'); 
                   } else {
                         const errorData = await response.json();

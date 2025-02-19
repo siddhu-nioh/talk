@@ -7,14 +7,39 @@ import {
 function Profile() {
     const Backend_Url = import.meta.env.VITE_BACKEND_URL;
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null);
     const [posts, setPosts] = useState([]);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [uploading, setUploading] = useState(false);
 
     useEffect(() => {
+
         fetchUserData();
+
+        const fetchUser = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                if (!token) throw new Error("No token found");
+
+                const response = await fetch(`${Backend_Url}/auth/check`, {
+                    method: "GET",
+                    headers: { Authorization: `Bearer ${token}` },
+                });   
+
+                if (!response.ok) throw new Error("Failed to fetch user data");
+
+                const data = await response.json();
+                setUser(data.user);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUser();
+
     }, []);
 
     const fetchUserData = async () => {

@@ -16,23 +16,20 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 router.get("/auth/check", async (req, res) => {
-    const token = req.headers.authorization?.split(" ")[1]; // Get the token from the Authorization header  so this is the first thing we do in this as we per session data previous samely
+    const token = req.headers.authorization?.split(" ")[1]; // Extract token from Authorization header
 
     if (!token) {
         return res.status(401).json({ authenticated: false, message: "No token provided" });
     }
 
     try {
-      
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify token
+        const user = await User.findById(decoded._id).select("-password"); // Find user
 
-        
-        const user = await User.findById(decoded._id).select("-password");
         if (!user) {
             return res.status(401).json({ authenticated: false, message: "User not found" });
         }
 
-        
         res.status(200).json({
             authenticated: true,
             user,

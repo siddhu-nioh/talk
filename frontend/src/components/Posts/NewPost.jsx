@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './New.css';
-import axios from 'axios'; // Use axios for progress tracking
+// import axios from 'axios'; // Use axios for progress tracking
 
 function New() {
     const Backend_Url = import.meta.env.VITE_BACKEND_URL;

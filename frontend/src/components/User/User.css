@@ -248,8 +248,9 @@
 }
 
 .sidebar-item:hover {
-  background: rgba(0, 0, 0, 0.521);
+  background: rgba(200, 200, 200, 0.2); 
 }
+
 
 /* Responsive Styles */
 @media (max-width: 768px) {

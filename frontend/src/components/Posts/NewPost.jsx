@@ -60,7 +60,7 @@ function New() {
                 setTimeout(() => {
                     alert("Post created successfully!");
                     navigate('/talk');
-                }, 1000); // Wait for the animation to complete
+                }, 2000); // Wait for the animation to complete
             } else {
                 throw new Error('Failed to upload post.');
             }

@@ -63,6 +63,7 @@ body {
     left: 0;
     top: 0;
     width: var(--progress, 0%);
+      color:white;
     height: 100%;
     background: rgba(0, 162, 255, 0.7);
     transition: width 0.2s ease-in-out;

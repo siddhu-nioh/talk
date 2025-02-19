@@ -19,7 +19,7 @@ function Profile() {
                 const response = await fetch(`${Backend_Url}/auth/check`, {
                     method: "GET",
                     headers: { Authorization: `Bearer ${token}` },
-                });
+                }); 
 
                 if (!response.ok) throw new Error("Failed to fetch user data");
 

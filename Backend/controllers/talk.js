@@ -42,7 +42,7 @@ module.exports.postUpload = async (req, res) => {
       const user = await User.findById(req.user._id);
       user.posts.push(newData);
       await user.save();
-      req.flash('success', 'Successfully uploaded the post');
+       res.status(201).json({ message: 'Successfully uploaded the post', data: newData });
       res.redirect('/talk');
 };
 module.exports.searchUsers = async (req, res) => {

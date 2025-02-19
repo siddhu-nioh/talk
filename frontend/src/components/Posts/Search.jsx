@@ -49,6 +49,7 @@ function SearchBar() {
                         placeholder="Search"
                         autoComplete="off"
                         value={query}
+                        style={{border:"none", borderBottom: "1px solid gray"}}
                         onChange={handleSearch}
                     />
 

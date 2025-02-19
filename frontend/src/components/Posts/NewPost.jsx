@@ -7,10 +7,29 @@ function New() {
     const [description, setDescription] = useState('');
     const [image, setImage] = useState(null);
     const [video, setVideo] = useState(null);
-    const [progress, setProgress] = useState(0); // Track upload progress
+    const [preview, setPreview] = useState(null);
+    const [progress, setProgress] = useState(0);
     const [isUploading, setIsUploading] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
+
+    // Handle Image Selection
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        setImage(file);
+        if (file) {
+            setPreview(URL.createObjectURL(file));
+        }
+    };
+
+    // Handle Video Selection
+    const handleVideoChange = (e) => {
+        const file = e.target.files[0];
+        setVideo(file);
+        if (file) {
+            setPreview(URL.createObjectURL(file));
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,10 +48,9 @@ function New() {
         if (image) formData.append('image', image);
         if (video) formData.append('video', video);
 
-        // Simulate progress increase
         let progressInterval = setInterval(() => {
             setProgress((prev) => (prev < 90 ? prev + 5 : prev));
-        }, 300); 
+        }, 300);
 
         try {
             const response = await fetch(`${Backend_Url}/talk`, {
@@ -45,12 +63,12 @@ function New() {
             });
 
             if (response.ok) {
-                clearInterval(progressInterval); // Stop fake progress
-                setProgress(100); // Set to 100% upon success
+                clearInterval(progressInterval);
+                setProgress(100);
                 setTimeout(() => {
                     alert("Post created successfully!");
                     navigate('/talk'); 
-                }, 1000); // Pause for effect
+                }, 1000);
             } else {
                 clearInterval(progressInterval);
                 setError('Failed to upload post. Please try again.');
@@ -84,7 +102,7 @@ function New() {
                             name="image"
                             accept="image/*"
                             style={{ display: 'none' }}
-                            onChange={(e) => setImage(e.target.files[0])}
+                            onChange={handleImageChange}
                         />
                     </label>
                     <label className="btn-action">
@@ -94,18 +112,30 @@ function New() {
                             name="video"
                             accept="video/*"
                             style={{ display: 'none' }}
-                            onChange={(e) => setVideo(e.target.files[0])}
+                            onChange={handleVideoChange}
                         />
                     </label>
+
+                    {/* Display preview of selected image or video */}
+                    {preview && (
+                        <div className="preview-container">
+                            {image ? (
+                                <img src={preview} alt="Selected" className="preview-image" />
+                            ) : (
+                                <video src={preview} controls className="preview-video"></video>
+                            )}
+                        </div>
+                    )}
+
                     {error && <p className="error-message">{error}</p>}
 
-                    {/* Upload Button with Progress Animation */}
+                    {/* Upload Button with Gradient Progress Animation */}
                     <button 
                         type="submit" 
                         className="btn-action upload"
                         disabled={isUploading}
                         style={{ 
-                            background: `linear-gradient(to right, #4caf50 ${progress}%, #ccc ${progress}%)`,
+                            background: `linear-gradient(to right, #4a90e2 ${progress}%, #dbe9f7 ${progress}%)`,
                             color: 'white',
                             fontWeight: 'bold',
                             position: 'relative',
@@ -122,6 +152,7 @@ function New() {
 }
 
 export default New;
+
 
 // import { useState } from 'react';
 // import { useNavigate } from 'react-router-dom';

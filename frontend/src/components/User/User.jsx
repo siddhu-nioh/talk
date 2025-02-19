@@ -39,7 +39,7 @@ function Profile() {
         if (!user) return;
         const fetchPosts = async () => {
             try {
-                const response = await fetch("http://localhost:8080/talk");
+                const response = await fetch(`${Backend_Url}/talk`);
                 if (!response.ok) throw new Error("Failed to fetch posts");
 
                 const data = await response.json();

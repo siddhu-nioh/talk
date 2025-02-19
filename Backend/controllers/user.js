@@ -88,11 +88,6 @@ module.exports.logout = (req, res) => {
 module.exports.showUsers = async (req, res) => {
     const { id } = req.params;
     const user = await User.findById(id).populate("posts");
-
-    if (!user) {
-        return res.status(404).json({ message: "User not found" });
-    }
-
     const isFollowing = user.followers.some(follower => follower.toString() === req.user?._id.toString());
     res.json({ ...user.toObject(), isFollowing });
 };
@@ -129,3 +124,23 @@ module.exports.allFollowers = async (req, res) => {
 
     res.json({ followers: user.followers });
 };
+
+//update user profile picture
+module.exports.updateProfile = async (req, res) => {
+        if (!req.files || !req.files.profilePicture || req.files.profilePicture.length === 0) {
+            return res.status(400).json({ error: "No file uploaded" });
+        }
+        const userId = req.user.id;
+        const imageUrl = req.files.profilePicture[0].path;
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { profile: imageUrl },
+            { new: true }
+        );
+        if (!updatedUser) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        res.json({ message: "Profile updated successfully", profilePictureUrl: imageUrl });
+};
+
+

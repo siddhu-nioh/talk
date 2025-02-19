@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import './Posts.css';
-import AdComponent from './AdComponent'; // Import the AdComponent
 
 function TalkPosts() {
   const Backend_Url = import.meta.env.VITE_BACKEND_URL;
@@ -63,8 +62,7 @@ function TalkPosts() {
   return (
     <div className="p-4 flex justify-center items-center posts">
       <div className="text-center">
-            <AdComponent />
-        {posts.map((post, index) => (
+        {posts.map((post) => (
           <div key={post._id}>
             <div className="post-container m-4 p-4 border-none bg-gray-800 rounded-lg shadow-lg">
               <div className="post-header flex items-center mb-2">
@@ -85,12 +83,8 @@ function TalkPosts() {
                 <p className="text-white leading-6 mt-2 description">{post.description}</p>
               )}
             </div>
-
-            {/* Display AdComponent after every 1 posts */}
-            {(index + 1) % 1 === 0 && <AdComponent />}
           </div>
         ))}
-            <AdComponent />
       </div>
     </div>
   );

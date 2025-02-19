@@ -1,45 +1,56 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "./User.css";
 import { FaEdit, FaUsers, FaShare, FaEnvelope, FaUserMinus, FaUserPlus } from "react-icons/fa";
 
 function UserProfile() {
   const Backend_Url = import.meta.env.VITE_BACKEND_URL;
   const { id } = useParams();
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentUserId, setCurrentUserId] = useState(null);
 
+  const getAuthToken = () => {
+    return localStorage.getItem('token');
+  };
+
   useEffect(() => {
     const fetchUser = async () => {
+      const token = getAuthToken();
+      if (!token) {
+        setError("You need to be logged in to view this profile");
+        setLoading(false);
+        // Optionally redirect to login
+        // navigate('/login');
+        return;
+      }
+
       try {
-        // Fetch logged-in user details
+        // Fetch logged-in user details and user profile in one request
         const authResponse = await fetch(`${Backend_Url}/user/${id}`, {
           method: "GET",
           credentials: "include",
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
         });
 
         if (!authResponse.ok) {
-          throw new Error("Failed to fetch logged-in user");
-        }
-
-        const authData = await authResponse.json();
-        setCurrentUserId(authData._id);
-
-        // Fetch profile user details along with posts
-        const response = await fetch(`${Backend_Url}/user/${id}`, {
-          method: "GET",
-          credentials: "include",
-        });
-
-        if (!response.ok) {
           throw new Error("Failed to fetch user data");
         }
 
-        const data = await response.json();
-        const isFollowing = data.followers.includes(authData._id);
-        setUser({ ...data, isFollowing });
+        const userData = await authResponse.json();
+        setCurrentUserId(userData._id);
+
+        // Check if we need to make a second request or if the API returns
+        // both current user info and profile user info in one response
+        // If your API doesn't return this info in one call, keep the second fetch
+        const isFollowing = userData.followers?.includes(userData._id) || false;
+        setUser({ ...userData, isFollowing });
+        
       } catch (err) {
         setError(err.message);
       } finally {
@@ -48,12 +59,19 @@ function UserProfile() {
     };
 
     fetchUser();
-  }, [id]);
+  }, [id, navigate]);
 
   const handleFollow = async () => {
     if (user.isFollowing) return;
 
+    const token = getAuthToken();
+    if (!token) {
+      setError("You need to be logged in to follow users");
+      return;
+    }
+
     try {
+      // Optimistic update
       setUser(prev => ({
         ...prev,
         followers: [...prev.followers, currentUserId],
@@ -63,6 +81,10 @@ function UserProfile() {
       const response = await fetch(`${Backend_Url}/user/follow/${id}`, {
         method: "POST",
         credentials: "include",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
       });
 
       if (!response.ok) {
@@ -70,6 +92,7 @@ function UserProfile() {
       }
     } catch (error) {
       console.error(error);
+      // Revert on error
       setUser(prev => ({
         ...prev,
         followers: prev.followers.filter(f => f !== currentUserId),
@@ -79,7 +102,14 @@ function UserProfile() {
   };
 
   const handleUnfollow = async () => {
+    const token = getAuthToken();
+    if (!token) {
+      setError("You need to be logged in to unfollow users");
+      return;
+    }
+
     try {
+      // Optimistic update
       setUser(prev => ({
         ...prev,
         followers: prev.followers.filter(f => f !== currentUserId),
@@ -89,6 +119,10 @@ function UserProfile() {
       const response = await fetch(`${Backend_Url}/user/unfollow/${id}`, {
         method: "POST",
         credentials: "include",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
       });
 
       if (!response.ok) {
@@ -96,6 +130,7 @@ function UserProfile() {
       }
     } catch (error) {
       console.error(error);
+      // Revert on error
       setUser(prev => ({
         ...prev,
         followers: [...prev.followers, currentUserId],

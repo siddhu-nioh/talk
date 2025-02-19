@@ -8,6 +8,7 @@ const cors = require("cors");
 const userRoutes = require("./routes/user");
 const talkRoutes = require("./routes/talk");
 const { ensureAuthenticated } = require("./middleware");
+const path = require('path');
 
 const app = express();
 
@@ -20,10 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Database connection
-mongoose.connect(process.env.ATLASDB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
+mongoose.connect(process.env.ATLASDB_URL)
 .then(() => console.log("Connected to DB"))
 .catch((err) => console.error("Database connection error:", err));
 
@@ -81,8 +79,8 @@ app.listen(PORT, () => {
 //       .catch((err) => console.error("Database connection error:", err));
 
 
-// app.set("view engine", "ejs");
-// app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 // app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 // app.use(express.static(path.join(__dirname, "public")));
@@ -199,14 +197,14 @@ app.listen(PORT, () => {
 // app.get("/", (req, res) => {
 //       res.redirect("/talk");
 // });
-// // Error handler middleware
-// app.use((err, req, res, next) => {
-//       console.error(err.stack);
-//       const { status = 500, message = "Something went wrong!" } = err;
-//       res.status(status).render("error", { err });
-// });
+// Error handler middleware
+app.use((err, req, res, next) => {
+        console.error(err.stack);
+        const { status = 500, message = "Something went wrong!" } = err;
+        res.status(status).render("error", { err });
+});
 
 // // Starting the server
 // app.listen(PORT, () => {
-//       console.log(`Server is running on port ${PORT}`);
+//     console.log(`Server is running on port ${PORT}`);
 // });  

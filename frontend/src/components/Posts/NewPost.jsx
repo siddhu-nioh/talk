@@ -132,10 +132,11 @@ function New() {
                     {/* Upload Button with Gradient Progress Animation */}
                     <button 
                         type="submit" 
-                        className="btn-action upload"
+                        className="upload"
                         disabled={isUploading}
                         style={{ 
                             background: `linear-gradient(to right, #4a90e2 ${progress}%, #dbe9f7 ${progress}%)`,
+                            backgroundColor:'rgba(16, 90, 248, 0.911)';
                             color: 'white',
                             fontWeight: 'bold',
                             position: 'relative',

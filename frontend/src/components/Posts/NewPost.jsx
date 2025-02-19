@@ -33,6 +33,9 @@ function New() {
                         method: 'POST',
                         body: formData,
                         credentials: 'include',
+                         headers: {
+                              'Authorization': `Bearer ${localStorage.getItem("token")}`, 
+                          },
                   });
                   if (response.ok) {
                         navigate('/talk'); 

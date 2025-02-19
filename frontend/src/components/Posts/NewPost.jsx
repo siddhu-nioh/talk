@@ -131,21 +131,16 @@ function New() {
 
                     {/* Upload Button with Gradient Progress Animation */}
                     <button 
-                        type="submit" 
-                        className="upload"
-                        disabled={isUploading}
-                        style={{ 
-                            background: `linear-gradient(to right, #4a90e2 ${progress}%, #dbe9f7 ${progress}%)`,
-                            backgroundColor:'rgba(16, 90, 248, 0.911)',
-                            color: 'white',
-                            fontWeight: 'bold',
-                            position: 'relative',
-                            overflow: 'hidden',
-                            transition: 'background 0.3s ease-in-out'
-                        }}
-                    >
-                        {isUploading ? `${progress}%` : 'Upload Post'}
-                    </button>
+    type="submit" 
+    className="btn-action upload"
+    disabled={isUploading}
+    style={{ 
+        '--progress': `${progress}%` // Dynamic progress effect
+    }}
+>
+    {isUploading ? `${progress}%` : 'Upload Post'}
+</button>
+
                 </form>
             </div>
         </div>

@@ -3,6 +3,7 @@ const router = express.Router();
 const userRouter = require("../controllers/user");
 const { ensureAuthenticated } = require("../middleware");
 const upload = require("../cloudConfig");
+const wrapAsync=require('../utils/wrapAsync');
 
 // Signup
 router.get("/signup", userRouter.renderSignup);
@@ -53,5 +54,8 @@ router.post("/user/unfollow/:id", ensureAuthenticated, userRouter.unFollowUser);
 
 // Followers
 router.get("/user/followers/:id", ensureAuthenticated, userRouter.allFollowers);
+//update user profile picture
+
+router.post("/user/profile/picture", ensureAuthenticated, upload, wrapAsync(userRouter.updateProfile));
 
 module.exports = router;

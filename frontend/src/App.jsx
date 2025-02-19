@@ -8,16 +8,14 @@ import SearchBar from './components/Posts/Search';
 import ShowUser from './components/User/SearchUserProfile';
 import Followers from './components/User/Followers';
 import Login from './components/User/Login';
-import ProtectedRoute from './components/ProtectedRoute'; // Import ProtectedRoute
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Posts />} />
         <Route path="/talk" element={<Posts />} />
         <Route path="/login" element={<Login />} />
-        {/* Protected Routes */}
         <Route
           path="/*"
           element={

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import "./User.css";
-import { FaEdit, FaTrash, FaUsers, FaShare, FaEnvelope, FaSignOutAlt, FaCog, FaTimes } from "react-icons/fa";
+import {
+    FaEdit, FaTrash, FaUsers, FaShare, FaEnvelope, FaSignOutAlt, FaCog, FaTimes
+} from "react-icons/fa";
 
 function Profile() {
     const Backend_Url = import.meta.env.VITE_BACKEND_URL;
@@ -8,49 +10,52 @@ function Profile() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [posts, setPosts] = useState([]);
-    const [isSettingsOpen, setIsSettingsOpen] = useState(false); // State for sidebar
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+    const [uploading, setUploading] = useState(false);
 
     useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const token = localStorage.getItem("token");
-                if (!token) throw new Error("No token found");
-
-                const response = await fetch(`${Backend_Url}/auth/check`, {
-                    method: "GET",
-                    headers: { Authorization: `Bearer ${token}` },
-                });
-
-                if (!response.ok) throw new Error("Failed to fetch user data");
-
-                const data = await response.json();
-                setUser(data.user);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchUser();
+        fetchUserData();
     }, []);
+
+    const fetchUserData = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            if (!token) throw new Error("No token found");
+
+            const response = await fetch(`${Backend_Url}/auth/check`, {
+                method: "GET",
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            if (!response.ok) throw new Error("Failed to fetch user data");
+
+            const data = await response.json();
+            setUser(data.user);
+            localStorage.setItem("user", JSON.stringify(data.user));
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
         if (!user) return;
-        const fetchPosts = async () => {
-            try {
-                const response = await fetch(`${Backend_Url}/talk`);
-                if (!response.ok) throw new Error("Failed to fetch posts");
-
-                const data = await response.json();
-                const userPosts = data.filter(post => post.owner._id === user._id);
-                setPosts(userPosts);
-            } catch (err) {
-                console.error("Error fetching posts:", err);
-            }
-        };
-        fetchPosts();
+        fetchUserPosts();
     }, [user]);
+
+    const fetchUserPosts = async () => {
+        try {
+            const response = await fetch(`${Backend_Url}/talk`);
+            if (!response.ok) throw new Error("Failed to fetch posts");
+
+            const data = await response.json();
+            const userPosts = data.filter(post => post.owner._id === user._id);
+            setPosts(userPosts);
+        } catch (err) {
+            console.error("Error fetching posts:", err);
+        }
+    };
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -60,6 +65,38 @@ function Profile() {
 
     const toggleSettings = () => {
         setIsSettingsOpen(!isSettingsOpen);
+    };
+
+    const handleFileChange = async (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            setUploading(true);
+            await uploadProfilePicture(file);
+            setUploading(false);
+        }
+    };
+
+    const uploadProfilePicture = async (file) => {
+        const token = localStorage.getItem("token");
+        const formData = new FormData();
+        formData.append("profilePicture", file);
+
+        try {
+            const response = await fetch(`${Backend_Url}/user/profile/picture`, {
+                method: "POST",
+                headers: { Authorization: `Bearer ${token}` },
+                body: formData,
+            });
+
+            if (!response.ok) throw new Error("Failed to upload profile picture");
+
+            const data = await response.json();
+            setUser((prevUser) => ({ ...prevUser, profile: data.profilePicture }));
+            localStorage.setItem("user", JSON.stringify({ ...user, profile: data.profilePicture }));
+            await fetchUserData();
+        } catch (err) {
+            console.error("Upload failed:", err);
+        }
     };
 
     if (loading) return <p>Loading...</p>;
@@ -79,15 +116,14 @@ function Profile() {
 
             {/* Right-Side Sidebar */}
             <div className={`sidebar ${isSettingsOpen ? "open" : ""}`}>
-                  
                 <div className="sidebar-content">
-                <div className="settings-icon-2" onClick={toggleSettings}>
+                    <div className="settings-icon-2" onClick={toggleSettings}>
                         {isSettingsOpen ? <FaTimes /> : <FaCog />}
                     </div>
                     <div className="sidebar-item" onClick={handleLogout}>
                         <FaSignOutAlt /> Logout
                     </div>
-                    <div className="sidebar-item">
+                    <div className="sidebar-item" onClick={() =>  document.getElementById("fileInput").click()}>
                         <FaEdit /> Edit Profile
                     </div>
                     <div className="sidebar-item">
@@ -101,7 +137,19 @@ function Profile() {
 
             {/* Profile Content */}
             <div className="profile-container">
-                <img src={user.profile || "default-profile.png"} alt="Profile Picture" />
+                <div className="profile-picture-container">
+                    <img src={user.profile || "default-profile.png"} alt="Profile" className="profile-picture" />
+
+                    <input
+                        type="file"
+                        id="fileInput"
+                        style={{ display: "none" }}
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        disabled={uploading}
+                    />
+                </div>
+
                 <h2>{user.username || "Unknown User"}</h2>
 
                 <div className="stats">
@@ -111,7 +159,14 @@ function Profile() {
                 </div>
 
                 <div className="action-buttons">
-                    <div className="btn-actions"><FaEdit /></div>
+                    <div 
+                        className="btn-actions" 
+                        onClick={() => !uploading && document.getElementById("fileInput").click()}
+                        style={{ opacity: uploading ? 0.5 : 1, cursor: uploading ? "not-allowed" : "pointer" }}
+                    >
+                        {uploading ? "Uploading..." : <FaEdit />}
+                    </div>
+
                     <div className="btn-actions"><FaTrash /></div>
                     <form action={`/user/followers/${user._id || "#"}`} method="GET">
                         <button className="btn-actions" style={{ border: "none" }} type="submit">

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import './Posts.css';
 import AdComponent from './AdComponent'; // Import the AdComponent
 
@@ -7,6 +7,9 @@ function TalkPosts() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Ref to store video elements
+  const videoRefs = useRef([]);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -26,25 +29,37 @@ function TalkPosts() {
     fetchPosts();
   }, []);
 
-  const isElementInViewport = (el) => {
-    const rect = el.getBoundingClientRect();
-    return rect.top < window.innerHeight && rect.bottom > 0;
-  };
-
+  // Intersection Observer to handle video play/pause
   useEffect(() => {
-    const handleScroll = () => {
-      document.querySelectorAll("video[data-autoplay]").forEach((video) => {
-        const isVisible = isElementInViewport(video);
-        if (isVisible && video.paused) {
-          video.play().catch((error) => console.error("Autoplay failed:", error));
-        } else if (!isVisible && !video.paused) {
-          video.pause();
-        }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target;
+          if (entry.isIntersecting) {
+            // Play the video if it's in the viewport
+            video.play().catch((error) => console.error("Autoplay failed:", error));
+          } else {
+            // Pause the video if it's out of the viewport
+            video.pause();
+          }
+        });
+      },
+      {
+        threshold: 0.5, // Trigger when 50% of the video is visible
+      }
+    );
+
+    // Observe all video elements
+    videoRefs.current.forEach((video) => {
+      if (video) observer.observe(video);
+    });
+
+    // Cleanup the observer
+    return () => {
+      videoRefs.current.forEach((video) => {
+        if (video) observer.unobserve(video);
       });
     };
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
   }, [posts]);
 
   const togglePlayPause = (event) => {
@@ -75,7 +90,14 @@ function TalkPosts() {
               {post.image ? (
                 <img src={post.image} alt="Post" className="media-content" />
               ) : post.video ? (
-                <video autoPlay muted playsInline className="media-content" onClick={togglePlayPause}>
+                <video
+                  ref={(el) => (videoRefs.current[index] = el)} // Attach ref to the video element
+                  autoPlay
+                  muted
+                  playsInline
+                  className="media-content"
+                  onClick={togglePlayPause}
+                >
                   <source src={post.video} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>

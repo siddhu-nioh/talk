@@ -135,7 +135,8 @@ function New() {
     className="btn-action upload"
     disabled={isUploading}
     style={{ 
-        '--progress': `${progress}%` // Dynamic progress effect
+        '--progress': `${progress}%`, // Dynamic progress effect,
+        color:'white'
     }}
 >
     {isUploading ? `${progress}%` : 'Upload Post'}

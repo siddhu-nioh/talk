@@ -26,8 +26,7 @@ body {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Upload Button Styling */
-.upload {
+/* Upload Button Styling */.upload {
     width: 100%;
     padding: 12px;
     border: none;
@@ -35,33 +34,38 @@ body {
     cursor: pointer;
     font-size: 16px;
     font-weight: bold;
-    background-color:  rgba(16, 90, 248, 0.911);
-    color: #ffffff;
-    backdrop-filter: blur(10px);
-    transition: all 0.4s ease-in-out;
+    color: white;
     text-transform: uppercase;
     letter-spacing: 1px;
     position: relative;
     overflow: hidden;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #6a11cb, #2575fc); /* Initial gradient */
+    transition: all 0.4s ease-in-out;
 }
 
+/* When hovering */
 .upload:hover {
-    background-color: rgba(16, 90, 248, 0.911);
+    background: linear-gradient(135deg, #4a90e2, #2575fc);
     transform: scale(1.05);
 }
 
+/* When button is disabled (during upload) */
+.upload:disabled {
+    cursor: not-allowed;
+    opacity: 0.8;
+}
 
-
-.upload::after {
-    content: attr(data-progress);
+/* Blue progress effect */
+.upload::before {
+    content: "";
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: bold;
+    left: 0;
+    top: 0;
+    width: var(--progress, 0%);
+    height: 100%;
+    background: rgba(0, 162, 255, 0.7);
+    transition: width 0.2s ease-in-out;
 }
 
 

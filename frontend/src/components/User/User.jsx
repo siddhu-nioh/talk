@@ -14,7 +14,26 @@ function Profile() {
     const [posts, setPosts] = useState([]);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [uploading, setUploading] = useState(false);
-
+    const [selectedPost, setSelectedPost] = useState(null);
+    const handlePostClick = (post) => {
+        setSelectedPost(post);
+    };
+    
+    const handleClosePost = () => {
+        setSelectedPost(null);
+    };
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (selectedPost && !event.target.closest(".expanded-media")) {
+                handleClosePost();
+            }
+        };
+    
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [selectedPost]);
     useEffect(() => {
 
         fetchUserData();
@@ -214,7 +233,7 @@ function Profile() {
                 <div className="posts-container">
                     {posts.length > 0 ? (
                         posts.map((post) => (
-                            <div key={post._id} className="post-card">
+                            <div key={post._id} className="post-card"    onClick={() => handlePostClick(post)}>
                                 {post.image ? (
                                     <img src={post.image} alt="Post" className="media-content-1" />
                                 ) : post.video ? (
@@ -228,7 +247,23 @@ function Profile() {
                     ) : (
                         <p>No posts available.</p>
                     )}
+
                 </div>
+                 {/* Expanded Media Section */}
+                 {selectedPost && (
+                    <div className="expanded-media-overlay">
+                        <div className="expanded-media">
+                            {selectedPost.image ? (
+                                <img src={selectedPost.image} alt="Expanded Post" />
+                            ) : selectedPost.video ? (
+                                <video controls autoPlay>
+                                    <source src={selectedPost.video} type="video/mp4" />
+                                    Your browser does not support the video tag.
+                                </video>
+                            ) : null}
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

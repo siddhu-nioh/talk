@@ -321,23 +321,23 @@
 }
 
 /* Hover Popup Effect */
-.post-card:hover .media-content-1 {
+/* .post-card:hover .media-content-1 {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(1.2); /* Center and enlarge */
-  z-index: 1000;
-  width: 90%; /* Adjust size as needed */
-  height: auto;
-  max-width: 800px; /* Limit maximum size */
-  max-height: 80vh; /* Limit maximum height */
+  /* z-index: 1000; */
+  /* width: 90%; Adjust size as needed */
+  /* height: auto; */
+  /* max-width: 800px; Limit maximum size */
+  /* max-height: 80vh; Limit maximum height */
   /* border-radius: 10px; Optional: Add rounded corners */
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5); /* Add a glow effect */
-  transition: all 0.3s ease;
-}
+  /* box-shadow: 0 0 20px rgba(255, 255, 255, 0.5); Add a glow effect */
+  /* transition: all 0.3s ease; */
+/* } */ 
 
 /* Overlay for Popup Effect */
-.post-card:hover::before {
+/* .post-card:hover::before {
   content: "";
   position: fixed;
   top: 0;
@@ -345,8 +345,8 @@
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.8); /* Dark overlay */
-  z-index: 999;
-}
+  /* z-index: 999;
+} */ 
 
 /* Mobile View */
 @media (max-width: 768px) {
@@ -361,4 +361,33 @@
     flex: 1 1 calc(33.333% - 20px); /* One post per row on very small screens */
       max-width: 100%;
   }
+}
+/* Expanded Media Overlay */
+.expanded-media-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Dark overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Expanded Media Content */
+.expanded-media {
+  max-width: 90%;
+  max-height: 90vh;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.expanded-media img,
+.expanded-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Ensure media fits within the container */
 }

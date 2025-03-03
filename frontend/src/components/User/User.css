@@ -24,7 +24,7 @@
       margin-bottom: 20px; /* Space between profile and posts */
   }
   /* Ensure the image is fully visible and responsive */
-.profile-container img {
+  .profile-picture-container img {
       width: 100px;
       height: 100px;
       border-radius: 50%;
@@ -91,9 +91,10 @@
       box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
   }
 
-  .posts-container  img, .posts-container video {
+.post-card img,     
+.post-card video {
       width: 100%;
-      max-height: 300px; 
+      max-height: 400px; 
       object-fit: cover;
       /* border-radius: 8px; */
   }

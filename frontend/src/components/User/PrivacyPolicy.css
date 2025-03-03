@@ -1,9 +1,9 @@
 .privacy-policy-container {
     padding: 20px;
-    background-color: #fafafa;
+    background-color: #000000;
     min-height: 100vh;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    color: #262626;
+    color: #ffffff;
     text-align: center;
 }
 
@@ -11,7 +11,7 @@
     font-size: 2.5rem;
     font-weight: bold;
     margin-bottom: 20px;
-    color: #000;
+    color: #d3d3d3;
 }
 
 .privacy-policy-container p {
@@ -19,7 +19,7 @@
     line-height: 1.6;
     margin: 10px auto;
     max-width: 600px;
-    color: #555;
+    color: #c4c4c4;
 }
 
 .privacy-policy-container p:first-of-type {

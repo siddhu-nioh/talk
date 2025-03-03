@@ -216,7 +216,7 @@ function Profile() {
                         posts.map((post) => (
                             <div key={post._id} className="post-card">
                                 {post.image ? (
-                                    <img src={post.image} alt="Post" className="media-content" />
+                                    <img src={post.image} alt="Post" className="media-content-1" />
                                 ) : post.video ? (
                                     <video controls className="media-content">
                                         <source src={post.video} type="video/mp4" />

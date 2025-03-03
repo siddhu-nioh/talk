@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import "./User.css";
 import {
-    FaEdit, FaTrash, FaUsers, FaShare, FaEnvelope, FaSignOutAlt, FaCog, FaTimes
+    FaEdit, FaTrash, FaUsers, FaShare, FaEnvelope, FaSignOutAlt, FaCog, FaTimes,
+    FaInfoCircle,
+    FaShieldAlt
 } from "react-icons/fa";
 
 function Profile() {
@@ -154,9 +156,15 @@ function Profile() {
                     <div className="sidebar-item">
                         <FaEnvelope /> Notifications
                     </div>
-                    <div className="sidebar-item">
-                        <FaUsers /> Privacy
-                    </div>
+                    <div className="sidebar-item" onClick={() => window.location.href = "/talk/about-us"}>
+    <FaInfoCircle /> About Us
+</div>
+<div className="sidebar-item" onClick={() => window.location.href = "/talk/contact-us"}>
+    <FaEnvelope /> Contact Us
+</div>
+<div className="sidebar-item" onClick={() => window.location.href = "/talk/privacy-policy"}>
+    <FaShieldAlt /> Privacy Policy
+</div>
                 </div>
             </div>
 

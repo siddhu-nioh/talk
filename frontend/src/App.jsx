@@ -9,6 +9,9 @@ import ShowUser from './components/User/SearchUserProfile';
 import Followers from './components/User/Followers';
 import Login from './components/User/Login';
 import ProtectedRoute from './components/ProtectedRoute';
+import AboutUs from './components/User/AboutUs';
+import ContactUs from './components/User/ContactUs';
+import PrivacyPolicy from './components/User/PrivacyPolicy';
 
 function App() {
   return (
@@ -27,6 +30,9 @@ function App() {
                   <Route path="/talk/search" element={<SearchBar />} />
                   <Route path="/talk/user" element={<User />} />
                   <Route path="/talk/new" element={<NewPost />} />
+                  <Route path="/talk/about-us" element={<AboutUs />} />
+                <Route path="/talk/contact-us" element={<ContactUs />} />
+                <Route path="/talk/privacy-policy" element={<PrivacyPolicy />} />
                 </Routes>
               </>
             </ProtectedRoute>

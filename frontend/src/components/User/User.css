@@ -304,7 +304,7 @@
 /* Post Card */
 .post-card {
   flex: 1 1 calc(33.333% - 20px); /* Three posts per row */
-  max-width: calc(33.333% - 20px); /* Ensure equal width */
+  /* max-width: calc(33.333% - 20px); Ensure equal width */
   position: relative;
   overflow: hidden;
   cursor: pointer;

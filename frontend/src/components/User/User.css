@@ -5,17 +5,17 @@
       align-items: center;
       justify-content: center;
       width: 100%;
-      padding: 20px;
+      /* padding: 20px; */
       box-sizing: border-box;
      
   }
   
   /* Profile container styling */
 .profile-container {
-      max-width: 400px;
+      /* max-width: 400px; */
       width: 100%;
-      padding: 20px;
-      margin-top: 6vw;
+      /* padding: 20px; */
+      margin-top: 8vw;
       background-color: #000000;
       border-radius: 10px;
       text-align: center;

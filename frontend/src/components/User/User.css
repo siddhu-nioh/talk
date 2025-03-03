@@ -287,3 +287,154 @@
       margin-top: 10vw;
     }
 }
+
+
+
+
+
+
+/* Profile Page Container */
+.profile-page {
+  background-color: #000; /* Instagram-like black background */
+  color: #fff;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #000;
+  border-bottom: 1px solid #333;
+}
+
+.header h1 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+
+
+
+
+/* Profile Container */
+.profile-container {
+  max-width: 935px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Profile Picture */
+.profile-picture-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-picture {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  object-fit: cover;
+}
+
+/* Profile Stats */
+.stats {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.stats div {
+  font-size: 1.1rem;
+  color: #fff;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.btn-actions {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-actions:hover {
+  background-color: #555;
+}
+
+.btn-actions svg {
+  margin-right: 5px;
+}
+
+/* Posts Container */
+.posts-container {
+  margin-top: 20px;
+}
+
+.posts-container h3 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.post-card {
+  background-color: #000;
+  border: 1px solid #333;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.media-content {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.ownername {
+  padding: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* Mobile View */
+@media (max-width: 768px) {
+  .profile-picture {
+      width: 100px;
+      height: 100px;
+  }
+
+  .stats {
+      flex-direction: column;
+      gap: 10px;
+  }
+
+  .action-buttons {
+      flex-wrap: wrap;
+  }
+
+  .btn-actions {
+      flex: 1 1 45%;
+  }
+}

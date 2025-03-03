@@ -212,15 +212,13 @@ function Profile() {
 
                 {/* User Posts Section */}
                 <div className="posts-container">
-                    <h3>User Posts</h3>
                     {posts.length > 0 ? (
                         posts.map((post) => (
                             <div key={post._id} className="post-card">
-                                <p className="text-white ownername font-bold">{post.owner.username}</p>
                                 {post.image ? (
                                     <img src={post.image} alt="Post" className="media-content" />
                                 ) : post.video ? (
-                                    <video autoPlay muted data-autoplay className="media-content">
+                                    <video controls className="media-content">
                                         <source src={post.video} type="video/mp4" />
                                         Your browser does not support the video tag.
                                     </video>

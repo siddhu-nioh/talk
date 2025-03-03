@@ -15,7 +15,7 @@
       /* max-width: 400px; */
       width: 100%;
       /* padding: 20px; */
-      margin-top: 15vw;
+      margin-top: 12vw;
       background-color: #000000;
       border-radius: 10px;
       text-align: center;
@@ -268,7 +268,7 @@
       right: 10px;
   }
   .profile-container {
-      margin-top: 22vw;}
+      margin-top: 26vw;}
   .settings-icon{
         margin-right: 8vw;
       }
@@ -286,7 +286,7 @@
     margin-right: 2vw;
   }
   .profile-container {
-      margin-top: 22vw;
+      margin-top: 26vw;
     }
 }
 

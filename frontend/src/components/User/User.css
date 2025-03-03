@@ -27,6 +27,7 @@
   .profile-picture-container img {
       width: 100px;
       height: 100px;
+      margin-top: 2vw;
       border-radius: 50%;
       background-color: #ccc;
       display: block;

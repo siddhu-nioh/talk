@@ -358,7 +358,7 @@
 
 @media (max-width: 480px) {
   .post-card {
-      flex: 1 1 100%; /* One post per row on very small screens */
+    flex: 1 1 calc(33.333% - 20px); /* One post per row on very small screens */
       max-width: 100%;
   }
 }

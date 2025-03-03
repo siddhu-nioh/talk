@@ -53,3 +53,24 @@
         padding: 15px;
     }
 }
+.back-button {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    color: #262626;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.back-button:hover {
+    background-color: #f0f0f0;
+}
+
+.back-button svg {
+    margin-right: 8px;
+}

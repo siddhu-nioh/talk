@@ -10,7 +10,7 @@ function Reels() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const videoRefs = useRef([]);
   const { id } = useParams();
-  const navigate = useNavigate();
+//   const navigate = useNavigate();
 
   // Fetch posts with videos
   useEffect(() => {
@@ -42,28 +42,7 @@ function Reels() {
   }, [id, posts]);
 
   // Handle scroll events
-  useEffect(() => {
-    const handleScroll = (event) => {
-      if (event.deltaY > 0) {
-        // Scroll down
-        if (currentIndex < posts.length - 1) {
-          navigate(`/reels/${posts[currentIndex + 1]._id}`);
-          setCurrentIndex(currentIndex + 1);
-        }
-      } else {
-        // Scroll up
-        if (currentIndex > 0) {
-          navigate(`/reels/${posts[currentIndex - 1]._id}`);
-          setCurrentIndex(currentIndex - 1);
-        }
-      }
-    };
-
-    window.addEventListener('wheel', handleScroll);
-    return () => {
-      window.removeEventListener('wheel', handleScroll);
-    };
-  }, [currentIndex, posts, navigate]);
+ 
 
   // Intersection Observer to handle video play/pause
   useEffect(() => {

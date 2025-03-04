@@ -12,7 +12,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import AboutUs from './components/User/AboutUs';
 import ContactUs from './components/User/ContactUs';
 import PrivacyPolicy from './components/User/PrivacyPolicy';
-import Reels from './components/Posts/reels';
+import Reels from './components/Posts/Reels';
 
 function App() {
   return (

@@ -12,6 +12,7 @@ function Reels() {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  // Fetch posts with videos
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -30,6 +31,7 @@ function Reels() {
     fetchPosts();
   }, [Backend_Url]);
 
+  // Update current index based on URL parameter
   useEffect(() => {
     if (posts.length > 0 && id) {
       const index = posts.findIndex(post => post._id === id);
@@ -39,39 +41,47 @@ function Reels() {
     }
   }, [id, posts]);
 
+  // Handle scroll events
+  useEffect(() => {
+    const handleScroll = (event) => {
+      if (event.deltaY > 0) {
+        // Scroll down
+        if (currentIndex < posts.length - 1) {
+          navigate(`/reels/${posts[currentIndex + 1]._id}`);
+          setCurrentIndex(currentIndex + 1);
+        }
+      } else {
+        // Scroll up
+        if (currentIndex > 0) {
+          navigate(`/reels/${posts[currentIndex - 1]._id}`);
+          setCurrentIndex(currentIndex - 1);
+        }
+      }
+    };
+
+    window.addEventListener('wheel', handleScroll);
+    return () => {
+      window.removeEventListener('wheel', handleScroll);
+    };
+  }, [currentIndex, posts, navigate]);
+
+  // Play video when it comes into view
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.play().catch((error) => console.error("Autoplay failed:", error));
     }
   }, [currentIndex]);
 
-  const handleScroll = (event) => {
-    if (event.deltaY > 0) {
-      // Scroll down
-      if (currentIndex < posts.length - 1) {
-        navigate(`/reels/${posts[currentIndex + 1]._id}`);
-        setCurrentIndex(currentIndex + 1);
-      }
-    } else {
-      // Scroll up
-      if (currentIndex > 0) {
-        navigate(`/reels/${posts[currentIndex - 1]._id}`);
-        setCurrentIndex(currentIndex - 1);
-      }
-    }
-  };
-
   if (loading) return <div className="text-center">Loading...</div>;
   if (error) return <div className="text-center text-red-500">Error: {error}</div>;
 
   return (
-    <div className="reels-container" onWheel={handleScroll}>
+    <div className="reels-container">
       {posts.length > 0 && (
         <div className="reel">
           <video
             ref={videoRef}
             autoPlay
-            muted
             playsInline
             className="reel-video"
           >
@@ -79,7 +89,11 @@ function Reels() {
             Your browser does not support the video tag.
           </video>
           <div className="reel-details">
-            <img src={posts[currentIndex].owner.profile || "default-profile.png"} alt={posts[currentIndex].owner.username} className="reel-avatar" />
+            <img
+              src={posts[currentIndex].owner.profile || "default-profile.png"}
+              alt={posts[currentIndex].owner.username}
+              className="reel-avatar"
+            />
             <p className="reel-username">{posts[currentIndex].owner.username}</p>
             <p className="reel-description">{posts[currentIndex].description}</p>
           </div>
@@ -89,4 +103,4 @@ function Reels() {
   );
 }
 
-export default Reels; 
+export default Reels;

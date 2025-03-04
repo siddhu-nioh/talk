@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import './Reels.css';
 
 function Reels() {
@@ -7,10 +7,8 @@ function Reels() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const videoRefs = useRef([]);
   const { id } = useParams();
-//   const navigate = useNavigate();
 
   // Fetch posts with videos
   useEffect(() => {
@@ -31,19 +29,6 @@ function Reels() {
     fetchPosts();
   }, [Backend_Url]);
 
-  // Update current index based on URL parameter
-  useEffect(() => {
-    if (posts.length > 0 && id) {
-      const index = posts.findIndex(post => post._id === id);
-      if (index !== -1) {
-        setCurrentIndex(index);
-      }
-    }
-  }, [id, posts]);
-
-  // Handle scroll events
- 
-
   // Intersection Observer to handle video play/pause
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -60,7 +45,7 @@ function Reels() {
         });
       },
       {
-        threshold: 0.5, // Trigger when 50% of the video is visible
+        threshold: 0.8, // Trigger when 80% of the video is visible
       }
     );
 
@@ -96,8 +81,8 @@ function Reels() {
         <div key={post._id} className="reel">
           <video
             ref={(el) => (videoRefs.current[index] = el)} // Attach ref to the video element
-            autoPlay={index === currentIndex}
-            muted={index !== currentIndex}
+            autoPlay={index === 0} // Autoplay the first video
+            muted={index !== 0} // Mute all videos except the first one
             playsInline
             className="reel-video"
             onClick={togglePlayPause}

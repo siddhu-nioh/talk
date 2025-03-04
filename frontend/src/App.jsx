@@ -12,6 +12,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import AboutUs from './components/User/AboutUs';
 import ContactUs from './components/User/ContactUs';
 import PrivacyPolicy from './components/User/PrivacyPolicy';
+import Reels from './components/Posts/reels';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Routes>
         <Route path="/talk" element={<Posts />} />
         <Route path="/login" element={<Login />} />
+        
         <Route
           path="/*"
           element={
@@ -33,6 +35,9 @@ function App() {
                   <Route path="/talk/about-us" element={<AboutUs />} />
                 <Route path="/talk/contact-us" element={<ContactUs />} />
                 <Route path="/talk/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/reels" element={<Reels />} />
+                  <Route path="/reels/:id" element={<Reels />} />
+
                 </Routes>
               </>
             </ProtectedRoute>

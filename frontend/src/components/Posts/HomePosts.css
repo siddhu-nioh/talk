@@ -42,7 +42,7 @@
 }
 
 .navbar ul li {
-    /* margin: 0 10px; Smaller margin between navbar items */
+    margin: 0 10px; 
     cursor: pointer;
     font-size: 14px; /* Smaller text for navbar items */
     color: white;

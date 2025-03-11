@@ -1,0 +1,117 @@
+/* HomePosts.css */
+.header {
+    background-color: #000000; /* Dark background for the header */
+    color: white;
+    padding: 10px 0px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    /* height: 60px; Smaller header height */
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* Ensure header stays on top */
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    
+    /* max-width: 1200px; */
+    /* margin: 0 8px; */
+}
+
+.header h1 {
+    margin: 0;
+    color: #007bff;
+    font-size: 30px; /* Smaller text for the website name */
+    font-weight: bold;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    /* width: auto; */
+    padding: 0;
+    /* margin-left: auto; Push navbar to the right */
+    align-items: center;
+}
+
+.navbar ul li {
+    /* margin: 0 10px; Smaller margin between navbar items */
+    cursor: pointer;
+    font-size: 14px; /* Smaller text for navbar items */
+    color: white;
+    transition: color 0.3s ease;
+}
+
+.navbar ul li:hover {
+    color: #007bff; /* Highlight color on hover */
+}
+
+.login-button {
+    background-color: transparent; /* Transparent background */
+    color: white; /* White text */
+    /* border: 1px solid white; White border */
+    padding: 20px 15px; /* Smaller padding */
+    border-radius: 4px;
+    width: 15%;
+    height: 5%;
+    cursor: pointer;
+    margin-left: 20px;
+    font-size: 14px; /* Smaller text */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: white; /* White background on hover */
+    color: #333; /* Dark text on hover */
+}
+
+/* Main content padding to avoid overlap with the fixed header */
+.main-content {
+    padding-top: 80px; /* Adjust based on header height */
+}
+
+/* Responsive Design for Mobile Screens */
+@media (max-width: 768px) {
+    .header {
+        padding: 10px; /* Reduce padding for smaller screens */
+    }
+
+    .header h1 {
+        font-size: 18px; /* Smaller website name */
+    }
+
+    .navbar ul li {
+        margin: 0 8px; /* Reduce margin between navbar items */
+        font-size: 12px; /* Smaller text for navbar items */
+    }
+
+    .login-button {
+        padding: 4px 8px; /* Smaller login button */
+        font-size: 12px; /* Smaller text */
+        margin-left: 10px; /* Reduce margin */
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 16px; /* Even smaller website name */
+    }
+
+    .navbar ul li {
+        margin: 0 6px; /* Further reduce margin */
+        font-size: 10px; /* Even smaller text */
+    }
+
+    .login-button {
+        padding: 3px 6px; /* Even smaller login button */
+        font-size: 10px; /* Even smaller text */
+        margin-left: 5px; /* Further reduce margin */
+    }
+}

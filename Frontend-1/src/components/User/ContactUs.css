@@ -1,0 +1,76 @@
+.contact-us-container {
+    padding: 20px;
+    background-color: #000000;
+    min-height: 100vh;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #ffffff;
+    text-align: center;
+}
+
+.contact-us-container h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #cfcfcf;
+}
+
+.contact-us-container p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 10px auto;
+    max-width: 600px;
+    color: #cecece;
+}
+
+.contact-info {
+    margin-top: 30px;
+    background-color: #000000;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+}
+
+.contact-info p {
+    font-size: 1rem;
+    margin: 10px 0;
+    color: #333;
+}
+@media (max-width: 768px) {
+    .contact-us-container {
+        padding: 15px;
+    }
+
+    .contact-us-container h1 {
+        font-size: 2rem;
+    }
+
+    .contact-us-container p {
+        font-size: 1rem;
+    }
+
+    .contact-info {
+        padding: 15px;
+    }
+}
+.back-button {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    color: #262626;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.back-button:hover {
+    background-color: #f0f0f0;
+}
+
+.back-button svg {
+    margin-right: 8px;
+}

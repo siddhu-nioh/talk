@@ -29,6 +29,7 @@ function App() {
                   <Route path="/talk/contact-us" element={<ContactUs />} />
                   <Route path="/talk/privacy-policy" element={<PrivacyPolicy />} />
                   <Route path="/talk/terms-and-conditions" element={<TermsAndConditions />} />
+                  <Route path="/talk/notifications" element={<Notifications />} />
         {/* Protected Routes */}
         <Route
           path="/*"
@@ -41,8 +42,6 @@ function App() {
                   <Route path="/talk/search" element={<SearchBar />} />
                   <Route path="/talk/user" element={<User />} />
                   <Route path="/talk/new" element={<NewPost />} />
-                  <Route path="/talk/notifications" element={<Notifications />} />
-        
                   <Route path="/reels" element={<Reels />} />
                   <Route path="/reels/:id" element={<Reels />} />
                 </Routes>

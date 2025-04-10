@@ -1,0 +1,25 @@
+
+<% layout('./layouts/boilerplate.ejs') %>
+<link rel="stylesheet" href="/css/user.css">
+<body>
+      <div class="profile-container">
+            <img src="<%=currUser.profile%>" alt="Profile Picture">
+            <h2><%=currUser.username%></h2>
+            <div class="stats">
+                  <div> <%= (currUser.posts && currUser.posts.length) || 0 %> Posts</div>
+                  <div> <%= (currUser.followers && currUser.followers.length) || 0 %> Followers</div>
+                  <div> <%= (currUser.following && currUser.following.length) || 0 %> Following</div>
+            </div>
+            <div class="action-buttons">
+                  <div class="btn-action"><i class="fas fa-edit"></i></div>
+                  <div class="btn-action"><i class="fas fa-trash"></i></div>
+                  <form action="/user/followers/<%=currUser._id%>" method="GET">
+                        <button class="btn-action" style="border: none;" type="submit">
+                              <i class="fas fa-users"></i>
+                        </button>
+                  </form>
+                  <div class="btn-action"><i class="fas fa-share"></i></div>
+                  <div class="btn-action"><i class="fas fa-envelope"></i></div>
+            </div>
+      </div>
+</body>

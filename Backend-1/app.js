@@ -1,458 +1,334 @@
+
 if (process.env.NODE_ENV !== "production") {
-  require("dotenv").config();
-}
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const http = require("http");
-const WebSocket = require('ws');
-const jwt = require("jsonwebtoken");
-const userRoutes = require("./routes/user");
-const talkRoutes = require("./routes/talk");
-const chatRoutes = require("./routes/chat");
-const Conversation = require("./models/Conversation");
-const path = require('path');
-const fs = require('fs');
-
-const app = express();
-
-// Ensure uploads directory exists
-const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir);
-}
-
-// Serve static files from the uploads directory
-app.use('/uploads', express.static(uploadsDir));
-
-const server = http.createServer(app);
-
-// Create WebSocket server
-const wss = new WebSocket.Server({ server });
-
-// Global storage for active users and their connections
-global.users = {};
-global.connections = new Map();
-
-// WebSocket connection handler
-wss.on('connection', (ws) => {
-  console.log("🔗 New WebSocket connection established");
-  let userId = null;
-
-  // Parse and handle incoming messages
-  ws.on('message', async (message) => {
-    try {
-      const data = JSON.parse(message);
+    require("dotenv").config();
+  }
+  const express = require("express");
+  const mongoose = require("mongoose");
+  const cors = require("cors");
+  const http = require("http");
+  const socketIo = require("socket.io");
+  const userRoutes = require("./routes/user");
+  const talkRoutes = require("./routes/talk"); 
+  const chatRoutes = require("./routes/chat");
+  const Conversation = require("./models/Conversation");
+  const path = require('path');
+  
+  const app = express();
+  const server = http.createServer(app);
+  const io = socketIo(server, {
+    cors: {
+      origin: "*",
+      credentials: true,
+      methods: ['GET', 'POST'],
+    },
+    transports: ["websocket", "polling"] // Add polling fallback
+  });
+  
+  global.io = io;
+  global.users = {}; // Store active users and their socket IDs
+  
+  // WebSocket Events
+  io.on("connection", (socket) => {
+    console.log("🔗 New WebSocket connection:", socket.id);
+    
+    // Handle user online status
+    socket.on("userOnline", (userId) => {
+      if (!userId) return;
+      global.users[userId] = socket.id;
+      console.log(`✅ User ${userId} is online with socket ID ${socket.id}`);
       
-      // Handle authentication first
-      if (data.type === 'authenticate') {
-        const token = data.token;
-        if (!token) {
-          ws.send(JSON.stringify({
-            type: 'error',
-            message: 'Authentication token missing'
-          }));
+      // Broadcast to others that this user is online
+      socket.broadcast.emit("userStatusChange", { userId, status: "online" });
+    });
+    
+    // Handle real-time messaging with enhanced features
+    socket.on("sendMessage", async ({ senderId, receiverId, content, mediaType, mediaUrl }) => {
+      try {
+        // Find if a conversation already exists between sender and receiver
+        let conversation = await Conversation.findOne({
+          participants: { $all: [senderId, receiverId] }
+        });
+  
+        // Prepare the message object with optional media content
+        const newMessage = { 
+          sender: senderId, 
+          text: content,
+          status: 'sent'
+        };
+  
+        // Add media data if provided
+        if (mediaType && mediaUrl) {
+          newMessage.media = {
+            type: mediaType,
+            url: mediaUrl
+          };
+        }
+  
+        if (!conversation) {
+          // If no conversation exists, create a new one with user status tracking
+          conversation = new Conversation({
+            participants: [senderId, receiverId],
+            messages: [newMessage],
+            userStatus: [
+              { user: senderId, status: 'active', lastRead: new Date() },
+              { user: receiverId, status: 'active', lastRead: null }
+            ]
+          });
+        } else {
+          // If conversation exists, push new message
+          conversation.messages.push(newMessage);
+  
+          // Update sender's lastRead timestamp
+          const senderStatus = conversation.userStatus.find(
+            status => status.user.toString() === senderId.toString()
+          );
+  
+          if (senderStatus) {
+            senderStatus.lastRead = new Date();
+            senderStatus.status = 'active'; // Reactivate conversation if it was archived
+          } else {
+            conversation.userStatus.push({ 
+              user: senderId, 
+              status: 'active', 
+              lastRead: new Date() 
+            });
+          }
+  
+          // Ensure receiver has a status entry
+          const receiverStatus = conversation.userStatus.find(
+            status => status.user.toString() === receiverId.toString()
+          );
+  
+          if (!receiverStatus) {
+            conversation.userStatus.push({ 
+              user: receiverId, 
+              status: 'active', 
+              lastRead: null 
+            });
+          } else if (receiverStatus.status === 'deleted') {
+            // Reactivate conversation for receiver if they had deleted it
+            receiverStatus.status = 'active';
+          }
+        }
+  
+        await conversation.save();
+        
+        // Get the newly added message
+        const newMessageObj = conversation.messages[conversation.messages.length - 1];
+        
+        // Notify receiver if they're online
+        if (global.users[receiverId]) {
+          io.to(global.users[receiverId]).emit("newMessage", { 
+            senderId, 
+            content,
+            mediaType: mediaType || null,
+            mediaUrl: mediaUrl || null,
+            messageId: newMessageObj._id,
+            conversationId: conversation._id,
+            timestamp: newMessageObj.timestamp,
+            status: newMessageObj.status
+          });
+          
+          // Auto-mark as delivered when socket is active
+          newMessageObj.status = 'delivered';
+          await conversation.save();
+          
+          console.log(`📩 Message sent to ${receiverId}:`, content);
+        }
+        
+        // Confirm delivery to sender
+        if (global.users[senderId]) {
+          io.to(global.users[senderId]).emit("messageSent", {
+            receiverId,
+            messageId: newMessageObj._id,
+            conversationId: conversation._id,
+            timestamp: newMessageObj.timestamp,
+            status: newMessageObj.status
+          });
+        }
+      } catch (error) {
+        console.error("❌ Error in WebSocket message handling:", error);
+        
+        // Notify sender of failure
+        if (global.users[senderId]) {
+          io.to(global.users[senderId]).emit("messageError", { 
+            error: "Failed to deliver message",
+            receiverId
+          });
+        }
+      }
+    });
+    
+    // Handle typing indicators
+    socket.on("typing", ({ senderId, receiverId, isTyping }) => {
+      if (global.users[receiverId]) {
+        io.to(global.users[receiverId]).emit("userTyping", { 
+          senderId, 
+          isTyping 
+        });
+      }
+    });
+    
+    // Enhanced read receipts with message status update
+    socket.on("messageRead", async ({ senderId, receiverId, conversationId }) => {
+      try {
+        // Find the conversation
+        const conversation = await Conversation.findById(conversationId);
+        
+        if (!conversation) {
           return;
         }
         
-        try {
-          const decoded = jwt.verify(token, process.env.JWT_SECRET); // Ensure JWT_SECRET is used
-          userId = decoded._id; // Correctly extract user ID from decoded token
-          
-          // Store user connection
-          global.users[userId] = ws;
-          global.connections.set(ws, userId);
-          
-          ws.send(JSON.stringify({
-            type: 'authenticated',
-            userId: userId
-          }));
-          
-          // Broadcast to others that this user is online
-          broadcastToAll({
-            type: 'userStatusChange',
-            userId: userId,
-            status: 'online'
-          }, userId);
-          
-          console.log(`✅ User ${userId} authenticated and online`);
-        } catch (error) {
-          ws.send(JSON.stringify({
-            type: 'error',
-            message: 'Invalid token: ' + error.message
-          }));
-        }
-        return;
-      }
-      
-      // For all other events, ensure user is authenticated
-      if (!userId) {
-        ws.send(JSON.stringify({
-          type: 'error',
-          message: 'Authentication required'
-        }));
-        return;
-      }
-      
-      // Handle various message types
-      switch (data.type) {
-        case 'userOnline':
-          // Already handled in authentication
-          break;
-          
-        case 'sendMessage':
-          await handleSendMessage(userId, data);
-          break;
-          
-        case 'typing':
-          handleTypingIndicator(userId, data);
-          break;
-          
-        case 'messageRead':
-          await handleMessageRead(userId, data);
-          break;
-          
-        case 'messagesDelivered':
-          await handleMessagesDelivered(userId, data);
-          break;
-          
-        case 'enterConversation':
-          await handleEnterConversation(userId, data);
-          break;
-          
-        case 'leaveConversation':
-          handleLeaveConversation(userId, data);
-          break;
-          
-        default:
-          ws.send(JSON.stringify({
-            type: 'error',
-            message: 'Unknown message type'
-          }));
-      }
-    } catch (error) {
-      console.error("WebSocket message handling error:", error);
-      ws.send(JSON.stringify({
-        type: 'error',
-        message: 'Error processing message'
-      }));
-    }
-  });
-  
-  // Handle disconnection
-  ws.on('close', () => {
-    console.log("❌ WebSocket connection closed");
-    if (userId) {
-      delete global.users[userId];
-      global.connections.delete(ws);
-      console.log(`🗑️ Removed user ${userId} from active connections`);
-      
-      // Broadcast user offline status
-      broadcastToAll({
-        type: 'userStatusChange',
-        userId: userId,
-        status: 'offline'
-      }, userId);
-    }
-  });
-});
-
-// Helper function to send message to a specific user
-function sendToUser(userId, data) {
-  const ws = global.users[userId];
-  if (ws && ws.readyState === WebSocket.OPEN) {
-    ws.send(JSON.stringify(data));
-    return true;
-  }
-  return false;
-}
-
-// Helper function to broadcast to all except sender
-function broadcastToAll(data, excludeUserId) {
-  wss.clients.forEach(client => {
-    if (client.readyState === WebSocket.OPEN) {
-      const clientUserId = global.connections.get(client);
-      if (clientUserId !== excludeUserId) {
-        client.send(JSON.stringify(data));
-      }
-    }
-  });
-}
-
-// Message handler functions
-async function handleSendMessage(senderId, data) {
-  try {
-    const { receiverId, content, mediaType, mediaUrl } = data;
-    
-    // Find if a conversation already exists between sender and receiver
-    let conversation = await Conversation.findOne({
-      participants: { $all: [senderId, receiverId] }
-    });
-
-    // Prepare the message object with optional media content
-    const newMessage = { 
-      sender: senderId, 
-      text: content,
-      status: 'sent'
-    };
-
-    // Add media data if provided
-    if (mediaType && mediaUrl) {
-      newMessage.media = {
-        type: mediaType,
-        url: mediaUrl
-      };
-    }
-
-    if (!conversation) {
-      // If no conversation exists, create a new one with user status tracking
-      conversation = new Conversation({
-        participants: [senderId, receiverId],
-        messages: [newMessage],
-        userStatus: [
-          { user: senderId, status: 'active', lastRead: new Date() },
-          { user: receiverId, status: 'active', lastRead: null }
-        ]
-      });
-    } else {
-      // If conversation exists, push new message
-      conversation.messages.push(newMessage);
-
-      // Update sender's lastRead timestamp
-      const senderStatus = conversation.userStatus.find(
-        status => status.user.toString() === senderId.toString()
-      );
-
-      if (senderStatus) {
-        senderStatus.lastRead = new Date();
-        senderStatus.status = 'active'; // Reactivate conversation if it was archived
-      } else {
-        conversation.userStatus.push({ 
-          user: senderId, 
-          status: 'active', 
-          lastRead: new Date() 
-        });
-      }
-
-      // Ensure receiver has a status entry
-      const receiverStatus = conversation.userStatus.find(
-        status => status.user.toString() === receiverId.toString()
-      );
-
-      if (!receiverStatus) {
-        conversation.userStatus.push({ 
-          user: receiverId, 
-          status: 'active', 
-          lastRead: null 
-        });
-      } else if (receiverStatus.status === 'deleted') {
-        // Reactivate conversation for receiver if they had deleted it
-        receiverStatus.status = 'active';
-      }
-    }
-
-    await conversation.save();
-    
-    // Get the newly added message
-    const newMessageObj = conversation.messages[conversation.messages.length - 1];
-    
-    // Notify receiver if they're online
-    const receiverOnline = sendToUser(receiverId, { 
-      type: 'newMessage',
-      senderId, 
-      content,
-      mediaType: mediaType || null,
-      mediaUrl: mediaUrl || null,
-      messageId: newMessageObj._id,
-      conversationId: conversation._id,
-      timestamp: newMessageObj.timestamp,
-      status: newMessageObj.status
-    });
-    
-    if (receiverOnline) {
-      // Auto-mark as delivered when receiver is active
-      newMessageObj.status = 'delivered';
-      await conversation.save();
-      
-      console.log(`📩 Message sent to ${receiverId}:`, content);
-    }
-    
-    // Confirm delivery to sender
-    sendToUser(senderId, {
-      type: 'messageSent',
-      receiverId,
-      messageId: newMessageObj._id,
-      conversationId: conversation._id,
-      timestamp: newMessageObj.timestamp,
-      status: newMessageObj.status
-    });
-  } catch (error) {
-    console.error("❌ Error in WebSocket message handling:", error);
-    
-    // Notify sender of failure
-    sendToUser(senderId, { 
-      type: 'messageError',
-      error: "Failed to deliver message",
-      receiverId: data.receiverId
-    });
-  }
-}
-
-function handleTypingIndicator(senderId, data) {
-  const { receiverId, isTyping } = data;
-  sendToUser(receiverId, { 
-    type: 'userTyping',
-    senderId, 
-    isTyping 
-  });
-}
-
-async function handleMessageRead(userId, data) {
-  try {
-    const { senderId, receiverId, conversationId } = data;
-    
-    // Find the conversation
-    const conversation = await Conversation.findById(conversationId);
-    
-    if (!conversation) {
-      return;
-    }
-    
-    // Update the lastRead timestamp for receiver
-    const receiverStatus = conversation.userStatus.find(
-      status => status.user.toString() === receiverId.toString()
-    );
-    
-    if (receiverStatus) {
-      receiverStatus.lastRead = new Date();
-    } else {
-      conversation.userStatus.push({
-        user: receiverId,
-        status: 'active',
-        lastRead: new Date()
-      });
-    }
-    
-    // Update status to 'read' for all messages from sender
-    let updated = false;
-    
-    conversation.messages.forEach(msg => {
-      if (msg.sender.toString() === senderId.toString() && msg.status !== 'read') {
-        msg.status = 'read';
-        updated = true;
-      }
-    });
-    
-    if (updated) {
-      await conversation.save();
-      
-      // Notify sender their messages were read
-      sendToUser(senderId, {
-        type: 'messagesRead',
-        readBy: receiverId,
-        conversationId
-      });
-    }
-  } catch (error) {
-    console.error("Error updating read status:", error);
-  }
-}
-
-async function handleMessagesDelivered(userId, data) {
-  try {
-    const { senderId, receiverId, conversationId } = data;
-    
-    // Find the conversation
-    const conversation = await Conversation.findById(conversationId);
-    
-    if (!conversation) {
-      return;
-    }
-    
-    // Update status to 'delivered' for all messages from sender that are still 'sent'
-    let updated = false;
-    
-    conversation.messages.forEach(msg => {
-      if (msg.sender.toString() === senderId.toString() && msg.status === 'sent') {
-        msg.status = 'delivered';
-        updated = true;
-      }
-    });
-    
-    if (updated) {
-      await conversation.save();
-      
-      // Notify sender their messages were delivered
-      sendToUser(senderId, {
-        type: 'messagesDelivered',
-        deliveredTo: receiverId,
-        conversationId
-      });
-    }
-  } catch (error) {
-    console.error("Error updating delivery status:", error);
-  }
-}
-
-async function handleEnterConversation(userId, data) {
-  try {
-    const { conversationId } = data;
-    
-    const conversation = await Conversation.findById(conversationId);
-    
-    if (!conversation) {
-      return;
-    }
-    
-    // Find the other participant
-    const otherUserId = conversation.participants.find(
-      p => p.toString() !== userId.toString()
-    );
-    
-    // Notify the other user if they're online
-    sendToUser(otherUserId, { 
-      type: 'userInConversation',
-      userId, 
-      conversationId,
-      status: "active"
-    });
-  } catch (error) {
-    console.error("Error handling conversation entry:", error);
-  }
-}
-
-function handleLeaveConversation(userId, data) {
-  try {
-    const { conversationId } = data;
-    
-    // Find participants and notify them
-    Conversation.findById(conversationId)
-      .then(conversation => {
-        if (conversation) {
-          const otherUserId = conversation.participants.find(
-            p => p.toString() !== userId.toString()
-          );
-          
-          sendToUser(otherUserId, { 
-            type: 'userLeftConversation',
-            userId, 
-            conversationId,
-            status: "inactive"
+        // Update the lastRead timestamp for receiver
+        const receiverStatus = conversation.userStatus.find(
+          status => status.user.toString() === receiverId.toString()
+        );
+        
+        if (receiverStatus) {
+          receiverStatus.lastRead = new Date();
+        } else {
+          conversation.userStatus.push({
+            user: receiverId,
+            status: 'active',
+            lastRead: new Date()
           });
         }
-      })
-      .catch(err => console.error("Error in leave conversation:", err));
-  } catch (error) {
-    console.error("Error handling conversation exit:", error);
-  }
-}
+        
+        // Update status to 'read' for all messages from sender
+        let updated = false;
+        
+        conversation.messages.forEach(msg => {
+          if (msg.sender.toString() === senderId.toString() && msg.status !== 'read') {
+            msg.status = 'read';
+            updated = true;
+          }
+        });
+        
+        if (updated) {
+          await conversation.save();
+          
+          // Notify sender their messages were read
+          if (global.users[senderId]) {
+            io.to(global.users[senderId]).emit("messagesRead", {
+              readBy: receiverId,
+              conversationId
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Error updating read status:", error);
+      }
+    });
+    
+    // Mark messages as delivered when user receives them
+    socket.on("messagesDelivered", async ({ senderId, receiverId, conversationId }) => {
+      try {
+        // Find the conversation
+        const conversation = await Conversation.findById(conversationId);
+        
+        if (!conversation) {
+          return;
+        }
+        
+        // Update status to 'delivered' for all messages from sender that are still 'sent'
+        let updated = false;
+        
+        conversation.messages.forEach(msg => {
+          if (msg.sender.toString() === senderId.toString() && msg.status === 'sent') {
+            msg.status = 'delivered';
+            updated = true;
+          }
+        });
+        
+        if (updated) {
+          await conversation.save();
+          
+          // Notify sender their messages were delivered
+          if (global.users[senderId]) {
+            io.to(global.users[senderId]).emit("messagesDelivered", {
+              deliveredTo: receiverId,
+              conversationId
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Error updating delivery status:", error);
+      }
+    });
+    
+    // Handle user presence for conversations
+    socket.on("enterConversation", async ({ userId, conversationId }) => {
+      try {
+        const conversation = await Conversation.findById(conversationId);
+        
+        if (!conversation) {
+          return;
+        }
+        
+        // Find the other participant
+        const otherUserId = conversation.participants.find(
+          p => p.toString() !== userId.toString()
+        );
+        
+        // Notify the other user if they're online
+        if (global.users[otherUserId]) {
+          io.to(global.users[otherUserId]).emit("userInConversation", { 
+            userId, 
+            conversationId,
+            status: "active"
+          });
+        }
+        
+        // Join a room for this conversation
+        socket.join(`conversation-${conversationId}`);
+      } catch (error) {
+        console.error("Error handling conversation entry:", error);
+      }
+    });
+    
+    // Handle leaving conversation view
+    socket.on("leaveConversation", ({ userId, conversationId }) => {
+      try {
+        // Find the other participant (even without DB query)
+        // Notify them if they're online
+        socket.broadcast.to(`conversation-${conversationId}`).emit("userLeftConversation", { 
+          userId, 
+          conversationId,
+          status: "inactive"
+        });
+        
+        // Leave the conversation room
+        socket.leave(`conversation-${conversationId}`);
+      } catch (error) {
+        console.error("Error handling conversation exit:", error);
+      }
+    });
+    
+    // Handle user disconnection
+    socket.on("disconnect", () => {
+      console.log("❌ User disconnected:", socket.id);
+      const userId = Object.keys(global.users).find(
+        (key) => global.users[key] === socket.id
+      );
+      
+      if (userId) {
+        delete global.users[userId];
+        console.log(`🗑️ Removed user ${userId} from active connections`);
+        
+        // Broadcast to others that this user is offline
+        socket.broadcast.emit("userStatusChange", { 
+          userId, 
+          status: "offline" 
+        });
+      }
+    });
+  });
+  
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:5173', "https://www.thetalk.org.in"],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+    origin: ['http://localhost:5173',"https://www.thetalk.org.in"],
+    credentials: true,
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -467,17 +343,18 @@ app.use("/", userRoutes);
 app.use("/talk", talkRoutes);
 app.use("/chat", chatRoutes);
 
+
+// const talk = require('./routes/talk');
 // Error handler
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: "Internal server error" });
+    console.error(err.stack);
+    res.status(500).json({ message: "Internal server error" });
 });
 
 // Start server
 const PORT = process.env.PORT || 8080;
-server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-  console.log(`WebSocket server is running on ws://localhost:${PORT}`);
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
 // if (process.env.NODE_ENV !== "production") {
 //       require("dotenv").config();
@@ -651,7 +528,7 @@ app.use((err, req, res, next) => {
 // // Starting the server
 // app.listen(PORT, () => {
 //     console.log(`Server is running on port ${PORT}`);
-// });
+// }); 
 
 
 

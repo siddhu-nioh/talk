@@ -1,0 +1,39 @@
+
+<% layout('./layouts/boilerplate.ejs') %>
+<link rel="stylesheet" href="/css/user.css">
+<body>
+      <div class="profile-container">
+            <img src="<%=data.profile%>" alt="Profile Picture">
+            <h2><%=data.username%></h2>
+            <div class="stats">
+                  <div> <%= (data.posts && data.posts.length) || 0 %> Posts</div>
+                  <div> <%= (data.followers && data.followers.length) || 0 %> Followers</div>
+                  <div> <%= (data.following && data.following.length) || 0 %> Following</div>
+            </div>
+            <div class="action-buttons">
+                  <div class="btn-action"><i class="fas fa-edit"></i></div>
+                  <!-- <div class="btn-action"><i class="fas fa-trash"></i></div> -->
+                  <form action="/user/followers/<%=data._id%>" method="GET">
+                        <button class="btn-action" style="border: none;" type="submit">
+                              <i class="fas fa-users"></i>
+                        </button>
+                  </form>
+                  <div class="btn-action"><i class="fas fa-share"></i></div>
+                  <div class="btn-action"><i class="fas fa-envelope"></i></div>
+                  <% if (data.isFollowing) { %>
+                        <form action="/user/unfollow/<%=data._id%>" method="POST">
+                              <button class="btn-action" style="border: none;" type="submit">
+                                    <i class="fas fa-user-minus"></i>
+                              </button>
+                        </form>
+                  <% } else { %>
+                        <form action="/user/follow/<%=data._id%>" method="POST">
+                              <button class="btn-action" style="border: none;" type="submit">
+                                    <i class="fas fa-user-plus"></i>
+                              </button>
+                        </form>
+                  <% } %>
+                  
+            </div>
+      </div>
+</body>

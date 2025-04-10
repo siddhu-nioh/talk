@@ -16,15 +16,9 @@ function ContactUs() {
             <h1>Contact Us</h1>
             <p>Have questions? We’re here to help!</p>
             <div className="contact-info">
-                <p>Email: sivapalurisiva@gmail.com</p>
+                <p>Email: support@talk.rog.in</p>
                 <p>Phone: +1 234 567 890</p>
-                <p>Website: thetalk.org.in</p>
-                For any queries or support:
-
-
             </div>
-            <p>I have read and agree to the Terms, Privacy Policy, and Guidelines.
-</p> 
         </div>
     );
 }

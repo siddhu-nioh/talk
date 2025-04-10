@@ -145,10 +145,7 @@ function UserProfile() {
 
   return (
     <div className="profile-container">
-      <div className="profile-picture-container">
-                    <img src={user.profile || "default-profile.png"} alt="Profile" className="profile-picture" />
-</div>
-      {/* <img src={user.profile || "default-profile.png"} alt="Profile" /> */}
+      <img src={user.profile || "default-profile.png"} alt="Profile" />
       <h2>{user.username || "Unknown User"}</h2>
 
       <div className="stats">

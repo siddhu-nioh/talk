@@ -55,4 +55,26 @@ router.get("/user/followers/:id", ensureAuthenticated, userRouter.allFollowers);
 
 router.post("/user/profile/picture", ensureAuthenticated, upload, wrapAsync(userRouter.updateProfile));
 
+// Search users by name or email
+router.get("/search", ensureAuthenticated, async (req, res) => {
+    try {
+        const { query } = req.query;
+        if (!query) {
+            return res.status(400).json({ message: "Search query is required" });
+        }
+
+        const users = await User.find({
+            $or: [
+                { name: new RegExp(query, "i") },
+                { email: new RegExp(query, "i") }
+            ]
+        }).select("-password");
+
+        res.status(200).json(users);
+    } catch (error) {
+        console.error("Search error:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+
 module.exports = router;

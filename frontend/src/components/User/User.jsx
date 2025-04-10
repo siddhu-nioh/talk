@@ -172,7 +172,7 @@ function Profile() {
                     <div className="sidebar-item" onClick={() =>  document.getElementById("fileInput").click()}>
                         <FaEdit /> Edit Profile
                     </div>
-                    <div className="sidebar-item">
+                    <div className="sidebar-item" onClick={() => window.location.href = "/talk/notifications"}>
                         <FaEnvelope /> Notifications
                     </div>
                     <div className="sidebar-item" onClick={() => window.location.href = "/talk/about-us"}>

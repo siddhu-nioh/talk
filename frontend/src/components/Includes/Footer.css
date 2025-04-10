@@ -3,7 +3,7 @@
       justify-content: space-around;
       align-items: center;
       padding: 10px;
-      background-color: #11181f;
+      background-color: #192734;
       position: fixed;
       bottom: 0;
       width: 100%;
@@ -25,7 +25,7 @@
 .footer-item {
       font-size: 24px;
       cursor: pointer;
-      color: #0569a3;
+      color: #1da1f2;
       display: flex;
       align-items: center;
       justify-content: center;

@@ -454,7 +454,7 @@ function NewPostUpload() {
                                 </button>
                             </div>
                         )}
-                        
+                           
                         <button 
                             type="submit" 
                             className={`btn-publish ${isUploading ? 'uploading' : ''}`}

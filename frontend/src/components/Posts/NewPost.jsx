@@ -1,235 +1,91 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './New.css';
-
-function New() {
-    const Backend_Url = import.meta.env.VITE_BACKEND_URL;
-    const [description, setDescription] = useState('');
-    const [image, setImage] = useState(null);
-    const [video, setVideo] = useState(null);
-    const [preview, setPreview] = useState(null);
-    const [progress, setProgress] = useState(0);
-    const [isUploading, setIsUploading] = useState(false);
-    const [error, setError] = useState('');
-    const navigate = useNavigate();
-
-    // Handle Image Selection
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        setImage(file);
-        if (file) {
-            setPreview(URL.createObjectURL(file));
-        }
-    };
-
-    // Handle Video Selection
-    const handleVideoChange = (e) => {
-        const file = e.target.files[0];
-        setVideo(file);
-        if (file) {
-            setPreview(URL.createObjectURL(file));
-        }
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        if (!image && !video) {
-            setError('Please provide either an image or a video.');
-            return;
-        }
-
-        setIsUploading(true);
-        setError('');
-        setProgress(0);
-
-        const formData = new FormData();
-        formData.append('description', description);
-        if (image) formData.append('image', image);
-        if (video) formData.append('video', video);
-
-        let progressInterval = setInterval(() => {
-            setProgress((prev) => (prev < 90 ? prev + 5 : prev));
-        }, 300);
-
-        try {
-            const response = await fetch(`${Backend_Url}/talk`, {
-                method: 'POST',
-                body: formData,
-                credentials: 'include',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem("token")}`, 
-                },
-            });
-
-            if (response.ok) {
-                clearInterval(progressInterval);
-                setProgress(100);
-                setTimeout(() => {
-                    alert("Post created successfully!");
-                    navigate('/talk'); 
-                }, 1000);
-            } else {
-                clearInterval(progressInterval);
-                setError('Failed to upload post. Please try again.');
-            }
-        } catch (error) {
-            clearInterval(progressInterval);
-            setError('An error occurred while uploading the post. Please try again.');
-        } finally {
-            setIsUploading(false);
-        }
-    };
-
-    return (
-        <div className="modal" id="uploadModal">
-            <div className="modal-content">
-                <button className="close" onClick={() => navigate('/talk')}>✖</button>
-                <button className="btn-back" onClick={() => navigate('/talk')}>Back</button>
-                <form onSubmit={handleSubmit}>
-                    <textarea
-                        name="description"
-                        placeholder="What's on your mind?"
-                        className="text-input"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        required
-                    ></textarea>
-                    <label className="btn-action">
-                        📷 Add Image
-                        <input
-                            type="file"
-                            name="image"
-                            accept="image/*"
-                            style={{ display: 'none' }}
-                            onChange={handleImageChange}
-                        />
-                    </label>
-                    <label className="btn-action">
-                        🎥 Add Video
-                        <input
-                            type="file"
-                            name="video"
-                            accept="video/*"
-                            style={{ display: 'none' }}
-                            onChange={handleVideoChange}
-                        />
-                    </label>
-
-                    {/* Display preview of selected image or video */}
-                    {preview && (
-                        <div className="preview-container">
-                            {image ? (
-                                <img src={preview} alt="Selected" className="preview-image" />
-                            ) : (
-                                <video src={preview} controls className="preview-video"></video>
-                            )}
-                        </div>
-                    )}
-
-                    {error && <p className="error-message">{error}</p>}
-
-                    {/* Upload Button with Gradient Progress Animation */}
-                    <button 
-    type="submit" 
-    className="btn-action upload"
-    disabled={isUploading}
-    style={{ 
-        '--progress': `${progress}%`, // Dynamic progress effect,
-        color:'white'
-    }}
->
-    {isUploading ? `${progress}%` : 'Upload Post'}
-</button>
-
-                </form>
-            </div>
-        </div>
-    );
-}
-
-export default New;
-
-
 // import { useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
 // import './New.css';
-// // import axios from 'axios'; // Use axios for progress tracking
 
 // function New() {
 //     const Backend_Url = import.meta.env.VITE_BACKEND_URL;
 //     const [description, setDescription] = useState('');
 //     const [image, setImage] = useState(null);
 //     const [video, setVideo] = useState(null);
-//     const [isSubmitting, setIsSubmitting] = useState(false);
+//     const [preview, setPreview] = useState(null);
+//     const [progress, setProgress] = useState(0);
+//     const [isUploading, setIsUploading] = useState(false);
 //     const [error, setError] = useState('');
-//     const [uploadProgress, setUploadProgress] = useState(0); // Track upload progress
 //     const navigate = useNavigate();
+
+//     // Handle Image Selection
+//     const handleImageChange = (e) => {
+//         const file = e.target.files[0];
+//         setImage(file);
+//         if (file) {
+//             setPreview(URL.createObjectURL(file));
+//         }
+//     };
+
+//     // Handle Video Selection
+//     const handleVideoChange = (e) => {
+//         const file = e.target.files[0];
+//         setVideo(file);
+//         if (file) {
+//             setPreview(URL.createObjectURL(file));
+//         }
+//     };
 
 //     const handleSubmit = async (e) => {
 //         e.preventDefault();
 
-//         // Validate that either an image or a video is provided
 //         if (!image && !video) {
 //             setError('Please provide either an image or a video.');
 //             return;
 //         }
 
-//         setIsSubmitting(true);
+//         setIsUploading(true);
 //         setError('');
+//         setProgress(0);
 
 //         const formData = new FormData();
 //         formData.append('description', description);
 //         if (image) formData.append('image', image);
 //         if (video) formData.append('video', video);
 
-//         try {
-         
-//                const response = await fetch(`${Backend_Url}/talk`, {
-//                         method: 'POST',
-//                         body: formData,
-//                         credentials: 'include',
-//                          headers: {
-//                               'Authorization': `Bearer ${localStorage.getItem("token")}`, 
-//                           },
-//                       onUploadProgress: (progressEvent) => {
-//                     const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-//                     setUploadProgress(percentCompleted); // Update progress
-//                 },
-//                   });
+//         let progressInterval = setInterval(() => {
+//             setProgress((prev) => (prev < 90 ? prev + 5 : prev));
+//         }, 300);
 
-//             if (response.status === 200 || response.status === 201) {
-//                 setUploadProgress(100); // Ensure progress bar shows 100% on success
+//         try {
+//             const response = await fetch(`${Backend_Url}/talk`, {
+//                 method: 'POST',
+//                 body: formData,
+//                 credentials: 'include',
+//                 headers: {
+//                     'Authorization': `Bearer ${localStorage.getItem("token")}`, 
+//                 },
+//             });
+
+//             if (response.ok) {
+//                 clearInterval(progressInterval);
+//                 setProgress(100);
 //                 setTimeout(() => {
 //                     alert("Post created successfully!");
-//                     navigate('/talk');
-//                 }, 2000); // Wait for the animation to complete
+//                     navigate('/talk'); 
+//                 }, 1000);
 //             } else {
-//                 throw new Error('Failed to upload post.');
+//                 clearInterval(progressInterval);
+//                 setError('Failed to upload post. Please try again.');
 //             }
 //         } catch (error) {
-//             setError(error.response?.data?.message || 'An error occurred while uploading the post. Please try again.');
-//             console.error('Upload Error:', error);
+//             clearInterval(progressInterval);
+//             setError('An error occurred while uploading the post. Please try again.');
 //         } finally {
-//             setIsSubmitting(false);
+//             setIsUploading(false);
 //         }
 //     };
 
 //     return (
 //         <div className="modal" id="uploadModal">
 //             <div className="modal-content">
-//                 <button
-//                     className="close"
-//                     onClick={() => navigate('/talk')}
-//                 >
-//                     ✖
-//                 </button>
-//                 <button
-//                     className="btn-back"
-//                     onClick={() => navigate('/talk')}
-//                 >
-//                     Back
-//                 </button>
+//                 <button className="close" onClick={() => navigate('/talk')}>✖</button>
+//                 <button className="btn-back" onClick={() => navigate('/talk')}>Back</button>
 //                 <form onSubmit={handleSubmit}>
 //                     <textarea
 //                         name="description"
@@ -246,7 +102,7 @@ export default New;
 //                             name="image"
 //                             accept="image/*"
 //                             style={{ display: 'none' }}
-//                             onChange={(e) => setImage(e.target.files[0])}
+//                             onChange={handleImageChange}
 //                         />
 //                     </label>
 //                     <label className="btn-action">
@@ -256,25 +112,36 @@ export default New;
 //                             name="video"
 //                             accept="video/*"
 //                             style={{ display: 'none' }}
-//                             onChange={(e) => setVideo(e.target.files[0])}
+//                             onChange={handleVideoChange}
 //                         />
 //                     </label>
-//                     {error && <p className="error-message">{error}</p>}
-//                     <input
-//                         type="submit"
-//                         className="btn-action upload"
-//                         value={isSubmitting ? 'Uploading...' : 'Upload Post'}
-//                         disabled={isSubmitting}
-//                     />
-//                     {/* Progress Bar */}
-//                     {isSubmitting && (
-//                         <div className="progress-container">
-//                             <div className="progress-bar" style={{ width: `${uploadProgress}%` }}></div>
-//                             <span className="progress-text">
-//                                 {uploadProgress < 100 ? `Uploading... ${uploadProgress}%` : 'Upload Done!'}
-//                             </span>
+
+//                     {/* Display preview of selected image or video */}
+//                     {preview && (
+//                         <div className="preview-container">
+//                             {image ? (
+//                                 <img src={preview} alt="Selected" className="preview-image" />
+//                             ) : (
+//                                 <video src={preview} controls className="preview-video"></video>
+//                             )}
 //                         </div>
 //                     )}
+
+//                     {error && <p className="error-message">{error}</p>}
+
+//                     {/* Upload Button with Gradient Progress Animation */}
+//                     <button 
+//     type="submit" 
+//     className="btn-action upload"
+//     disabled={isUploading}
+//     style={{ 
+//         '--progress': `${progress}%`, // Dynamic progress effect,
+//         color:'white'
+//     }}
+// >
+//     {isUploading ? `${progress}%` : 'Upload Post'}
+// </button>
+
 //                 </form>
 //             </div>
 //         </div>
@@ -282,116 +149,346 @@ export default New;
 // }
 
 // export default New;
-// import { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import './New.css';
 
-// function New() {
-//       const Backend_Url = import.meta.env.VITE_BACKEND_URL;
-//       const [description, setDescription] = useState('');
-//       const [image, setImage] = useState(null);
-//       const [video, setVideo] = useState(null);
-//       const [isSubmitting, setIsSubmitting] = useState(false); // Track form submission state
-//       const [error, setError] = useState(''); // Track errors
-//       const navigate = useNavigate();
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './NewPostUpload.css'; // We'll create this stylesheet after
 
-//       const handleSubmit = async (e) => {
-//             e.preventDefault();
+function NewPostUpload() {
+    // Core state management
+    const Backend_Url = import.meta.env.VITE_BACKEND_URL;
+    const [activeTab, setActiveTab] = useState('media'); // 'media' or 'tweet'
+    const [description, setDescription] = useState('');
+    const [image, setImage] = useState(null);
+    const [video, setVideo] = useState(null);
+    const [preview, setPreview] = useState(null);
+    const [progress, setProgress] = useState(0);
+    const [isUploading, setIsUploading] = useState(false);
+    const [error, setError] = useState('');
+    const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
+    const [charCount, setCharCount] = useState(0);
+    const MAX_CHARS = 280; // For tweet-style posts
+    
+    const fileInputRef = useRef(null);
+    const dropAreaRef = useRef(null);
+    const navigate = useNavigate();
+    
+    // Handle description input
+    const handleDescriptionChange = (e) => {
+        const text = e.target.value;
+        if (activeTab === 'tweet' && text.length > MAX_CHARS) return;
+        setDescription(text);
+        setCharCount(text.length);
+    };
 
-//             // Validate that either an image or a video is provided
-//             if (!image && !video) {
-//                   setError('Please provide either an image or a video.');
-//                   return;
-//             }
+    // Handle Image Selection
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        if (file.type.startsWith('image/')) {
+            setImage(file);
+            setVideo(null);
+        } else if (file.type.startsWith('video/')) {
+            setVideo(file);
+            setImage(null);
+        }
+        
+        setPreview(URL.createObjectURL(file));
+    };
+    
+    // Handle drag and drop
+    useEffect(() => {
+        const dropArea = dropAreaRef.current;
+        if (!dropArea) return;
+        
+        const preventDefault = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        };
+        
+        const handleDragOver = (e) => {
+            preventDefault(e);
+            dropArea.classList.add('drag-over');
+        };
+        
+        const handleDragLeave = (e) => {
+            preventDefault(e);
+            dropArea.classList.remove('drag-over');
+        };
+        
+        const handleDrop = (e) => {
+            preventDefault(e);
+            dropArea.classList.remove('drag-over');
+            
+            const files = e.dataTransfer.files;
+            if (files.length) {
+                const file = files[0];
+                if (file.type.startsWith('image/')) {
+                    setImage(file);
+                    setVideo(null);
+                } else if (file.type.startsWith('video/')) {
+                    setVideo(file);
+                    setImage(null);
+                }
+                setPreview(URL.createObjectURL(file));
+            }
+        };
+        
+        dropArea.addEventListener('dragover', handleDragOver);
+        dropArea.addEventListener('dragleave', handleDragLeave);
+        dropArea.addEventListener('drop', handleDrop);
+        
+        return () => {
+            dropArea.removeEventListener('dragover', handleDragOver);
+            dropArea.removeEventListener('dragleave', handleDragLeave);
+            dropArea.removeEventListener('drop', handleDrop);
+        };
+    }, []);
+    
+    // Handle form submission
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-//             setIsSubmitting(true);
-//             setError(''); 
+        // Validate form based on active tab
+        if (activeTab === 'media' && !image && !video) {
+            setError('Please provide either an image or a video for a media post.');
+            return;
+        }
+        
+        if (!description.trim()) {
+            setError('Please enter some text for your post.');
+            return;
+        }
 
-//             const formData = new FormData();
-//             formData.append('description', description);
-//             if (image) formData.append('image', image);
-//             if (video) formData.append('video', video);
+        setIsUploading(true);
+        setError('');
+        setProgress(0);
 
-//             try {
-                  // const response = await fetch(`${Backend_Url}/talk`, {
-                  //       method: 'POST',
-                  //       body: formData,
-                  //       credentials: 'include',
-                  //        headers: {
-                  //             'Authorization': `Bearer ${localStorage.getItem("token")}`, 
-                  //         },
-                  // });
-//                   if (response.ok) {
-//                         alert("post created succesfully");
-//                         navigate('/talk'); 
-//                   } else {
-//                         const errorData = await response.json();
-//                         setError(errorData.message || 'Failed to upload post. Please try again.');
-//                         console.error('Backend Error:', errorData);
-//                   }
-//             } catch (error) {
-//                   setError('An error occurred while uploading the post. Please try again.');
-//                   console.error('Network Error:', error);
-//             } finally {
-//                   setIsSubmitting(false); // Re-enable the submit button
-//             }
-//       };
+        const formData = new FormData();
+        formData.append('description', description);
+        formData.append('type', activeTab); // Send post type to backend
+        
+        if (activeTab === 'media') {
+            if (image) formData.append('image', image);
+            if (video) formData.append('video', video);
+        }
 
-//       return (
-//             <div className="modal" id="uploadModal">
-//                   <div className="modal-content">
-//                         <button
-//                               className="close"
-//                               onClick={() => navigate('/talk')} // Programmatically navigate back
-//                         >
-//                               ✖
-//                         </button>
-//                         <button
-//                               className="btn-back"
-//                               onClick={() => navigate('/talk')} // Programmatically navigate back
-//                         >
-//                               Back
-//                         </button>
-//                         <form onSubmit={handleSubmit}>
-//                               <textarea
-//                                     name="description"
-//                                     placeholder="What's on your mind?"
-//                                     className="text-input"
-//                                     value={description}
-//                                     onChange={(e) => setDescription(e.target.value)}
-//                                     required
-//                               ></textarea>
-//                               <label className="btn-action">
-//                                     📷 Add Image
-//                                     <input
-//                                           type="file"
-//                                           name="image"
-//                                           accept="image/*"
-//                                           style={{ display: 'none' }}
-//                                           onChange={(e) => setImage(e.target.files[0])}
-//                                     />
-//                               </label>
-//                               <label className="btn-action">
-//                                     🎥 Add Video
-//                                     <input
-//                                           type="file"
-//                                           name="video"
-//                                           accept="video/*"
-//                                           style={{ display: 'none' }}
-//                                           onChange={(e) => setVideo(e.target.files[0])}
-//                                     />
-//                               </label>
-//                               {error && <p className="error-message">{error}</p>} {/* Display error messages */}
-//                               <input
-//                                     type="submit"
-//                                     className="btn-action upload"
-//                                     value={isSubmitting ? 'Uploading...' : 'Upload Post'} // Update button text
-//                                     disabled={isSubmitting} // Disable button while submitting
-//                               />
-//                         </form>
-//                   </div>
-//             </div>
-//       );
-// }
+        // Simulate realistic upload progress
+        let progressInterval = setInterval(() => {
+            setProgress((prev) => {
+                if (prev < 20) return prev + 2;
+                if (prev < 50) return prev + 1;
+                if (prev < 80) return prev + 0.5;
+                if (prev < 90) return prev + 0.2;
+                return prev;
+            });
+        }, 120);
 
-// export default New;
+        try {
+            const response = await fetch(`${Backend_Url}/talk`, {
+                method: 'POST',
+                body: formData,
+                credentials: 'include',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                },
+            });
+
+            if (response.ok) {
+                clearInterval(progressInterval);
+                setProgress(100);
+                setShowSuccessAnimation(true);
+                
+                setTimeout(() => {
+                    navigate('/talk');
+                }, 1500);
+            } else {
+                clearInterval(progressInterval);
+                const errorData = await response.json();
+                setError(errorData.message || 'Failed to upload post. Please try again.');
+            }
+        } catch (error) {
+            clearInterval(progressInterval);
+            setError('Network error. Please check your connection and try again.');
+        } finally {
+            setTimeout(() => {
+                setIsUploading(false);
+            }, 500);
+        }
+    };
+    
+    // Clear media when switching tabs
+    const handleTabChange = (tab) => {
+        setActiveTab(tab);
+        setPreview(null);
+        setImage(null);
+        setVideo(null);
+        setError('');
+    };
+    
+    const triggerFileInput = () => {
+        fileInputRef.current.click();
+    };
+    
+    const clearMedia = () => {
+        setPreview(null);
+        setImage(null);
+        setVideo(null);
+    };
+    
+    const getCharCountColor = () => {
+        if (charCount > MAX_CHARS * 0.9) return 'var(--danger)';
+        if (charCount > MAX_CHARS * 0.7) return 'var(--warning)';
+        return 'var(--text-secondary)';
+    };
+
+    return (
+        <div className="post-upload-container">
+            <div className="post-upload-modal">
+                <div className="modal-header">
+                    <button className="btn-icon back-button" onClick={() => navigate('/talk')}>
+                        <i className="icon-arrow-left"></i>
+                    </button>
+                    <h2>Create Post</h2>
+                    <button className="btn-icon close-button" onClick={() => navigate('/talk')}>
+                        <i className="icon-close"></i>
+                    </button>
+                </div>
+                
+                <div className="tabs-container">
+                    <button 
+                        className={`tab ${activeTab === 'media' ? 'active' : ''}`}
+                        onClick={() => handleTabChange('media')}
+                    >
+                        <i className="icon-media"></i>
+                        Media Post
+                    </button>
+                    <button 
+                        className={`tab ${activeTab === 'tweet' ? 'active' : ''}`}
+                        onClick={() => handleTabChange('tweet')}
+                    >
+                        <i className="icon-text"></i>
+                        Text Post
+                    </button>
+                </div>
+                
+                <form onSubmit={handleSubmit}>
+                    <div className="post-content-area">
+                        <textarea
+                            name="description"
+                            placeholder={activeTab === 'media' ? "What's on your mind?" : "What's happening?"}
+                            value={description}
+                            onChange={handleDescriptionChange}
+                            className="post-text-input"
+                            maxLength={activeTab === 'tweet' ? MAX_CHARS : undefined}
+                            autoFocus
+                            required
+                        ></textarea>
+                        
+                        {activeTab === 'tweet' && (
+                            <div className="char-counter" style={{ color: getCharCountColor() }}>
+                                <span className="count-text">{charCount}</span>
+                                <span className="divider">/</span>
+                                <span className="max-text">{MAX_CHARS}</span>
+                            </div>
+                        )}
+                    </div>
+                    
+                    {activeTab === 'media' && (
+                        <div 
+                            className={`media-drop-area ${preview ? 'has-preview' : ''}`}
+                            ref={dropAreaRef}
+                        >
+                            {!preview ? (
+                                <div className="upload-placeholder" onClick={triggerFileInput}>
+                                    <div className="upload-icon">
+                                        <i className="icon-upload-cloud"></i>
+                                    </div>
+                                    <p className="upload-text">Drag & drop or click to upload</p>
+                                    <p className="upload-info">Supports JPG, PNG, GIF, MP4</p>
+                                    <input
+                                        ref={fileInputRef}
+                                        type="file"
+                                        accept="image/*,video/*"
+                                        style={{ display: 'none' }}
+                                        onChange={handleImageChange}
+                                    />
+                                </div>
+                            ) : (
+                                <div className="preview-container">
+                                    {image ? (
+                                        <img src={preview} alt="Preview" className="media-preview" />
+                                    ) : (
+                                        <video src={preview} controls className="media-preview"></video>
+                                    )}
+                                    <button 
+                                        type="button" 
+                                        className="remove-media-btn"
+                                        onClick={clearMedia}
+                                    >
+                                        <i className="icon-trash"></i>
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                    
+                    {error && (
+                        <div className="error-message">
+                            <i className="icon-alert-circle"></i>
+                            <span>{error}</span>
+                        </div>
+                    )}
+                    
+                    <div className="upload-controls">
+                        {activeTab === 'media' && !preview && (
+                            <div className="media-selector">
+                                <button 
+                                    type="button" 
+                                    className="btn-media-select" 
+                                    onClick={triggerFileInput}
+                                >
+                                    <i className="icon-image"></i>
+                                    <span>Add Media</span>
+                                </button>
+                            </div>
+                        )}
+                        
+                        <button 
+                            type="submit" 
+                            className={`btn-publish ${isUploading ? 'uploading' : ''}`}
+                            disabled={isUploading}
+                        >
+                            {isUploading ? (
+                                <div className="upload-progress-container">
+                                    <div 
+                                        className="upload-progress-bar"
+                                        style={{ width: `${progress}%` }}
+                                    ></div>
+                                    <span className="upload-progress-text">{Math.round(progress)}%</span>
+                                </div>
+                            ) : (
+                                <>
+                                    <span className="btn-text">Publish</span>
+                                    <i className="icon-send"></i>
+                                </>
+                            )}
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            {showSuccessAnimation && (
+                <div className="success-overlay">
+                    <div className="success-animation">
+                        <i className="icon-check-circle"></i>
+                        <p>Post published successfully!</p>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
+
+export default NewPostUpload;

@@ -1,0 +1,87 @@
+
+body {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f1f1f1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+}
+
+.container {
+      width: 100%;
+      max-width: 400px;
+      padding: 20px;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      text-align: center;
+}
+
+/* Heading Style */
+h1 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+}
+
+/* Form Group Styles */
+.form-group {
+      margin-bottom: 15px;
+      text-align: left;
+}
+
+/* Label Style */
+label {
+      display: block;
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 5px;
+}
+
+/* Input Field Styles */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+      width: 100%;
+      padding: 10px 15px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+}
+
+/* Button Styles */
+button {
+      width: 100%;
+      padding: 10px 15px;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      background-color: #25D366; 
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+}
+
+button:hover {
+      background-color: #20ba5a; 
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 480px) {
+      .container {
+            padding: 15px;
+      }
+
+      h1 {
+            font-size: 20px;
+      }
+
+      input,
+      button {
+            font-size: 14px;
+      }
+}

@@ -1,30 +1,339 @@
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
+// import "./User.css";
+// import {
+//     FaEdit, FaTrash, FaUsers, FaShare, FaEnvelope, FaSignOutAlt, FaCog, FaTimes,
+//     FaInfoCircle,
+//     FaShieldAlt
+// } from "react-icons/fa";
+
+// function Profile() {
+//     const Backend_Url = import.meta.env.VITE_BACKEND_URL;
+//     const [user, setUser] = useState(null);
+//     const [loading, setLoading] = useState(true)
+//     const [error, setError] = useState(null);
+//     const [posts, setPosts] = useState([]);
+//     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+//     const [uploading, setUploading] = useState(false);
+//     const [selectedPost, setSelectedPost] = useState(null);
+//     const handlePostClick = (post) => {
+//         setSelectedPost(post);
+//     };
+    
+//     const handleClosePost = () => {
+//         setSelectedPost(null);
+//     };
+//     useEffect(() => {
+//         const handleClickOutside = (event) => {
+//             if (selectedPost && !event.target.closest(".expanded-media")) {
+//                 handleClosePost();
+//             }
+//         };
+    
+//         document.addEventListener("mousedown", handleClickOutside);
+//         return () => {
+//             document.removeEventListener("mousedown", handleClickOutside);
+//         };
+//     }, [selectedPost]);
+//     useEffect(() => {
+
+//         fetchUserData();
+
+//         const fetchUser = async () => {
+//             try {
+//                 const token = localStorage.getItem("token");
+//                 if (!token) throw new Error("No token found");
+
+//                 const response = await fetch(`${Backend_Url}/auth/check`, {
+//                     method: "GET",
+//                     headers: { Authorization: `Bearer ${token}` },
+//                 });   
+
+//                 if (!response.ok) throw new Error("Failed to fetch user data");
+
+//                 const data = await response.json();
+//                 setUser(data.user);
+//             } catch (err) {
+//                 setError(err.message);
+//             } finally {
+//                 setLoading(false);
+//             }
+//         };
+
+//         fetchUser();
+
+//     }, []);
+
+//     const fetchUserData = async () => {
+//         try {
+//             const token = localStorage.getItem("token");
+//             if (!token) throw new Error("No token found");
+
+//             const response = await fetch(`${Backend_Url}/auth/check`, {
+//                 method: "GET",
+//                 headers: { Authorization: `Bearer ${token}` },
+//             });
+
+//             if (!response.ok) throw new Error("Failed to fetch user data");
+
+//             const data = await response.json();
+//             setUser(data.user);
+//             localStorage.setItem("user", JSON.stringify(data.user));
+//         } catch (err) {
+//             setError(err.message);
+//         } finally {
+//             setLoading(false);
+//         }
+//     };
+
+//     useEffect(() => {
+//         if (!user) return;
+//         fetchUserPosts();
+//     }, [user]);
+
+//     const fetchUserPosts = async () => {
+//         try {
+//             const response = await fetch(`${Backend_Url}/talk`);
+//             if (!response.ok) throw new Error("Failed to fetch posts");
+
+//             const data = await response.json();
+//             const userPosts = data.filter(post => post.owner._id === user._id);
+//             setPosts(userPosts);
+//         } catch (err) {
+//             console.error("Error fetching posts:", err);
+//         }
+//     };
+
+//     const handleLogout = () => {
+//         localStorage.removeItem("token");
+//         localStorage.removeItem("user");
+//         window.location.href = "/login";
+//     };
+
+//     const toggleSettings = () => {
+//         setIsSettingsOpen(!isSettingsOpen);
+//     };
+
+//     const handleFileChange = async (event) => {
+//         const file = event.target.files[0];
+//         if (file) {
+//             setUploading(true);
+//             await uploadProfilePicture(file);
+//             setUploading(false);
+//         }
+//     };
+
+//     const uploadProfilePicture = async (file) => {
+//         const token = localStorage.getItem("token");
+//         const formData = new FormData();
+//         formData.append("profilePicture", file);
+
+//         try {
+//             const response = await fetch(`${Backend_Url}/user/profile/picture`, {
+//                 method: "POST",
+//                 headers: { Authorization: `Bearer ${token}` },
+//                 body: formData,
+//             });
+
+//             if (!response.ok) throw new Error("Failed to upload profile picture");
+
+//             const data = await response.json();
+//             setUser((prevUser) => ({ ...prevUser, profile: data.profilePicture }));
+//             localStorage.setItem("user", JSON.stringify({ ...user, profile: data.profilePicture }));
+//             await fetchUserData();
+//         } catch (err) {
+//             console.error("Upload failed:", err);
+//         }
+//     };
+
+//     if (loading) return <p>Loading...</p>;
+//     if (error) return <p>Error: {error}</p>;
+
+//     return (
+//         <div className="profile-page">
+//             {/* Header with Settings Icon */}
+//             <header className="header">
+//                 <div className="header-content">
+//                     <h1>Profile</h1>
+//                     <div className="settings-icon" onClick={toggleSettings}>
+//                         {isSettingsOpen ? <FaTimes /> : <FaCog />}
+//                     </div>
+//                 </div>
+//             </header>
+
+//             {/* Right-Side Sidebar */}
+//             <div className={`sidebar ${isSettingsOpen ? "open" : ""}`}>
+//                 <div className="sidebar-content">
+//                     <div className="settings-icon-2" onClick={toggleSettings}>
+//                         {isSettingsOpen ? <FaTimes /> : <FaCog />}
+//                     </div>
+//                     <div className="sidebar-item" onClick={handleLogout}>
+//                         <FaSignOutAlt /> Logout
+//                     </div>
+//                     <div className="sidebar-item" onClick={() =>  document.getElementById("fileInput").click()}>
+//                         <FaEdit /> Edit Profile
+//                     </div>
+//                     <div className="sidebar-item" onClick={() => window.location.href = "/talk/notifications"}>
+//                         <FaEnvelope /> Notifications
+//                     </div>
+//                     <div className="sidebar-item" onClick={() => window.location.href = "/talk/about-us"}>
+//     <FaInfoCircle /> About Us
+// </div>
+// <div className="sidebar-item" onClick={() => window.location.href = "/talk/contact-us"}>
+//     <FaEnvelope /> Contact Us
+// </div>
+// <div className="sidebar-item" onClick={() => window.location.href = "/talk/privacy-policy"}>
+//     <FaShieldAlt /> Privacy Policy
+// </div>
+//                 </div>
+//             </div>
+
+//             {/* Profile Content */}
+//             <div className="profile-container">
+//                 <div className="profile-picture-container">
+//                     <img src={user.profile || "default-profile.png"} alt="Profile" className="profile-picture" />
+
+//                     <input
+//                         type="file"
+//                         id="fileInput"
+//                         style={{ display: "none" }}
+//                         accept="image/*"
+//                         onChange={handleFileChange}
+//                         disabled={uploading}
+//                     />
+//                 </div>
+
+//                 <h2>{user.username || "Unknown User"}</h2>
+
+//                 <div className="stats">
+//                     <div>{posts.length} Posts</div>
+//                     <div>{(user.followers && user.followers.length) || 0} Followers</div>
+//                     <div>{(user.following && user.following.length) || 0} Following</div>
+//                 </div>
+
+//                 <div className="action-buttons">
+//                     <div 
+//                         className="btn-actions" 
+//                         onClick={() => !uploading && document.getElementById("fileInput").click()}
+//                         style={{ opacity: uploading ? 0.5 : 1, cursor: uploading ? "not-allowed" : "pointer" }}
+//                     >
+//                         {uploading ? "Uploading..." : <FaEdit />}
+//                     </div>
+
+//                     <div className="btn-actions"><FaTrash /></div>
+//                     <form action={`/user/followers/${user._id || "#"}`} method="GET">
+//                         <button className="btn-actions" style={{ border: "none" }} type="submit">
+//                             <FaUsers />
+//                         </button>
+//                     </form>
+//                     <div className="btn-actions"><FaShare /></div>
+//                     <div className="btn-actions"><FaEnvelope /></div>
+//                 </div>
+
+//                 {/* User Posts Section */}
+//                 <div className="posts-container">
+//                     {posts.length > 0 ? (
+//                         posts.map((post) => (
+//                             <div key={post._id} className="post-card"    onClick={() => handlePostClick(post)}>
+//                                 {post.image ? (
+//                                     <img src={post.image} alt="Post" className="media-content-1" />
+//                                 ) : post.video ? (
+//                                     <video controls className="media-content">
+//                                         <source src={post.video} type="video/mp4" />
+//                                         Your browser does not support the video tag.
+//                                     </video>
+//                                 ) : null}
+//                             </div>
+//                         ))
+//                     ) : (
+//                         <p>No posts available.</p>
+//                     )}
+
+//                 </div>
+//                  {/* Expanded Media Section */}
+//                  {selectedPost && (
+//                     <div className="expanded-media-overlay">
+//                         <div className="expanded-media">
+//                             {selectedPost.image ? (
+//                                 <img src={selectedPost.image} alt="Expanded Post" />
+//                             ) : selectedPost.video ? (
+//                                 <video controls autoPlay>
+//                                     <source src={selectedPost.video} type="video/mp4" />
+//                                     Your browser does not support the video tag.
+//                                 </video>
+//                             ) : null}
+//                         </div>
+//                     </div>
+//                 )}
+//             </div>
+//         </div>
+//     );
+// }
+
+// export default Profile;
+import { useState, useEffect, useRef } from "react";
 import "./User.css";
 import {
     FaEdit, FaTrash, FaUsers, FaShare, FaEnvelope, FaSignOutAlt, FaCog, FaTimes,
-    FaInfoCircle,
-    FaShieldAlt
+    FaInfoCircle, FaShieldAlt, FaRegBookmark, FaRegHeart, FaHeart, FaGrid, FaPlay,
+    FaEllipsisH, FaRegComment, FaBars, FaCamera
 } from "react-icons/fa";
+import { CgMediaLive } from "react-icons/cg";
+import { RiLayoutGridFill, RiMovie2Fill, RiBookmarkFill } from "react-icons/ri";
 
 function Profile() {
     const Backend_Url = import.meta.env.VITE_BACKEND_URL;
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [posts, setPosts] = useState([]);
+    const [reels, setReels] = useState([]);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [selectedPost, setSelectedPost] = useState(null);
+    const [activeTab, setActiveTab] = useState("posts");
+    const [showProfileOptions, setShowProfileOptions] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [likedPosts, setLikedPosts] = useState({});
+    const [showStoryModal, setShowStoryModal] = useState(false);
+    const profileRef = useRef(null);
+    
+    // Animate on load
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            document.querySelector('.profile-container').classList.add('loaded');
+        }, 100);
+        
+        return () => clearTimeout(timer);
+    }, []);
+
+    // Handle scrolling effects
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollPosition = window.scrollY;
+            if (scrollPosition > 50) {
+                setIsScrolled(true);
+            } else {
+                setIsScrolled(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     const handlePostClick = (post) => {
         setSelectedPost(post);
+        document.body.style.overflow = 'hidden';
     };
     
     const handleClosePost = () => {
         setSelectedPost(null);
+        document.body.style.overflow = 'auto';
     };
+
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (selectedPost && !event.target.closest(".expanded-media")) {
+            if (selectedPost && !event.target.closest(".expanded-media") && !event.target.closest(".post-actions-expanded")) {
                 handleClosePost();
             }
         };
@@ -34,8 +343,8 @@ function Profile() {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [selectedPost]);
-    useEffect(() => {
 
+    useEffect(() => {
         fetchUserData();
 
         const fetchUser = async () => {
@@ -60,7 +369,6 @@ function Profile() {
         };
 
         fetchUser();
-
     }, []);
 
     const fetchUserData = async () => {
@@ -97,7 +405,13 @@ function Profile() {
 
             const data = await response.json();
             const userPosts = data.filter(post => post.owner._id === user._id);
-            setPosts(userPosts);
+            
+            // Separate posts and reels
+            const postsArray = userPosts.filter(post => post.image);
+            const reelsArray = userPosts.filter(post => post.video);
+            
+            setPosts(postsArray);
+            setReels(reelsArray);
         } catch (err) {
             console.error("Error fetching posts:", err);
         }
@@ -145,125 +459,375 @@ function Profile() {
         }
     };
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
+    const handleLike = (postId) => {
+        setLikedPosts(prev => ({
+            ...prev,
+            [postId]: !prev[postId]
+        }));
+    };
+
+    const showAddStory = () => {
+        setShowStoryModal(true);
+    };
+
+    const closeStoryModal = () => {
+        setShowStoryModal(false);
+    };
+
+    if (loading) return (
+        <div className="loading-screen">
+            <div className="loading-spinner"></div>
+            <p>Loading profile...</p>
+        </div>
+    );
+    
+    if (error) return (
+        <div className="error-container">
+            <div className="error-icon">⚠️</div>
+            <p>Error: {error}</p>
+            <button onClick={() => window.location.reload()} className="retry-button">
+                Retry
+            </button>
+        </div>
+    );
 
     return (
         <div className="profile-page">
             {/* Header with Settings Icon */}
-            <header className="header">
+            <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
                 <div className="header-content">
-                    <h1>Profile</h1>
+                    <h1>{user.username || "Profile"}</h1>
                     <div className="settings-icon" onClick={toggleSettings}>
                         {isSettingsOpen ? <FaTimes /> : <FaCog />}
                     </div>
                 </div>
             </header>
 
-            {/* Right-Side Sidebar */}
+            {/* Settings Sidebar */}
             <div className={`sidebar ${isSettingsOpen ? "open" : ""}`}>
                 <div className="sidebar-content">
-                    <div className="settings-icon-2" onClick={toggleSettings}>
-                        {isSettingsOpen ? <FaTimes /> : <FaCog />}
+                    <div className="sidebar-header">
+                        <h2>Settings</h2>
+                        <div className="settings-icon-2" onClick={toggleSettings}>
+                            <FaTimes />
+                        </div>
                     </div>
-                    <div className="sidebar-item" onClick={handleLogout}>
-                        <FaSignOutAlt /> Logout
+                    
+                    <div className="sidebar-items">
+                        <div className="sidebar-item" onClick={() => document.getElementById("fileInput").click()}>
+                            <FaEdit /> <span>Edit Profile</span>
+                        </div>
+                        <div className="sidebar-item" onClick={() => window.location.href = "/talk/notifications"}>
+                            <FaEnvelope /> <span>Notifications</span>
+                        </div>
+                        <div className="sidebar-item" onClick={() => window.location.href = "/talk/about-us"}>
+                            <FaInfoCircle /> <span>About Us</span>
+                        </div>
+                        <div className="sidebar-item" onClick={() => window.location.href = "/talk/contact-us"}>
+                            <FaEnvelope /> <span>Contact Us</span>
+                        </div>
+                        <div className="sidebar-item" onClick={() => window.location.href = "/talk/privacy-policy"}>
+                            <FaShieldAlt /> <span>Privacy Policy</span>
+                        </div>
+                        <div className="sidebar-item logout" onClick={handleLogout}>
+                            <FaSignOutAlt /> <span>Logout</span>
+                        </div>
                     </div>
-                    <div className="sidebar-item" onClick={() =>  document.getElementById("fileInput").click()}>
-                        <FaEdit /> Edit Profile
-                    </div>
-                    <div className="sidebar-item" onClick={() => window.location.href = "/talk/notifications"}>
-                        <FaEnvelope /> Notifications
-                    </div>
-                    <div className="sidebar-item" onClick={() => window.location.href = "/talk/about-us"}>
-    <FaInfoCircle /> About Us
-</div>
-<div className="sidebar-item" onClick={() => window.location.href = "/talk/contact-us"}>
-    <FaEnvelope /> Contact Us
-</div>
-<div className="sidebar-item" onClick={() => window.location.href = "/talk/privacy-policy"}>
-    <FaShieldAlt /> Privacy Policy
-</div>
                 </div>
             </div>
 
             {/* Profile Content */}
-            <div className="profile-container">
-                <div className="profile-picture-container">
-                    <img src={user.profile || "default-profile.png"} alt="Profile" className="profile-picture" />
+            <div className="profile-container" ref={profileRef}>
+                <div className="profile-header">
+                    <div className="profile-header-content">
+                        <div className="profile-picture-section">
+                            <div 
+                                className="profile-picture-container"
+                                onClick={() => !uploading && document.getElementById("fileInput").click()}
+                            >
+                                <img src={user.profile || "https://via.placeholder.com/150"} alt="Profile" className="profile-picture" />
+                                {!uploading && <div className="profile-picture-overlay">
+                                    <FaCamera className="camera-icon" />
+                                </div>}
+                                {uploading && <div className="uploading-overlay">
+                                    <div className="uploading-spinner"></div>
+                                </div>}
+                            </div>
+                            
+                            <div className="story-ring" onClick={showAddStory}>
+                                <div className="add-story-button">+</div>
+                            </div>
 
-                    <input
-                        type="file"
-                        id="fileInput"
-                        style={{ display: "none" }}
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        disabled={uploading}
-                    />
-                </div>
+                            <input
+                                type="file"
+                                id="fileInput"
+                                style={{ display: "none" }}
+                                accept="image/*"
+                                onChange={handleFileChange}
+                                disabled={uploading}
+                            />
+                        </div>
 
-                <h2>{user.username || "Unknown User"}</h2>
+                        <div className="profile-info">
+                            <div className="username-container">
+                                <h2 className="username">{user.username || "Unknown User"}</h2>
+                                <div className="verified-badge" title="Verified Account">✓</div>
+                            </div>
+                            
+                            <div className="bio-section">
+                                {user.bio || "No bio yet. Tap edit profile to add your bio."}
+                            </div>
 
-                <div className="stats">
-                    <div>{posts.length} Posts</div>
-                    <div>{(user.followers && user.followers.length) || 0} Followers</div>
-                    <div>{(user.following && user.following.length) || 0} Following</div>
-                </div>
-
-                <div className="action-buttons">
-                    <div 
-                        className="btn-actions" 
-                        onClick={() => !uploading && document.getElementById("fileInput").click()}
-                        style={{ opacity: uploading ? 0.5 : 1, cursor: uploading ? "not-allowed" : "pointer" }}
-                    >
-                        {uploading ? "Uploading..." : <FaEdit />}
+                            <div className="profile-actions">
+                                <button className="edit-profile-btn" onClick={() => document.getElementById("fileInput").click()}>
+                                    Edit Profile
+                                </button>
+                                <button className="share-profile-btn">
+                                    <FaShare />
+                                </button>
+                                <button className="more-options-btn" onClick={() => setShowProfileOptions(!showProfileOptions)}>
+                                    <FaEllipsisH />
+                                </button>
+                                
+                                {showProfileOptions && (
+                                    <div className="profile-options-dropdown">
+                                        <div className="option-item">QR Code</div>
+                                        <div className="option-item">Share Profile</div>
+                                        <div className="option-item" onClick={handleLogout}>Logout</div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                     </div>
 
-                    <div className="btn-actions"><FaTrash /></div>
-                    <form action={`/user/followers/${user._id || "#"}`} method="GET">
-                        <button className="btn-actions" style={{ border: "none" }} type="submit">
-                            <FaUsers />
-                        </button>
-                    </form>
-                    <div className="btn-actions"><FaShare /></div>
-                    <div className="btn-actions"><FaEnvelope /></div>
+                    <div className="stats-container">
+                        <div className="stat-item">
+                            <div className="stat-count">{posts.length + reels.length}</div>
+                            <div className="stat-label">Posts</div>
+                        </div>
+                        <div className="stat-item">
+                            <div className="stat-count">{(user.followers && user.followers.length) || 0}</div>
+                            <div className="stat-label">Followers</div>
+                        </div>
+                        <div className="stat-item">
+                            <div className="stat-count">{(user.following && user.following.length) || 0}</div>
+                            <div className="stat-label">Following</div>
+                        </div>
+                    </div>
                 </div>
 
-                {/* User Posts Section */}
-                <div className="posts-container">
-                    {posts.length > 0 ? (
-                        posts.map((post) => (
-                            <div key={post._id} className="post-card"    onClick={() => handlePostClick(post)}>
-                                {post.image ? (
-                                    <img src={post.image} alt="Post" className="media-content-1" />
-                                ) : post.video ? (
-                                    <video controls className="media-content">
-                                        <source src={post.video} type="video/mp4" />
-                                        Your browser does not support the video tag.
-                                    </video>
-                                ) : null}
-                            </div>
-                        ))
-                    ) : (
-                        <p>No posts available.</p>
+                {/* Content Tabs */}
+                <div className="content-tabs">
+                    <div 
+                        className={`tab ${activeTab === 'posts' ? 'active' : ''}`} 
+                        onClick={() => setActiveTab('posts')}
+                    >
+                        <RiLayoutGridFill />
+                    </div>
+                    <div 
+                        className={`tab ${activeTab === 'reels' ? 'active' : ''}`} 
+                        onClick={() => setActiveTab('reels')}
+                    >
+                        <RiMovie2Fill />
+                    </div>
+                    <div 
+                        className={`tab ${activeTab === 'saved' ? 'active' : ''}`} 
+                        onClick={() => setActiveTab('saved')}
+                    >
+                        <RiBookmarkFill />
+                    </div>
+                    <div 
+                        className={`tab ${activeTab === 'tagged' ? 'active' : ''}`} 
+                        onClick={() => setActiveTab('tagged')}
+                    >
+                        <FaUsers />
+                    </div>
+                </div>
+
+                {/* Content sections based on active tab */}
+                <div className="content-section">
+                    {activeTab === 'posts' && (
+                        <div className="posts-grid">
+                            {posts.length > 0 ? (
+                                posts.map((post) => (
+                                    <div key={post._id} className="post-item" onClick={() => handlePostClick(post)}>
+                                        <img src={post.image} alt="Post" className="post-thumbnail" />
+                                        <div className="post-overlay">
+                                            <div className="post-stats">
+                                                <span><FaHeart /> {post.likes || 0}</span>
+                                                <span><FaRegComment /> {post.comments || 0}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="empty-state">
+                                    <div className="empty-icon">📷</div>
+                                    <p>No posts yet</p>
+                                </div>
+                            )}
+                        </div>
                     )}
 
+                    {activeTab === 'reels' && (
+                        <div className="reels-grid">
+                            {reels.length > 0 ? (
+                                reels.map((reel) => (
+                                    <div key={reel._id} className="reel-item" onClick={() => handlePostClick(reel)}>
+                                        <video className="reel-thumbnail">
+                                            <source src={reel.video} type="video/mp4" />
+                                        </video>
+                                        <div className="reel-overlay">
+                                            <div className="play-icon">
+                                                <FaPlay />
+                                            </div>
+                                            <div className="reel-stats">
+                                                <span><FaHeart /> {reel.likes || 0}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="empty-state">
+                                    <div className="empty-icon">🎬</div>
+                                    <p>No reels yet</p>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {activeTab === 'saved' && (
+                        <div className="saved-content empty-state">
+                            <div className="empty-icon">🔖</div>
+                            <p>No saved items</p>
+                        </div>
+                    )}
+
+                    {activeTab === 'tagged' && (
+                        <div className="tagged-content empty-state">
+                            <div className="empty-icon">👤</div>
+                            <p>No tagged posts</p>
+                        </div>
+                    )}
                 </div>
-                 {/* Expanded Media Section */}
-                 {selectedPost && (
+                
+                {/* Expanded Post View */}
+                {selectedPost && (
                     <div className="expanded-media-overlay">
+                        <div className="post-header">
+                            <div className="post-user-info">
+                                <img src={user.profile || "https://via.placeholder.com/40"} alt={user.username} className="user-pic" />
+                                <span className="username">{user.username}</span>
+                            </div>
+                            <button className="close-post" onClick={handleClosePost}>
+                                <FaTimes />
+                            </button>
+                        </div>
+                        
                         <div className="expanded-media">
                             {selectedPost.image ? (
                                 <img src={selectedPost.image} alt="Expanded Post" />
                             ) : selectedPost.video ? (
-                                <video controls autoPlay>
+                                <video controls autoPlay loop>
                                     <source src={selectedPost.video} type="video/mp4" />
                                     Your browser does not support the video tag.
                                 </video>
                             ) : null}
                         </div>
+                        
+                        <div className="post-actions-expanded">
+                            <div className="post-action-buttons">
+                                <button className={`action-btn ${likedPosts[selectedPost._id] ? 'active' : ''}`} onClick={() => handleLike(selectedPost._id)}>
+                                    {likedPosts[selectedPost._id] ? <FaHeart /> : <FaRegHeart />}
+                                </button>
+                                <button className="action-btn">
+                                    <FaRegComment />
+                                </button>
+                                <button className="action-btn">
+                                    <FaShare />
+                                </button>
+                                <button className="action-btn bookmark">
+                                    <FaRegBookmark />
+                                </button>
+                            </div>
+                            
+                            <div className="post-likes">
+                                {selectedPost.likes || 0} likes
+                            </div>
+                            
+                            <div className="post-caption">
+                                <span className="username">{user.username}</span> {selectedPost.description || "No caption"}
+                            </div>
+                            
+                            <div className="post-date">
+                                {new Date(selectedPost.createdAt || Date.now()).toLocaleDateString('en-US', {
+                                    month: 'long',
+                                    day: 'numeric'
+                                })}
+                            </div>
+                            
+                            <div className="add-comment">
+                                <input type="text" placeholder="Add a comment..." />
+                                <button className="post-btn">Post</button>
+                            </div>
+                        </div>
                     </div>
                 )}
+                
+                {/* Story Modal */}
+                {showStoryModal && (
+                    <div className="story-modal">
+                        <div className="story-modal-content">
+                            <button className="close-story" onClick={closeStoryModal}>
+                                <FaTimes />
+                            </button>
+                            <div className="story-options">
+                                <h3>Create</h3>
+                                <div className="story-option">
+                                    <div className="story-option-icon photo">
+                                        <FaCamera />
+                                    </div>
+                                    <span>Photo</span>
+                                </div>
+                                <div className="story-option">
+                                    <div className="story-option-icon video">
+                                        <RiMovie2Fill />
+                                    </div>
+                                    <span>Video</span>
+                                </div>
+                                <div className="story-option">
+                                    <div className="story-option-icon live">
+                                        <CgMediaLive />
+                                    </div>
+                                    <span>Live</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+            
+            {/* Bottom Navigation */}
+            <div className="bottom-navigation">
+                <div className="nav-item">
+                    <i className="nav-icon home"></i>
+                </div>
+                <div className="nav-item">
+                    <i className="nav-icon search"></i>
+                </div>
+                <div className="nav-item">
+                    <i className="nav-icon add"></i>
+                </div>
+                <div className="nav-item">
+                    <i className="nav-icon reels"></i>
+                </div>
+                <div className="nav-item active">
+                    <img 
+                        src={user?.profile || "https://via.placeholder.com/30"} 
+                        alt="Profile" 
+                        className="nav-profile"
+                    />
+                </div>
             </div>
         </div>
     );

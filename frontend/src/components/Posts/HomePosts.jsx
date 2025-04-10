@@ -43,8 +43,7 @@
 //     );
 // }
 
-// export default HomePosts;
-import React, { useState, useEffect } from "react";
+// export default HomePosts;import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import './HomePosts.css';
 import TalkPosts from "./Posts";
@@ -60,7 +59,8 @@ import {
   FaMoon, 
   FaSun, 
   FaSearch, 
-  FaBell
+  FaBell,
+  FaUserCircle
 } from "react-icons/fa";
 
 function HomePosts() {
@@ -91,7 +91,6 @@ function HomePosts() {
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
-    // You would add actual theme switching logic here
     document.body.classList.toggle('light-mode');
   };
 
@@ -105,7 +104,7 @@ function HomePosts() {
 
   return (
     <div className={`app-container ${isDarkMode ? 'dark-theme' : 'light-theme'}`}>
-      {/* Mobile Header */}
+      {/* Header */}
       <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
         <div className="mobile-header">
           <div className="logo-container">
@@ -113,26 +112,26 @@ function HomePosts() {
           </div>
           
           <div className="header-actions">
-            <button className="action-button search-toggle" onClick={toggleSearch}>
-              <FaSearch className="icon-animation" />
+            <button className="action-button search-toggle glow-on-hover" onClick={toggleSearch}>
+              <FaSearch className="header-icon" />
             </button>
             
-            <button className="action-button notification">
-              <FaBell className="icon-animation" />
-              <span className="notification-badge">3</span>
+            <button className="action-button notification glow-on-hover">
+              <FaBell className="header-icon" />
+              <span className="notification-badge pulse">3</span>
             </button>
             
-            <button className="action-button theme-toggle" onClick={toggleDarkMode}>
-              {isDarkMode ? <FaSun className="icon-animation" /> : <FaMoon className="icon-animation" />}
+            <button className="action-button theme-toggle glow-on-hover" onClick={toggleDarkMode}>
+              {isDarkMode ? <FaSun className="header-icon" /> : <FaMoon className="header-icon" />}
             </button>
             
-            <button className="menu-toggle" onClick={toggleSettings}>
-              {isSettingsOpen ? <FaTimes className="icon-animation" /> : <FaBars className="icon-animation" />}
+            <button className="menu-toggle glow-on-hover" onClick={toggleSettings}>
+              {isSettingsOpen ? <FaTimes className="header-icon" /> : <FaBars className="header-icon" />}
             </button>
           </div>
         </div>
         
-        {/* Search Bar - Expandable */}
+        {/* Enhanced Search Bar */}
         <div className={`search-container ${searchActive ? 'active' : ''}`}>
           <input 
             type="text" 
@@ -141,51 +140,57 @@ function HomePosts() {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
           />
-          <button className="search-close" onClick={toggleSearch}>
-            <FaTimes />
+          <button className="search-close glow-on-hover" onClick={toggleSearch}>
+            <FaTimes className="search-icon" />
           </button>
         </div>
       </header>
 
-      {/* Side Navigation Menu */}
-      <div className={`side-menu ${isSettingsOpen ? 'open' : ''}`}>
+      {/* Enhanced Side Menu with Dark Theme */}
+      <div className={`side-menu ultra-dark ${isSettingsOpen ? 'open' : ''}`}>
         <div className="side-menu-header">
           <h2>Menu</h2>
-          <button className="close-menu" onClick={toggleSettings}>
-            <FaTimes />
+          <button className="close-menu glow-on-hover" onClick={toggleSettings}>
+            <FaTimes className="side-icon" />
           </button>
         </div>
         
         <div className="user-preview">
-          <div className="avatar-placeholder">
+          <div className="avatar-placeholder glow-effect">
+            <FaUserCircle className="avatar-icon" />
             <span>Guest</span>
           </div>
-          <button className="login-button-side" onClick={handleLogin}>
-            <FaSignInAlt /> Sign In
+          <button className="login-button-side neo-brutalism" onClick={handleLogin}>
+            <FaSignInAlt className="button-icon" /> Sign In
           </button>
         </div>
         
         <nav className="side-nav">
           <ul>
-            <li onClick={() => navigate("/talk")}>
+            <li className="nav-item" onClick={() => navigate("/talk")}>
               <FaHome className="nav-icon" />
               <span>Home</span>
+              <div className="hover-glow"></div>
             </li>
-            <li onClick={() => navigate("/talk/about-us")}>
+            <li className="nav-item" onClick={() => navigate("/talk/about-us")}>
               <FaInfoCircle className="nav-icon" />
               <span>About Us</span>
+              <div className="hover-glow"></div>
             </li>
-            <li onClick={() => navigate("/talk/contact-us")}>
+            <li className="nav-item" onClick={() => navigate("/talk/contact-us")}>
               <FaEnvelope className="nav-icon" />
               <span>Contact Us</span>
+              <div className="hover-glow"></div>
             </li>
-            <li onClick={() => navigate("/talk/privacy-policy")}>
+            <li className="nav-item" onClick={() => navigate("/talk/privacy-policy")}>
               <FaShieldAlt className="nav-icon" />
               <span>Privacy Policy</span>
+              <div className="hover-glow"></div>
             </li>
-            <li onClick={() => navigate("/talk/terms-and-conditions")}>
+            <li className="nav-item" onClick={() => navigate("/talk/terms-and-conditions")}>
               <FaFileContract className="nav-icon" />
               <span>Terms & Conditions</span>
+              <div className="hover-glow"></div>
             </li>
           </ul>
         </nav>
@@ -194,17 +199,17 @@ function HomePosts() {
           <p>© 2025 Talk Social Platform</p>
           <div className="theme-switch-container">
             <span>Theme:</span>
-            <button className="theme-switch" onClick={toggleDarkMode}>
-              {isDarkMode ? <FaSun /> : <FaMoon />}
+            <button className="theme-switch glow-on-hover" onClick={toggleDarkMode}>
+              {isDarkMode ? <FaSun className="theme-icon" /> : <FaMoon className="theme-icon" />}
               <span>{isDarkMode ? 'Light Mode' : 'Dark Mode'}</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Backdrop */}
+      {/* Improved Backdrop with Blur Effect */}
       {isSettingsOpen && (
-        <div className="backdrop" onClick={toggleSettings}></div>
+        <div className="backdrop blur-effect" onClick={toggleSettings}></div>
       )}
 
       {/* Main Content */}
@@ -214,10 +219,11 @@ function HomePosts() {
         </div>
       </div>
       
-      {/* Quick Action Floating Button */}
-      <button className="floating-action-button">
+      {/* Enhanced Floating Action Button */}
+      <button className="floating-action-button super-glow">
         <span className="plus-icon">+</span>
         <div className="ripple"></div>
+        <div className="outer-glow"></div>
       </button>
     </div>
   );

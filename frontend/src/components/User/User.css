@@ -575,7 +575,7 @@ body {
   top: 45px;
   right: 0;
   width: 180px;
-  background-color: var(--dark-bg);
+  /* background-color: var(--dark-bg); */
   border: 1px solid var(--border-color);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);

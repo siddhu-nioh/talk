@@ -280,7 +280,7 @@ import {
 import { CgMediaLive } from "react-icons/cg";
 import { RiLayoutGridFill, RiMovie2Fill, RiBookmarkFill } from "react-icons/ri";
 // Add this import statement at the top of your Profile.js file
-import InstagramPostPage from './InstagramPostPage'; // Adjust the path according to where you've saved the component
+import InstagramPostPage from './InstagramPage'; // Adjust the path according to where you've saved the component
 function Profile() {
     const Backend_Url = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000/api";
     const [user, setUser] = useState(null);

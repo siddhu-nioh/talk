@@ -279,7 +279,8 @@ import {
 } from "react-icons/fa";
 import { CgMediaLive } from "react-icons/cg";
 import { RiLayoutGridFill, RiMovie2Fill, RiBookmarkFill } from "react-icons/ri";
-
+// Add this import statement at the top of your Profile.js file
+import InstagramPostPage from './InstagramPostPage'; // Adjust the path according to where you've saved the component
 function Profile() {
     const Backend_Url = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000/api";
     const [user, setUser] = useState(null);
@@ -331,11 +332,10 @@ function Profile() {
         fetchUserData();
     }, []);
      
-    const handlePostClick = (postId) => {
-        setSelectedPost(postId);
-        setSelectedPostId(postId);
+    const handlePostClick = (post) => {
+        setSelectedPost(post);
+        setSelectedPostId(post._id);
         setShowPostPage(true);
-        // document.body.style.overflow = 'hidden';
     };
     
     const handleClosePost = () => {
@@ -745,9 +745,9 @@ function Profile() {
                     )}
                 </div>
                 
-                {showPostPage  && (
+                {showPostPage && (
   <InstagramPostPage
-    posts={posts}
+    posts={activeTab === 'posts' ? posts : activeTab === 'reels' ? reels : []}
     user={user}
     onClose={handleClosePostPage}
     initialPostId={selectedPostId}

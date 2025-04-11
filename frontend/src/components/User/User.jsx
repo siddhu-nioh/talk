@@ -296,7 +296,7 @@ function Profile() {
     const [likedPosts, setLikedPosts] = useState({});
     const [showStoryModal, setShowStoryModal] = useState(false);
     const profileRef = useRef(null);
-    
+     
     // Animate on load
     useEffect(() => {
         const timer = setTimeout(() => {

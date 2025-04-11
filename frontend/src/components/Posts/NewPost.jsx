@@ -368,7 +368,7 @@ function NewPostUpload() {
                         className={`tab ${activeTab === 'tweet' ? 'active' : ''}`}
                         onClick={() => handleTabChange('tweet')}
                     >
-                        <i className="icon-text"></i>
+                        <i className="icon-text-2"></i>
                         Text Post
                     </button>
                 </div>

@@ -46,7 +46,7 @@ body {
 .icon-arrow-left:before { content: "←"; }
 .icon-close:before { content: "✕"; }
 .icon-media:before { content: "🖼️"; }
-.icon-text:before { content: "📝"; }
+.icon-text-2:before { content: "📝"; }
 .icon-upload-cloud:before { content: "☁️"; }
 .icon-image:before { content: "🖼️"; }
 .icon-send:before { content: "📤"; }

@@ -557,10 +557,10 @@ body {
   justify-content: center;
   width: 40px;
   height: 38px;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: indigo;
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  color: var(--light-text);
+  color: white;
   cursor: pointer;
   transition: all 0.2s ease;
 }

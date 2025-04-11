@@ -555,8 +555,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 10vw;
-  background-color: rgb(33, 33, 255);
+  width: 6vw;
+  background-color: rgb(3, 3, 53);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   color: white;

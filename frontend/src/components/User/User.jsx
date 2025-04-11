@@ -296,7 +296,14 @@ function Profile() {
     const [likedPosts, setLikedPosts] = useState({});
     const [showStoryModal, setShowStoryModal] = useState(false);
     const profileRef = useRef(null);
-     
+    const [showPostPage, setShowPostPage] = useState(false);
+    const [selectedPostId, setSelectedPostId] = useState(null);
+    
+   
+    
+    const handleClosePostPage = () => {
+      setShowPostPage(false);
+    };
     // Handle scrolling effects
     useEffect(() => {
         const handleScroll = () => {
@@ -323,10 +330,12 @@ function Profile() {
         // Fetch user data on component mount
         fetchUserData();
     }, []);
-
-    const handlePostClick = (post) => {
-        setSelectedPost(post);
-        document.body.style.overflow = 'hidden';
+     
+    const handlePostClick = (postId) => {
+        setSelectedPost(postId);
+        setSelectedPostId(postId);
+        setShowPostPage(true);
+        // document.body.style.overflow = 'hidden';
     };
     
     const handleClosePost = () => {
@@ -736,8 +745,17 @@ function Profile() {
                     )}
                 </div>
                 
+                {showPostPage  && (
+  <InstagramPostPage
+    posts={posts}
+    user={user}
+    onClose={handleClosePostPage}
+    initialPostId={selectedPostId}
+  />
+)}
+
                 {/* Expanded Post View */}
-                {selectedPost && (
+                {/* {selectedPost && (
                     <div className="expanded-media-overlay">
                         <div className="post-header">
                             <div className="post-user-info">
@@ -798,7 +816,7 @@ function Profile() {
                         </div>
                     </div>
                 )}
-                
+                 */}
                 {/* Story Modal */}
                 {showStoryModal && (
                     <div className="story-modal">

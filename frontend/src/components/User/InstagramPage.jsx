@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaHeart, FaRegHeart, FaRegComment, FaShare, FaRegBookmark, FaArrowLeft } from 'react-icons/fa';
-import './InstagramPostPage.css'; // We'll define this CSS file below
+import './InstagramPage.css'; // We'll define this CSS file below
 
 const InstagramPostPage = ({ posts, user, onClose, initialPostId }) => {
   const [currentPostIndex, setCurrentPostIndex] = useState(0);

@@ -741,7 +741,7 @@ function Profile() {
                     <div className="expanded-media-overlay">
                         <div className="post-header">
                             <div className="post-user-info">
-                                <img src={user.profile || "https://via.placeholder.com/40"} alt={user.username} className="user-pic" />
+                                <img src={user.profile} alt={user.username} className="user-pic" />
                                 <span className="username">{user.username}</span>
                             </div>
                             <button className="close-post" onClick={handleClosePost}>

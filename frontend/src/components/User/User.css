@@ -775,10 +775,10 @@ body {
 /* Expanded Media Overlay */
 .expanded-media-overlay {
   position: fixed;
-  top: 0;
+  top: 20;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 80%;
+  height: 70%;
   background-color: rgba(0, 0, 0, 0.95);
   z-index: 1000;
   display: flex;

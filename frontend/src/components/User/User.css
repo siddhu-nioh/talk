@@ -240,6 +240,108 @@ body {
   margin-top: auto;
   color: #ff375f;
 }
+/* Fix for profile container visibility */
+.profile-page {
+  padding-top: 60px; /* Make room for fixed header */
+  color: var(--light-text);
+  background-color: var(--darker-bg);
+}
+
+.profile-container {
+  width: 100%;
+  max-width: 975px;
+  margin: 0 auto;
+  background-color: var(--darker-bg);
+  border-radius: 0;
+  opacity: 1; /* Force visibility */
+  transform: none; /* Remove transform */
+  transition: none; /* Remove transition that might be causing issues */
+  padding-bottom: 70px; /* Give space for bottom navigation */
+  z-index: 1;
+  position: relative;
+}
+
+/* Ensure content is visible */
+.profile-header,
+.content-tabs,
+.content-section {
+  z-index: 5;
+  position: relative;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Fix potential z-index stacking issues */
+.header {
+  z-index: 100;
+}
+
+.sidebar {
+  z-index: 101;
+}
+
+/* Fix for profile picture display */
+.profile-picture-container {
+  background-color: #333;
+  border: 2px solid var(--border-color);
+}
+
+/* Fix post grid visibility */
+.posts-grid, .reels-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  width: 100%;
+  visibility: visible;
+}
+
+.post-item, .reel-item {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: #333;
+  border-radius: 4px;
+}
+
+/* Improve empty state visibility */
+.empty-state {
+  color: var(--light-grey);
+  padding: 40px 0;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 36px;
+  margin-bottom: 15px;
+}
+
+/* Make sure bottom navigation is properly displayed */
+.bottom-navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--darker-bg);
+  border-top: 1px solid var(--border-color);
+  z-index: 90;
+}
+
+/* Improve loading visibility */
+.loading-screen {
+  background-color: var(--darker-bg);
+  color: white;
+}
+
+/* Force visibility for critical elements */
+.profile-header-content,
+.stats-container,
+.username-container,
+.bio-section,
+.profile-actions {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
 
 /* Profile Container */
 .profile-container {

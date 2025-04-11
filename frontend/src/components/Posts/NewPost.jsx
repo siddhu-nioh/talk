@@ -152,7 +152,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './NewPostUpload.css'; // We'll create this stylesheet after
+import './New.css'; // We'll create this stylesheet after
 
 function NewPostUpload() {
     // Core state management

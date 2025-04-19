@@ -38,7 +38,7 @@ function HomePosts() {
 
             {/* Main Content */}
             <div className="main-content">
-                <TalkPosts />
+                <TalkPosts/>
             </div>
         </div>
     );

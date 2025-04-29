@@ -140,7 +140,7 @@
       transform: translate(-50%, -50%);
       width: 60px;
       height: 60px;
-      background-color: rgba(0, 0, 0, 0.5);
+      background-color: rgba(0, 0, 0, 0.877);
       border-radius: 50%;
       display: flex;
       justify-content: center;
@@ -393,7 +393,7 @@
       padding: 16px;
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 4px;
-      background-color: rgba(255, 255, 255, 0.03);
+      background-color: rgba(5, 5, 5, 0.767);
       animation: fadeIn 0.5s ease;
     }
     

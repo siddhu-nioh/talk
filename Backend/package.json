@@ -12,6 +12,7 @@
   "license": "ISC",
   "description": "��#\u0000 \u0000T\u0000a\u0000l\u0000k\u0000\r\u0000 \u0000",
   "dependencies": {
+    "axios": "^1.9.0",
     "bcryptjs": "^3.0.2",
     "cloudinary": "^1.41.3",
     "connect-flash": "^0.1.1",

@@ -16,23 +16,23 @@
     }
     
     /* Post item styling with animations */
-    .post-item {
+    .post-item-P {
       background-color: #000;
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 4px;
       margin-bottom: 16px;
-      overflow: hidden;
+      /* overflow: hidden; */
       transform: translateY(20px);
       opacity: 0;
       transition: transform 0.4s ease-out, opacity 0.4s ease-out, box-shadow 0.3s ease;
     }
     
-    .post-item.post-visible {
+    .post-item-P.post-visible {
       transform: translateY(0);
       opacity: 1;
     }
     
-    .post-item:hover {
+    .post-item-P:hover {
       box-shadow: 0 2px 12px rgba(255, 255, 255, 0.05);
     }
     
@@ -42,7 +42,8 @@
       align-items: center;
       justify-content: space-between;
       padding: 12px 16px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: white;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.74);
     }
     
     .user-info {
@@ -81,6 +82,7 @@
       cursor: pointer;
       padding: 4px;
       color: #fff;
+      width: fit-content;
       transition: transform 0.2s ease;
     }
     
@@ -119,14 +121,15 @@
       width: 100%;
       object-fit: contain;
       background-color: #000;
-      max-height: 560px;
+      max-height: fit-content;
       display: block;
       margin: 0 auto;
     }
     
     /* For small images/videos, maintain aspect ratio but enforce minimum dimensions */
     .post-image, .post-video {
-      min-height: 200px;
+      min-height: fit-content;
+      min-width: auto;
     }
     
     /* Video playing overlay */
@@ -174,7 +177,7 @@
       gap: 16px;
     }
     
-    .action-btn {
+    .action-btn-1 {
       background: transparent;
       border: none;
       cursor: pointer;
@@ -183,6 +186,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      width: fit-content;
     }
     
     .action-btn:hover {
@@ -405,7 +409,7 @@
         padding: 0;
       }
       
-      .post-item {
+      .post-item-P {
         border-radius: 0;
         border-left: none;
         border-right: none;

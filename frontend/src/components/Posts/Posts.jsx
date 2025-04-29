@@ -702,7 +702,7 @@ function TalkPosts() {
                 if (isLastPost) lastPostElementRef.current = el;
               }}
               data-postid={postId}
-              className={`post-item ${isVisible ? 'post-visible' : ''}`}
+              className={`post-item-P ${isVisible ? 'post-visible' : ''}`}
             >
               {/* Post header */}
               <div className="post-header">
@@ -770,7 +770,7 @@ function TalkPosts() {
                     <Share2 className="action-icon" />
                   </button>
                 </div>
-                <button className="action-btn save-btn" aria-label="Save">
+                <button className="action-btn-1 save-btn" aria-label="Save">
                   <Bookmark className="action-icon" />
                 </button>
               </div>

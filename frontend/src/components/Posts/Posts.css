@@ -49,6 +49,7 @@
     .user-info {
       display: flex;
       align-items: center;
+      color
     }
     
     .avatar-container {
@@ -70,7 +71,8 @@
       object-fit: cover;
     }
     
-    .username {
+    .username-P {
+      color: white;
       font-weight: 600;
       margin-left: 12px;
       font-size: 14px;
@@ -81,7 +83,7 @@
       border: none;
       cursor: pointer;
       padding: 4px;
-      color: #fff;
+      color: #ffffff;
       width: fit-content;
       transition: transform 0.2s ease;
     }

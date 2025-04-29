@@ -714,7 +714,7 @@ function TalkPosts() {
                       className="avatar-image"
                     />
                   </div>
-                  <span className="username">{post.owner.username}</span>
+                  <span className="username-P">{post.owner.username}</span>
                 </div>
                 <button className="more-options">
                   <MoreHorizontal className="icon-more" />

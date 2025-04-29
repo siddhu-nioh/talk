@@ -1,4 +1,4 @@
-.posts{
+/* .posts{
       display: flex;
       justify-content: center;
       align-items: center;
@@ -54,4 +54,136 @@
 .ownername {
       color: white;
       font-size: 1rem;
-}
+} */
+/* Posts.css */
+.posts-container {
+      background-color: #000;
+      color: #fff;
+      min-height: 100vh;
+      padding-top: 1rem;
+    }
+    
+    .post-item {
+      background-color: #000;
+      margin-bottom: 8px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .post-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+    }
+    
+    .avatar-container {
+      height: 32px;
+      width: 32px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid #ff3040;
+    }
+    
+    .avatar-container img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+    
+    .post-media {
+      position: relative;
+      max-height: 500px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      background-color: #000;
+    }
+    
+    .post-media img,
+    .post-media video {
+      width: 100%;
+      max-height: 500px;
+      object-fit: contain;
+    }
+    
+    .post-actions {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+    }
+    
+    .action-icons {
+      display: flex;
+      gap: 16px;
+    }
+    
+    .icon {
+      font-size: 24px;
+      cursor: pointer;
+    }
+    
+    .icon.liked {
+      color: #ff3040;
+    }
+    
+    .comments-section {
+      padding: 0 10px;
+    }
+    
+    .comment-input {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-top: 1px solid #262626;
+      margin-top: 8px;
+    }
+    
+    .comment-input input {
+      flex-grow: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #fff;
+    }
+    
+    .comment-input button {
+      color: #0095f6;
+      font-weight: 600;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+    }
+    
+    .spinner {
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-top-color: #0095f6;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    
+    /* Make video clickable */
+    video {
+      cursor: pointer;
+    }
+    
+    /* Style for expanded description */
+    .expanded-description {
+      white-space: pre-wrap;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      .posts-container {
+        padding: 0;
+      }
+    }

@@ -4,7 +4,7 @@ import { FaArrowLeft, FaSearch, FaImage, FaFile, FaCheck, FaCheckDouble } from "
 import { io } from "socket.io-client";
 import "./Notifications.css";
 
-const Backend_Url = "http://localhost:8080"; //import.meta.env.VITE_API_BASE_URL;
+const Backend_Url = import.meta.env.VITE_BACKEND_URL; //import.meta.env.VITE_API_BASE_URL;
 
 function Notifications() {
   const navigate = useNavigate();

@@ -24,6 +24,7 @@
 //       { name: 'profilePicture', maxCount: 1 }
 // ]);
 // First, set up proper file upload middleware
+// cloudConfig.js
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('cloudinary').v2;
@@ -35,54 +36,25 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// Set up storage for images
-const imageStorage = new CloudinaryStorage({
+// Create storage engine for Cloudinary
+const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'talk_images',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'gif']
+    folder: 'talk_uploads',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov'],
+    resource_type: 'auto', // Auto-detect whether it's image or video
   }
 });
 
-// Set up storage for videos
-const videoStorage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'talk_videos',
-    resource_type: 'video',
-    allowed_formats: ['mp4', 'mov', 'avi']
+// Create and export the multer middleware
+const upload = multer({ 
+  storage: storage,
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10MB file size limit
   }
-});
-
-// Create separate upload middlewares
-const imageUpload = multer({ storage: imageStorage });
-const videoUpload = multer({ storage: videoStorage });
-
-// Combined middleware for handling both image and video uploads
-const upload = (req, res, next) => {
-  console.log("📦 Request body before upload:", req.body);
-  
-  // Check if the request contains an image or video
-  if (req.body.type === 'media') {
-    // If file is present in the request
-    if (req.files && (req.files.image || req.files.video)) {
-      // Process accordingly
-      if (req.files.image) {
-        return imageUpload.single('image')(req, res, next);
-      } else if (req.files.video) {
-        return videoUpload.single('video')(req, res, next);
-      }
-    } else {
-      // Check if request has parts indicating a file upload attempt
-      const contentType = req.headers['content-type'];
-      if (contentType && contentType.includes('multipart/form-data')) {
-        // If it's a multipart form but no files detected, manually handle it
-        return multer().any()(req, res, next);
-      }
-    }
-  }
-  // If no files to process, just continue
-  next();
-};
+}).fields([
+  { name: 'image', maxCount: 1 },
+  { name: 'video', maxCount: 1 }
+]);
 
 module.exports = upload;

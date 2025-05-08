@@ -24,12 +24,7 @@ router.get('/search', ensureAuthenticated, talkRouter.renderSearch);
 router.get('/user', talkRouter.renderUser);
 
 // Fix: Ensure each middleware is properly defined and the controller method exists
-router.post('/', 
-    ensureAuthenticated,
-    upload,  // This should be your multer middleware defined in cloudConfig.js
-    validateMedia,
-    wrapAsync(talkRouter.postUpload)
-);
+router.post('/',ensureAuthenticated, upload, validateMedia, wrapAsync(talkRouter.postUpload));
 
 router.get('/search/users', wrapAsync(talkRouter.searchUsers));
 

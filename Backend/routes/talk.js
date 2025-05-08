@@ -15,7 +15,7 @@
 // module.exports = router;// routes/talk.js
 const express = require('express');
 const router = express.Router();
-const upload = require('../cloudConfig');
+const {upload} = require('../cloudConfig');
 const talkRouter = require('../controllers/talk');
 const wrapAsync = require('../utils/wrapAsync');
 const { ensureAuthenticated, validateMedia } = require('../middleware');

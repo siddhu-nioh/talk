@@ -111,16 +111,16 @@ const dataSchema = new Schema(
   { timestamps: true }
 );
 
-// Validation middleware to ensure either image or video (but not both) is provided
-dataSchema.pre('validate', function (next) {
-  if (!this.image && !this.video) {
-    return next(new Error('Either image or video must be provided.'));
-  }
-  if (this.image && this.video) {
-    return next(new Error('Only one of image or video can be provided.'));
-  }
-  next();
-});
+// // Validation middleware to ensure either image or video (but not both) is provided
+// dataSchema.pre('validate', function (next) {
+//   if (!this.image && !this.video) {
+//     return next(new Error('Either image or video must be provided.'));
+//   }
+//   if (this.image && this.video) {
+//     return next(new Error('Only one of image or video can be provided.'));
+//   }
+//   next();
+// });
 
 const Post = mongoose.model('Post', dataSchema);
 module.exports = Post;

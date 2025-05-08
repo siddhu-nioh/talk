@@ -114,7 +114,9 @@ module.exports.renderUser = (req, res) => {
 module.exports.postUpload = async (req, res) => {
   try {
     const { description } = req.body;
-    const { image, video } = req.media;
+    const image = req.media?.image || null;
+const video = req.media?.video || null;
+
     
     const newData = new Post({
       image: image || null,
@@ -130,7 +132,9 @@ module.exports.postUpload = async (req, res) => {
     const user = await User.findById(req.user._id);
     user.posts.push(newData);
     await user.save();
-    
+    console.log("Request body:", req.body);
+console.log("Request media:", req.media);
+
     res.status(201).json({ 
       message: 'Successfully uploaded the post', 
       data: newData 

@@ -140,7 +140,7 @@ module.exports.ensureAuthenticated = async (req, res, next) => {
     }
 };
 
-const validateMedia = (req, res, next) => {
+module.exports.validateMedia = (req, res, next) => {
     // Allow posts with no media (text-only posts)
     if (!req.files || (Object.keys(req.files).length === 0 && !req.body.description)) {
       return res.status(400).json({ 

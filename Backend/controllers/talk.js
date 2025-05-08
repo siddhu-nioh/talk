@@ -111,13 +111,63 @@ module.exports.renderUser = (req, res) => {
   res.render("main/user");
 };
 
-module.exports.postUpload = async (req, res) => {
-  try {
-    const { description } = req.body;
-    const image = req.media?.image || null;
-const video = req.media?.video || null;
+// module.exports.postUpload = async (req, res) => {
+//   try {
+//     const { description } = req.body;
+//     const image = req.media?.image || null;
+// const video = req.media?.video || null;
 
     
+//     const newData = new Post({
+//       image: image || null,
+//       video: video || null,
+//       description,
+//       owner: req.user._id,
+//       likes: [],
+//       comments: []
+//     });
+    
+//     await newData.save();
+    
+//     const user = await User.findById(req.user._id);
+//     user.posts.push(newData);
+//     await user.save();
+//     console.log(" User:", req.user);
+// console.log(" Description:", req.body.description);
+// console.log(" Media received:", req.files);
+// console.log(" Parsed media:", req.media);
+
+
+//     res.status(201).json({ 
+//       message: 'Successfully uploaded the post', 
+//       data: newData 
+//     });
+//   } catch (error) {
+//     console.error("Error uploading post:", error);
+//     res.status(500).json({ error: "Failed to upload post" });
+//     console.log(" User:", req.user);
+// console.log(" Description:", req.body.description);
+// console.log(" Media received:", req.files);
+// console.log("Parsed media:", req.media);
+
+//   }
+// };
+module.exports.postUpload = async (req, res) => {
+  if (!req.user || !req.user._id) {
+    console.error("❌ Missing req.user or req.user._id");
+    return res.status(401).json({ message: "User info not found in request" });
+}
+
+  try {
+    console.log("➡️ postUpload triggered");
+    console.log("📎 req.body.description:", req.body.description);
+    console.log("🖼️ req.files:", req.files);
+    console.log("📦 req.media:", req.media);
+    console.log("🔐 req.user:", req.user);
+
+    const { description } = req.body;
+    const { image, video } = req.media;
+
     const newData = new Post({
       image: image || null,
       video: video || null,
@@ -126,30 +176,20 @@ const video = req.media?.video || null;
       likes: [],
       comments: []
     });
-    
+
+    console.log("📤 Saving post to DB...");
     await newData.save();
-    
+
     const user = await User.findById(req.user._id);
     user.posts.push(newData);
     await user.save();
-    console.log(" User:", req.user);
-console.log(" Description:", req.body.description);
-console.log(" Media received:", req.files);
-console.log(" Parsed media:", req.media);
 
+    console.log("✅ Post created successfully");
+    res.status(201).json({ message: 'Successfully uploaded the post', data: newData });
 
-    res.status(201).json({ 
-      message: 'Successfully uploaded the post', 
-      data: newData 
-    });
   } catch (error) {
-    console.error("Error uploading post:", error);
+    console.error("❌ Error uploading post:", error);
     res.status(500).json({ error: "Failed to upload post" });
-    console.log(" User:", req.user);
-console.log(" Description:", req.body.description);
-console.log(" Media received:", req.files);
-console.log("Parsed media:", req.media);
-
   }
 };
 

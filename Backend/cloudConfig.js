@@ -40,8 +40,8 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'talk_uploads',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov'],
+      folder: 'Talk_Test',
+                allowed_formats: ['png', 'jpg', 'jpeg', 'webp', 'mp4', 'mov', 'avi'],
     resource_type: 'auto', // Auto-detect whether it's image or video
   }
 });
@@ -49,12 +49,15 @@ const storage = new CloudinaryStorage({
 // Create and export the multer middleware
 const upload = multer({ 
   storage: storage,
-  limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB file size limit
-  }
+//   limits: {
+//     fileSize: 10 * 1024 * 1024, // 10MB file size limit
+//   }
 }).fields([
   { name: 'image', maxCount: 1 },
   { name: 'video', maxCount: 1 }
+  
+    { name: 'profile', maxCount: 1 },
+      { name: 'profilePicture', maxCount: 1 }
 ]);
 
 module.exports = upload;

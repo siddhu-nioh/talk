@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const userRouter = require("../controllers/user");
 const { ensureAuthenticated } = require("../middleware");
-const {upload} = require("../cloudConfig");
+const upload = require("../cloudConfig");
 const wrapAsync=require('../utils/wrapAsync');
 
 // Signup

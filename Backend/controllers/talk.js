@@ -194,15 +194,15 @@ module.exports.renderUser = (req, res) => {
 // };
 module.exports.postUpload = async (req, res) => {
   if (!req.user || !req.user._id) {
-    console.error("❌ Missing req.user or req.user._id");
+    console.error(" Missing req.user or req.user._id");
     return res.status(401).json({ message: "User info not found in request" });
   }
   
   try {
-    console.log("➡️ postUpload triggered");
-    console.log("📎 req.body.description:", req.body.description);
-    console.log("🖼️ req.files:", req.files);
-    console.log("🔐 req.user:", req.user);
+    console.log(" postUpload triggered");
+    console.log(" req.body.description:", req.body.description);
+    console.log(" req.files:", req.files);
+    console.log(" req.user:", req.user);
     
     const { description } = req.body;
     
@@ -222,20 +222,20 @@ module.exports.postUpload = async (req, res) => {
       comments: []
     });
     
-    console.log("📤 Saving post to DB...");
+    console.log("Saving post to DB...");
     await newData.save();
     
     const user = await User.findById(req.user._id);
     user.posts.push(newData);
     await user.save();
     
-    console.log("✅ Post created successfully");
+    console.log(" Post created successfully");
     res.status(201).json({
       message: 'Successfully uploaded the post',
       data: newData
     });
   } catch (error) {
-    console.error("❌ Error uploading post:", error);
+    console.error(" Error uploading post:", error);
     res.status(500).json({ error: "Failed to upload post", details: error.message });
   }
 };

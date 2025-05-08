@@ -140,45 +140,16 @@ module.exports.ensureAuthenticated = async (req, res, next) => {
     }
 };
 
-module.exports.validateMedia = (req, res, next) => {
-    console.log("📦 Validating media from request files:", req.files);
-    
-    // Check if files exist
-    if (!req.files) {
-        console.error("❌ No files found in request");
-        return res.status(400).json({ message: "Either an image or video must be provided" });
+const validateMedia = (req, res, next) => {
+    // Allow posts with no media (text-only posts)
+    if (!req.files || (Object.keys(req.files).length === 0 && !req.body.description)) {
+      return res.status(400).json({ 
+        message: "Please provide either media (image/video) or a description" 
+      });
     }
     
-    // Extract file paths from the multer files object
-    const image = req.files.image?.[0]?.path || 
-                  req.files.image?.[0]?.secure_url || 
-                  null;
-                  
-    const video = req.files.video?.[0]?.path || 
-                  req.files.video?.[0]?.secure_url || 
-                  null;
-    
-    console.log("🖼️ Extracted image path:", image);
-    console.log("🎬 Extracted video path:", video);
-    
-    // Ensure at least one media file was uploaded
-    if (!image && !video) {
-        console.error("❌ Neither image nor video was provided");
-        return res.status(400).json({ message: "Either an image or video must be provided" });
-    }
-    
-    // Attach media info to request object
-    req.media = { image, video };
-    console.log("✅ Media validation successful:", req.media);
     next();
-};
-
-module.exports.saveRedirectUrl = (req, res, next) => {
-    if (req.session.redirectUrl) {
-        res.locals.redirectUrl = req.session.redirectUrl;
-    }
-    next();
-};
+  };
 
 module.exports.ensureAdmin = (req, res, next) => {
     if (!req.user) {

@@ -202,16 +202,21 @@ module.exports.postUpload = async (req, res) => {
     console.log("➡️ postUpload triggered");
     console.log("📎 req.body.description:", req.body.description);
     console.log("🖼️ req.files:", req.files);
-    console.log("📦 req.media:", req.media);
     console.log("🔐 req.user:", req.user);
     
     const { description } = req.body;
-    const { image, video } = req.media;
     
+    // Create media object from files
+    const media = {
+      image: req.files.image ? req.files.image[0].path : null,
+      video: req.files.video ? req.files.video[0].path : null
+    };
+    
+    // Allow posts without media (text-only posts)
     const newData = new Post({
-      image: image || null,
-      video: video || null,
-      description,
+      image: media.image,
+      video: media.video,
+      description: description || "",  // Allow empty descriptions
       owner: req.user._id,
       likes: [],
       comments: []
@@ -225,9 +230,9 @@ module.exports.postUpload = async (req, res) => {
     await user.save();
     
     console.log("✅ Post created successfully");
-    res.status(201).json({ 
-      message: 'Successfully uploaded the post', 
-      data: newData 
+    res.status(201).json({
+      message: 'Successfully uploaded the post',
+      data: newData
     });
   } catch (error) {
     console.error("❌ Error uploading post:", error);

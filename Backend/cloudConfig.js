@@ -58,5 +58,5 @@ const upload = multer({ storage }).fields([
 //   { name: 'profile', maxCount: 1 },
 //   { name: 'profilePicture', maxCount: 1 }
 // ]);
-
-module.exports = upload;
+// Export as an object with upload as a property
+module.exports = { upload, cloudinary };

@@ -284,8 +284,14 @@ function NewPostUpload() {
                 return prev;
             });
         }, 120);
+        console.log("Image file:", image);
+console.log("Video file:", video);
+console.log("Description:", description);
 
         try {
+            console.log("Image file:", image);
+console.log("Video file:", video);
+
             const response = await fetch(`${Backend_Url}/talk`, {
                 method: 'POST',
                 body: formData,
@@ -293,8 +299,9 @@ function NewPostUpload() {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem("token")}`,
                 },
+                
             });
-
+            
             if (response.ok) {
                 clearInterval(progressInterval);
                 setProgress(100);

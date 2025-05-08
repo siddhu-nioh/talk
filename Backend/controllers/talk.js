@@ -132,8 +132,11 @@ const video = req.media?.video || null;
     const user = await User.findById(req.user._id);
     user.posts.push(newData);
     await user.save();
-    console.log("Request body:", req.body);
-console.log("Request media:", req.media);
+    console.log(" User:", req.user);
+console.log(" Description:", req.body.description);
+console.log(" Media received:", req.files);
+console.log(" Parsed media:", req.media);
+
 
     res.status(201).json({ 
       message: 'Successfully uploaded the post', 
@@ -142,6 +145,11 @@ console.log("Request media:", req.media);
   } catch (error) {
     console.error("Error uploading post:", error);
     res.status(500).json({ error: "Failed to upload post" });
+    console.log(" User:", req.user);
+console.log(" Description:", req.body.description);
+console.log(" Media received:", req.files);
+console.log("Parsed media:", req.media);
+
   }
 };
 

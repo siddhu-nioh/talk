@@ -29,15 +29,29 @@ module.exports.ensureAuthenticated = async (req, res, next) => {
     }
 };
 
+// module.exports.validateMedia = (req, res, next) => {
+//     const image = req.files?.image ? req.files.image[0].path : null;
+//     const video = req.files?.video ? req.files.video[0].path : null;
+//     if (!image && !video) {
+//         return res.status(400).json({ message: "Either an image or video must be provided" });
+//     }
+//     req.media = { image, video };
+//     next();
+// };
+
 module.exports.validateMedia = (req, res, next) => {
-    const image = req.files?.image ? req.files.image[0].path : null;
-    const video = req.files?.video ? req.files.video[0].path : null;
+    const image = req.files?.image ? req.files.image[0].path || req.files.image[0].secure_url : null;
+    const video = req.files?.video ? req.files.video[0].path || req.files.video[0].secure_url : null;
+
     if (!image && !video) {
         return res.status(400).json({ message: "Either an image or video must be provided" });
     }
+
     req.media = { image, video };
+    console.log(" Uploaded media:", req.media);
     next();
 };
+
 
 module.exports.saveRedirectUrl = (req, res, next) => {
     if (req.session.redirectUrl) {

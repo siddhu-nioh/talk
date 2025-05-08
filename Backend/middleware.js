@@ -39,20 +39,54 @@ module.exports.ensureAuthenticated = async (req, res, next) => {
 //     next();
 // };
 
-module.exports.validateMedia = (req, res, next) => {
-    const image = req.files?.image?.[0]?.secure_url || null;
-    const video = req.files?.video?.[0]?.secure_url || null;
-    console.log("🧾 Full image file info:", req.files?.image?.[0]);
-
-
-    if (!image && !video) {
-        return res.status(400).json({ message: "Either an image or video must be provided" });
+const validateMedia = (req, res, next) => {
+    console.log("🔍 Validating media in request:", req.file, req.files);
+    
+    let image = null;
+    let video = null;
+    
+    // Check if we have a single file from multer
+    if (req.file) {
+      if (req.file.mimetype.startsWith('image/')) {
+        image = req.file.path || req.file.secure_url;
+      } else if (req.file.mimetype.startsWith('video/')) {
+        video = req.file.path || req.file.secure_url;
+      }
+    } 
+    // Check if we have files object from multer
+    else if (req.files) {
+      // Handle array format
+      if (Array.isArray(req.files)) {
+        const imageFile = req.files.find(f => f.mimetype.startsWith('image/'));
+        const videoFile = req.files.find(f => f.mimetype.startsWith('video/'));
+        
+        if (imageFile) image = imageFile.path || imageFile.secure_url;
+        if (videoFile) video = videoFile.path || videoFile.secure_url;
+      } 
+      // Handle object format
+      else {
+        if (req.files.image) {
+          const imageFile = Array.isArray(req.files.image) ? req.files.image[0] : req.files.image;
+          image = imageFile.path || imageFile.secure_url;
+        }
+        if (req.files.video) {
+          const videoFile = Array.isArray(req.files.video) ? req.files.video[0] : req.files.video;
+          video = videoFile.path || videoFile.secure_url;
+        }
+      }
     }
-
+    
+    console.log("📷 Extracted image:", image);
+    console.log("🎬 Extracted video:", video);
+    
+    if (!image && !video) {
+      return res.status(400).json({ message: "Either an image or video must be provided" });
+    }
+    
     req.media = { image, video };
-    console.log(" Uploaded media:", req.media);
+    console.log("🔄 Final media object:", req.media);
     next();
-};
+  };
 
 
 module.exports.saveRedirectUrl = (req, res, next) => {

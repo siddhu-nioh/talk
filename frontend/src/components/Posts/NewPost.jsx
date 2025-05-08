@@ -249,81 +249,106 @@ function NewPostUpload() {
     // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        
         // Validate form based on active tab
         if (activeTab === 'media' && !image && !video) {
-            setError('Please provide either an image or a video for a media post.');
-            return;
+          setError('Please provide either an image or a video for a media post.');
+          return;
         }
         
         if (!description.trim()) {
-            setError('Please enter some text for your post.');
-            return;
+          setError('Please enter some text for your post.');
+          return;
         }
-
+        
         setIsUploading(true);
         setError('');
         setProgress(0);
-
+        
         const formData = new FormData();
         formData.append('description', description);
         formData.append('type', activeTab); // Send post type to backend
         
+        // Only append files that are actually defined
         if (activeTab === 'media') {
-            if (image) formData.append('image', image);
-            if (video) formData.append('video', video);
+          if (image) {
+            console.log("Appending image to form:", image);
+            formData.append('image', image);
+          }
+          if (video) {
+            console.log("Appending video to form:", video);
+            formData.append('video', video);
+          }
         }
-
+        
+        // Log form data contents for debugging
+        console.log("Form data entries:");
+        for (let [key, value] of formData.entries()) {
+          if (value instanceof File) {
+            console.log(key, ":", value.name, "(size:", value.size, "bytes)");
+          } else {
+            console.log(key, ":", value);
+          }
+        }
+        
         // Simulate realistic upload progress
         let progressInterval = setInterval(() => {
-            setProgress((prev) => {
-                if (prev < 20) return prev + 2;
-                if (prev < 50) return prev + 1;
-                if (prev < 80) return prev + 0.5;
-                if (prev < 90) return prev + 0.2;
-                return prev;
-            });
+          setProgress((prev) => {
+            if (prev < 20) return prev + 2;
+            if (prev < 50) return prev + 1;
+            if (prev < 80) return prev + 0.5;
+            if (prev < 90) return prev + 0.2;
+            return prev;
+          });
         }, 120);
-        console.log("Image file:", image);
-console.log("Video file:", video);
-console.log("Description:", description);
-
+        
         try {
-            console.log("Image file:", image);
-console.log("Video file:", video);
-
-            const response = await fetch(`${Backend_Url}/talk`, {
-                method: 'POST',
-                body: formData,
-                credentials: 'include',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
-                },
-                
-            });
-            
-            if (response.ok) {
-                clearInterval(progressInterval);
-                setProgress(100);
-                setShowSuccessAnimation(true);
-                
-                setTimeout(() => {
-                    navigate('/talk');
-                }, 1500);
-            } else {
-                clearInterval(progressInterval);
-                const errorData = await response.json();
-                setError(errorData.message || 'Failed to upload post. Please try again.');
+          const response = await fetch(`${Backend_Url}/talk`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem("token")}`,
+              // IMPORTANT: Do NOT set Content-Type when sending FormData
+              // The browser will set it automatically including the boundary parameter
+            },
+          });
+          
+          clearInterval(progressInterval);
+          
+          if (!response.ok) {
+            // Try to get more detailed error info
+            let errorData;
+            try {
+              errorData = await response.json();
+            } catch (e) {
+              errorData = { message: `Server error: ${response.status} ${response.statusText}` };
             }
+            
+            setError(errorData.message || `Upload failed with status: ${response.status}`);
+            console.error("Server responded with error:", errorData);
+            return;
+          }
+          
+          // Handle success
+          const result = await response.json();
+          console.log("Upload successful:", result);
+          setProgress(100);
+          setShowSuccessAnimation(true);
+          
+          setTimeout(() => {
+            navigate('/talk');
+          }, 1500);
+          
         } catch (error) {
-            clearInterval(progressInterval);
-            setError('Network error. Please check your connection and try again.');
+          clearInterval(progressInterval);
+          console.error("Upload error:", error);
+          setError('Network error. Please check your connection and try again.');
         } finally {
-            setTimeout(() => {
-                setIsUploading(false);
-            }, 500);
+          setTimeout(() => {
+            setIsUploading(false);
+          }, 500);
         }
-    };
+      };
     
     // Clear media when switching tabs
     const handleTabChange = (tab) => {

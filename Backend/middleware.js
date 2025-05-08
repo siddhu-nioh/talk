@@ -40,8 +40,8 @@ module.exports.ensureAuthenticated = async (req, res, next) => {
 // };
 
 module.exports.validateMedia = (req, res, next) => {
-    const image = req.files?.image ? req.files.image[0].path || req.files.image[0].secure_url || req.files.image[0].url : null;
-    const video = req.files?.video ? req.files.video[0].path || req.files.video[0].secure_url || req.files.video[0].url : null;
+    const image = req.files?.image?.[0]?.secure_url || null;
+    const video = req.files?.video?.[0]?.secure_url || null;
     console.log("🧾 Full image file info:", req.files?.image?.[0]);
 
 

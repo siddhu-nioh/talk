@@ -115,6 +115,7 @@ const User = require("./models/user");
 module.exports.ensureAuthenticated = async (req, res, next) => {
     const token = req.headers.authorization?.split(" ")[1]; // Get token from header
     
+    console.warn(" access attempt:  token provided");
     if (!token) {
         console.warn("Unauthorized access attempt: No token provided");
         return res.status(401).json({ message: "Unauthorized", authenticated: false });
@@ -142,6 +143,8 @@ module.exports.ensureAuthenticated = async (req, res, next) => {
 
 module.exports.validateMedia = (req, res, next) => {
     // Allow posts with no media (text-only posts)
+    
+    console.warn(" access attempt:  provided");
     if (!req.files || (Object.keys(req.files).length === 0 && !req.body.description)) {
       return res.status(400).json({ 
         message: "Please provide either media (image/video) or a description" 

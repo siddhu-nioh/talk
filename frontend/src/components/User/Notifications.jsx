@@ -1557,6 +1557,7 @@ function Notifications() {
           {(newMessage.trim() || mediaData) && !mediaUploading ? (
             <button 
               onClick={sendMessage}
+              className="BUTTON-1"
               style={{
                 background: 'none',
                 border: 'none',

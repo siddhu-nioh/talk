@@ -428,6 +428,12 @@ function Notifications() {
       console.error("Failed to mark messages as read:", error);
     }
   };
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const handleSubmit = () => {
+    // Do something...
+    setSuccessMessage("message sent!!!!");
+  };
 
   // Fetch conversations
   const fetchConversations = async () => {
@@ -555,6 +561,9 @@ function Notifications() {
         return null;
     }
   };
+  // This is the key change - determining if message is outgoing based on sender ID
+// comparing with the current user's ID, not just relying on the message property
+const isOutgoing = msg.sender === currentUser?._id;
 
   // Format timestamp
   const formatTime = (timestamp) => {

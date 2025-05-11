@@ -771,7 +771,7 @@ function Notifications() {
   <div className="instagram-chat-container" style={{
     backgroundColor: '#121212',
     color: '#fff',
-    height: '100vh',
+    height: '80vh',
     width: '100%',
     maxWidth: '450px',
     margin: '0 auto',
@@ -779,7 +779,7 @@ function Notifications() {
     flexDirection: 'column',
     fontFamily: 'Arial, sans-serif',
     position: 'relative',
-    overflow: 'hidden',
+    overflow: 'auto',
   }}>
     {view === "conversations" ? (
       // Conversations View

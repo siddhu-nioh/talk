@@ -768,10 +768,11 @@ function Notifications() {
   //   </div>
   // );
   return (
+ 
   <div className="instagram-chat-container" style={{
     backgroundColor: '#121212',
     color: '#fff',
-    height: '90vh',
+    height: '100vh',
     width: '100%',
     maxWidth: '450px',
     margin: '0 auto',
@@ -779,7 +780,7 @@ function Notifications() {
     flexDirection: 'column',
     fontFamily: 'Arial, sans-serif',
     position: 'relative',
-    overflow: 'auto',
+    overflow: 'hidden',
   }}>
     {view === "conversations" ? (
       // Conversations View
@@ -797,6 +798,7 @@ function Notifications() {
           justifyContent: 'space-between',
           alignItems: 'center',
           background: 'linear-gradient(45deg, #4F46E5, #7E22CE)',
+          boxShadow: '0 2px 10px rgba(0,0,0,0.15)',
         }}>
           <h1 style={{ 
             margin: 0, 
@@ -805,12 +807,22 @@ function Notifications() {
             letterSpacing: '0.5px',
           }}>Messages</h1>
           <div style={{ display: 'flex', gap: '12px' }}>
-            <div style={{ fontSize: '20px', cursor: 'pointer' }}>
+            <div style={{ 
+              fontSize: '20px', 
+              cursor: 'pointer',
+              transition: 'transform 0.2s',
+            }} onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+               onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 4V20M20 12H4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
-            <div style={{ fontSize: '20px', cursor: 'pointer' }}>
+            <div style={{ 
+              fontSize: '20px', 
+              cursor: 'pointer',
+              transition: 'transform 0.2s',
+            }} onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+               onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M21 11.5C21.0034 12.8199 20.6951 14.1219 20.1 15.3C19.3944 16.7118 18.3098 17.8992 16.9674 18.7293C15.6251 19.5594 14.0782 19.9994 12.5 20C11.18 20.0035 9.87812 19.6951 8.7 19.1L3 21L4.9 15.3C4.30493 14.1219 3.99656 12.8199 4 11.5C4.00061 9.92179 4.44061 8.37488 5.27072 7.03258C6.10083 5.69028 7.28825 4.6056 8.7 3.90003C9.87812 3.30496 11.18 2.99659 12.5 3.00003H13C15.0843 3.11502 17.053 3.99479 18.5291 5.47089C20.0052 6.94699 20.885 8.91568 21 11V11.5Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
@@ -823,6 +835,7 @@ function Notifications() {
           padding: '12px 15px',
           position: 'relative',
           borderBottom: '1px solid #262626',
+          backgroundColor: '#1a1a1a',
         }}>
           <div style={{
             display: 'flex',
@@ -831,6 +844,7 @@ function Notifications() {
             borderRadius: '10px',
             padding: '8px 10px',
             position: 'relative',
+            boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
           }}>
             <div style={{ marginRight: '10px', opacity: 0.7 }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -904,7 +918,7 @@ function Notifications() {
             maxHeight: '50vh',
             overflowY: 'auto',
             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-            animation: 'slideDown 0.2s ease-out',
+            animation: 'slideDown 0.3s ease-out',
           }}>
             {users.map((user) => (
               <div
@@ -916,10 +930,16 @@ function Notifications() {
                   padding: '12px 15px',
                   cursor: 'pointer',
                   borderBottom: '1px solid #262626',
-                  transition: 'background-color 0.2s',
+                  transition: 'background-color 0.2s, transform 0.2s',
                 }}
-                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#1a1a1a'}
-                onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.backgroundColor = '#1a1a1a';
+                  e.currentTarget.style.transform = 'translateX(5px)';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                  e.currentTarget.style.transform = 'translateX(0)';
+                }}
               >
                 <div style={{
                   width: '44px',
@@ -934,6 +954,7 @@ function Notifications() {
                   color: 'white',
                   fontWeight: 'bold',
                   fontSize: '16px',
+                  boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
                 }}>
                   {user.username.charAt(0).toUpperCase()}
                 </div>
@@ -981,13 +1002,63 @@ function Notifications() {
               textAlign: 'center', 
               color: '#a8a8a8',
               fontSize: '14px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 'calc(100vh - 120px)',
             }}>
-              <div style={{ marginBottom: '10px' }}>
-                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <div style={{ 
+                marginBottom: '20px',
+                width: '80px',
+                height: '80px',
+                borderRadius: '50%',
+                backgroundColor: '#262626',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
+              }}>
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M21 11.5C21.0034 12.8199 20.6951 14.1219 20.1 15.3C19.3944 16.7118 18.3098 17.8992 16.9674 18.7293C15.6251 19.5594 14.0782 19.9994 12.5 20C11.18 20.0035 9.87812 19.6951 8.7 19.1L3 21L4.9 15.3C4.30493 14.1219 3.99656 12.8199 4 11.5C4.00061 9.92179 4.44061 8.37488 5.27072 7.03258C6.10083 5.69028 7.28825 4.6056 8.7 3.90003C9.87812 3.30496 11.18 2.99659 12.5 3.00003H13C15.0843 3.11502 17.053 3.99479 18.5291 5.47089C20.0052 6.94699 20.885 8.91568 21 11V11.5Z" stroke="#a8a8a8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
-              No conversations yet.<br />Search for users to start chatting!
+              <div style={{ 
+                fontSize: '18px',
+                fontWeight: 'bold',
+                marginBottom: '10px',
+                color: '#f1f1f1' 
+              }}>
+                No conversations yet
+              </div>
+              <div>
+                Search for users to start chatting!
+              </div>
+              <button style={{
+                background: 'linear-gradient(45deg, #4F46E5, #7E22CE)',
+                border: 'none',
+                borderRadius: '20px',
+                color: 'white',
+                padding: '10px 20px',
+                fontSize: '14px',
+                fontWeight: 'bold',
+                marginTop: '20px',
+                cursor: 'pointer',
+                transition: 'transform 0.2s, opacity 0.2s',
+                boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 6px 15px rgba(0,0,0,0.25)';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 10px rgba(0,0,0,0.2)';
+              }}
+              onClick={() => setSearchTerm('')}
+              >
+                Find Friends
+              </button>
             </div>
           ) : (
             <div>
@@ -1001,11 +1072,18 @@ function Notifications() {
                     borderBottom: '1px solid #262626',
                     position: 'relative',
                     cursor: 'pointer',
-                    transition: 'background-color 0.2s',
+                    transition: 'all 0.2s',
                     backgroundColor: convo.unreadCount > 0 ? 'rgba(79, 70, 229, 0.05)' : 'transparent',
+                    transform: 'translateX(0)',
                   }}
-                  onMouseOver={(e) => e.currentTarget.style.backgroundColor = convo.unreadCount > 0 ? 'rgba(79, 70, 229, 0.1)' : '#1a1a1a'}
-                  onMouseOut={(e) => e.currentTarget.style.backgroundColor = convo.unreadCount > 0 ? 'rgba(79, 70, 229, 0.05)' : 'transparent'}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.backgroundColor = convo.unreadCount > 0 ? 'rgba(79, 70, 229, 0.1)' : '#1a1a1a';
+                    e.currentTarget.style.transform = 'translateX(5px)';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.backgroundColor = convo.unreadCount > 0 ? 'rgba(79, 70, 229, 0.05)' : 'transparent';
+                    e.currentTarget.style.transform = 'translateX(0)';
+                  }}
                 >
                   <div style={{
                     position: 'relative',
@@ -1023,6 +1101,7 @@ function Notifications() {
                       color: 'white',
                       fontWeight: 'bold',
                       fontSize: '20px',
+                      boxShadow: '0 3px 8px rgba(0,0,0,0.2)',
                     }}>
                       {convo.otherUser.username.charAt(0).toUpperCase()}
                     </div>
@@ -1036,6 +1115,7 @@ function Notifications() {
                         bottom: '0',
                         right: '0',
                         border: '2px solid #121212',
+                        boxShadow: '0 0 0 2px rgba(0, 186, 52, 0.3)',
                       }}></div>
                     )}
                   </div>
@@ -1091,7 +1171,7 @@ function Notifications() {
                       
                       {convo.unreadCount > 0 && (
                         <span style={{
-                          backgroundColor: '#4F46E5',
+                          background: 'linear-gradient(45deg, #4F46E5, #7E22CE)',
                           color: 'white',
                           fontSize: '12px',
                           fontWeight: 'bold',
@@ -1102,6 +1182,7 @@ function Notifications() {
                           justifyContent: 'center',
                           alignItems: 'center',
                           padding: '0 5px',
+                          boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
                         }}>
                           {convo.unreadCount}
                         </span>
@@ -1150,7 +1231,7 @@ function Notifications() {
         display: 'flex',
         flexDirection: 'column',
         height: '100%',
-        animation: 'slideInRight 0.2s forwards',
+        animation: 'slideInRight 0.3s forwards',
       }}>
         {/* Chat Header */}
         <div style={{
@@ -1159,6 +1240,7 @@ function Notifications() {
           alignItems: 'center',
           borderBottom: '1px solid #262626',
           background: 'linear-gradient(45deg, #4F46E5, #7E22CE)',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
         }}>
           <button 
             onClick={() => setView("conversations")}
@@ -1171,7 +1253,10 @@ function Notifications() {
               marginRight: '10px',
               display: 'flex',
               alignItems: 'center',
+              transition: 'transform 0.2s',
             }}
+            onMouseOver={(e) => e.currentTarget.style.transform = 'translateX(-3px)'}
+            onMouseOut={(e) => e.currentTarget.style.transform = 'translateX(0)'}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
               <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -1196,6 +1281,7 @@ function Notifications() {
                 color: 'white',
                 fontWeight: 'bold',
                 marginRight: '12px',
+                boxShadow: '0 3px 6px rgba(0,0,0,0.1)',
               }}>
                 {selectedUser.username.charAt(0).toUpperCase()}
               </div>
@@ -1222,7 +1308,11 @@ function Notifications() {
                   color: 'white',
                   cursor: 'pointer',
                   padding: '5px',
-                }}>
+                  transition: 'transform 0.2s',
+                }}
+                onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                >
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                     <path d="M3 5H21M3 12H21M3 19H21" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
@@ -1240,6 +1330,8 @@ function Notifications() {
             padding: '10px 15px',
             display: 'flex',
             flexDirection: 'column',
+            backgroundImage: 'linear-gradient(rgba(26, 26, 26, 0.7), rgba(18, 18, 18, 0.9))',
+            backgroundSize: 'cover',
           }}
           onClick={markMessagesAsRead}
         >
@@ -1249,15 +1341,20 @@ function Notifications() {
               justifyContent: 'center', 
               alignItems: 'center',
               height: '100%',
+              flexDirection: 'column',
+              gap: '10px',
             }}>
               <div style={{ 
                 width: '40px', 
                 height: '40px', 
                 borderRadius: '50%', 
-                border: '3px solid rgba(79, 70, 229, 0.3)', 
+                border: '3px solid rgba(79, 70, 229, 0.2)', 
                 borderTop: '3px solid #4F46E5',
                 animation: 'spin 1s linear infinite',
               }}></div>
+              <div style={{ color: '#a8a8a8', fontSize: '14px' }}>
+                Loading messages...
+              </div>
             </div>
           ) : messages.length === 0 ? (
             <div style={{ 
@@ -1270,25 +1367,56 @@ function Notifications() {
               color: '#a8a8a8',
             }}>
               <div style={{
-                width: '70px',
-                height: '70px',
+                width: '80px',
+                height: '80px',
                 borderRadius: '50%',
                 backgroundColor: '#262626',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginBottom: '15px',
+                marginBottom: '20px',
+                boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
               }}>
-                <svg width="35" height="35" viewBox="0 0 24 24" fill="none">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
                   <path d="M21 11.5C21.0034 12.8199 20.6951 14.1219 20.1 15.3C19.3944 16.7118 18.3098 17.8992 16.9674 18.7293C15.6251 19.5594 14.0782 19.9994 12.5 20C11.18 20.0035 9.87812 19.6951 8.7 19.1L3 21L4.9 15.3C4.30493 14.1219 3.99656 12.8199 4 11.5C4.00061 9.92179 4.44061 8.37488 5.27072 7.03258C6.10083 5.69028 7.28825 4.6056 8.7 3.90003C9.87812 3.30496 11.18 2.99659 12.5 3.00003H13C15.0843 3.11502 17.053 3.99479 18.5291 5.47089C20.0052 6.94699 20.885 8.91568 21 11V11.5Z" stroke="#a8a8a8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
-              <p style={{ margin: '0 0 10px', fontSize: '16px', fontWeight: 'bold' }}>
+              <p style={{ 
+                margin: '0 0 10px', 
+                fontSize: '18px', 
+                fontWeight: 'bold',
+                color: '#f1f1f1', 
+              }}>
                 No messages yet
               </p>
-              <p style={{ margin: 0, fontSize: '14px' }}>
+              <p style={{ margin: 0, fontSize: '14px', maxWidth: '230px' }}>
                 Start the conversation with {selectedUser?.username}!
               </p>
+              <button style={{
+                background: 'linear-gradient(45deg, #4F46E5, #7E22CE)',
+                border: 'none',
+                borderRadius: '20px',
+                color: 'white',
+                padding: '10px 20px',
+                fontSize: '14px',
+                fontWeight: 'bold',
+                marginTop: '20px',
+                cursor: 'pointer',
+                transition: 'transform 0.2s, box-shadow 0.2s',
+                boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 6px 12px rgba(0,0,0,0.3)';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 10px rgba(0,0,0,0.2)';
+              }}
+              onClick={() => document.querySelector('textarea').focus()}
+              >
+                Send a message
+              </button>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -1302,7 +1430,10 @@ function Notifications() {
               </div>
               
               {messages.map((msg, index) => {
+                // This is the key change - determining if message is outgoing based on sender ID
+                // comparing with the current user's ID, not just relying on the message property
                 const isOutgoing = msg.sender === currentUser?._id;
+                
                 return (
                   <div 
                     key={msg._id || index} 
@@ -1311,8 +1442,10 @@ function Notifications() {
                       maxWidth: '80%',
                       position: 'relative',
                       animation: isOutgoing 
-                        ? 'slideInRight 0.2s forwards' 
-                        : 'slideInLeft 0.2s forwards',
+                        ? 'slideInRight 0.3s ease-out forwards' 
+                        : 'slideInLeft 0.3s ease-out forwards',
+                      transform: isOutgoing ? 'translateX(20px)' : 'translateX(-20px)',
+                      opacity: 0,
                     }}
                   >
                     <div style={{
@@ -1322,7 +1455,19 @@ function Notifications() {
                       borderRadius: '18px',
                       padding: msg.media ? '2px' : '10px 15px',
                       position: 'relative',
-                    }}>
+                      boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+                      border: isOutgoing ? 'none' : '1px solid #333',
+                      transition: 'transform 0.2s, box-shadow 0.2s',
+                    }}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.transform = 'scale(1.02)';
+                      e.currentTarget.style.boxShadow = '0 3px 8px rgba(0,0,0,0.15)';
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.transform = 'scale(1)';
+                      e.currentTarget.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+                    }}
+                    >
                       {msg.media && (
                         <div style={{
                           borderRadius: '18px',
@@ -1336,6 +1481,13 @@ function Notifications() {
                             style={{
                               width: '100%',
                               display: 'block',
+                              transition: 'transform 0.3s',
+                            }}
+                            onMouseOver={(e) => {
+                              e.currentTarget.style.transform = 'scale(1.03)';
+                            }}
+                            onMouseOut={(e) => {
+                              e.currentTarget.style.transform = 'scale(1)';
                             }}
                           />
                         </div>
@@ -1366,7 +1518,7 @@ function Notifications() {
                     }}>
                       {formatTime(msg.timestamp)}
                       {isOutgoing && (
-                        <span>
+                        <span style={{ display: 'flex', alignItems: 'center' }}>
                           {msg.status === 'sent' && (
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                               <path d="M5 13L9 17L19 7" stroke="#a8a8a8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -1399,6 +1551,19 @@ function Notifications() {
                     from { opacity: 0; transform: translateX(-20px); }
                     to { opacity: 1; transform: translateX(0); }
                   }
+                  @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                  }
+                  @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                  }
+                  @keyframes pulse {
+                    0% { transform: scale(1); }
+                    50% { transform: scale(1.05); }
+                    100% { transform: scale(1); }
+                  }
                 `}
               </style>
             </div>
@@ -1411,7 +1576,7 @@ function Notifications() {
             padding: '10px 15px',
             borderTop: '1px solid #262626',
             backgroundColor: '#1a1a1a',
-            animation: 'slideUp 0.2s forwards',
+            animation: 'slideUp 0.3s forwards',
           }}>
             <div style={{
               display: 'flex',
@@ -1426,7 +1591,11 @@ function Notifications() {
                     height: '60px',
                     width: 'auto',
                     borderRadius: '8px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+                    transition: 'transform 0.2s',
                   }}
+                  onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                  onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
                 />
               ) : (
                 <div style={{
@@ -1436,6 +1605,7 @@ function Notifications() {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '10px',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
                 }}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                     <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="#a8a8a8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -1475,7 +1645,10 @@ function Notifications() {
                     fontSize: '13px',
                     padding: '5px 10px',
                     borderRadius: '4px',
+                    transition: 'background-color 0.2s',
                   }}
+                  onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.1)'}
+                  onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                 >
                   Remove
                 </button>
@@ -1495,6 +1668,7 @@ function Notifications() {
           display: 'flex',
           alignItems: 'center',
           gap: '10px',
+          animation: 'fadeIn 0.5s',
         }}>
           <button 
             onClick={() => fileInputRef.current.click()}
@@ -1508,8 +1682,17 @@ function Notifications() {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
+              transition: 'transform 0.2s, background-color 0.2s',
             }}
             disabled={mediaUploading}
+            onMouseOver={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(79, 70, 229, 0.1)';
+              e.currentTarget.style.transform = 'scale(1.05)';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.transform = 'scale(1)';
+            }}
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M4 16L8.586 11.414C8.96121 11.0391 9.46985 10.8284 10 10.8284C10.5302 10.8284 11.0388 11.0391 11.414 11.414L16 16M14 14L15.586 12.414C15.9612 12.0391 16.4698 11.8284 17 11.8284C17.5302 11.8284 18.0388 12.0391 18.414 12.414L20 14M14 8H14.01M6 20H18C18.5304 20 19.0391 19.7893 19.4142 19.4142C19.7893 19.0391 20 18.5304 20 18V6C20 5.46957 19.7893 4.96086 19.4142 4.58579C19.0391 4.21071 18.5304 4 18 4H6C5.46957 4 4.96086 4.21071 4.58579 4.58579C4.21071 4.96086 4 5.46957 4 6V18C4 18.5304 4.21071 19.0391 4.58579 19.4142C4.96086 19.7893 5.46957 20 6 20Z" stroke="#4F46E5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -1530,15 +1713,19 @@ function Notifications() {
             backgroundColor: '#262626',
             borderRadius: '24px',
             padding: '8px 12px',
-          }}>
+            transition: 'box-shadow 0.3s',
+            boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.2)',
+          }}
+          onMouseOver={(e) => e.currentTarget.style.boxShadow = 'inset 0 1px 3px rgba(0,0,0,0.2), 0 0 0 1px rgba(79, 70, 229, 0.2)'}
+          onMouseOut={(e) => e.currentTarget.style.boxShadow = 'inset 0 1px 3px rgba(0,0,0,0.2)'}
+          >
             <textarea
               value={newMessage}
-              className="BUTTON-1"
               onChange={(e) => setNewMessage(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Message..."
               style={{
-                // width: '100%',
+                width: '100%',
                 backgroundColor: 'transparent',
                 border: 'none',
                 color: 'white',
@@ -1552,28 +1739,39 @@ function Notifications() {
                 overflow: 'auto',
               }}
               disabled={mediaUploading}
+              onFocus={(e) => e.currentTarget.parentElement.style.boxShadow = '0 0 0 2px rgba(79, 70, 229, 0.3), inset 0 1px 3px rgba(0,0,0,0.2)'}
+              onBlur={(e) => e.currentTarget.parentElement.style.boxShadow = 'inset 0 1px 3px rgba(0,0,0,0.2)'}
             />
           </div>
           
           {(newMessage.trim() || mediaData) && !mediaUploading ? (
             <button 
               onClick={sendMessage}
-              // className="BUTTON-1"
               style={{
-                background: 'none',
+                background: 'linear-gradient(45deg, #4F46E5, #7E22CE)',
                 border: 'none',
-                color: '#4F46E5',
+                color: 'white',
                 fontWeight: 'bold',
                 fontSize: '14px',
                 cursor: 'pointer',
-                padding: '8px',
+                padding: '8px 16px',
+                borderRadius: '20px',
+                transition: 'transform 0.2s, box-shadow 0.2s',
+                boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = 'scale(1.05)';
+                e.currentTarget.style.boxShadow = '0 4px 8px rgba(0,0,0,0.3)';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
               }}
             >
               Send
             </button>
           ) : (
             <button
-            className="BUTTON-1"
               style={{
                 background: 'none',
                 border: 'none',
@@ -1584,8 +1782,20 @@ function Notifications() {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+                transition: 'transform 0.2s, background-color 0.2s',
+                borderRadius: '50%',
               }}
               disabled={mediaUploading}
+              onMouseOver={(e) => {
+                if (!mediaUploading) {
+                  e.currentTarget.style.backgroundColor = 'rgba(79, 70, 229, 0.1)';
+                  e.currentTarget.style.transform = 'scale(1.05)';
+                }
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent';
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path d="M19 10C19 11.1 19.9 12 21 12V8C19.9 8 19 8.9 19 10ZM7 11H17V9H7V11ZM12 16C14.21 16 16 14.21 16 12H8C8 14.21 9.79 16 12 16ZM14 19H10C9.45 19 9 19.45 9 20H15C15 19.45 14.55 19 14 19ZM3 10C3 8.9 2.1 8 1 8V12C2.1 12 3 11.1 3 10Z" fill="#4F46E5"/>
@@ -1630,9 +1840,48 @@ function Notifications() {
         >
           ×
         </button>
-        <style>
-          {`@keyframes fadeIn { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }`}
-        </style>
+      </div>
+    )}
+    
+    {/* Success Toast */}
+    {successMessage && (
+      <div style={{
+        position: 'fixed',
+        bottom: '20px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        backgroundColor: 'rgba(16, 185, 129, 0.9)',
+        color: 'white',
+        padding: '12px 20px',
+        borderRadius: '8px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)',
+        zIndex: 100,
+        animation: 'fadeIn 0.3s forwards',
+        maxWidth: '90%',
+      }}>
+        <span style={{ marginRight: '15px', fontSize: '14px', display: 'flex', alignItems: 'center' }}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{ marginRight: '8px' }}>
+            <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18455 2.99721 7.13631 4.39828 5.49706C5.79935 3.85781 7.69279 2.71537 9.79619 2.24013C11.8996 1.7649 14.1003 1.98232 16.07 2.85999" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M22 4L12 14.01L9 11.01" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          {successMessage}
+        </span>
+        <button 
+          onClick={() => setSuccessMessage("")}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'white',
+            cursor: 'pointer',
+            fontSize: '18px',
+            padding: '0 5px',
+          }}
+        >
+          ×
+        </button>
       </div>
     )}
   </div>

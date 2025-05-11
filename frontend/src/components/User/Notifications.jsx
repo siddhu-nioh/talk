@@ -771,7 +771,7 @@ function Notifications() {
   <div className="instagram-chat-container" style={{
     backgroundColor: '#121212',
     color: '#fff',
-    height: '80vh',
+    height: '90vh',
     width: '100%',
     maxWidth: '450px',
     margin: '0 auto',

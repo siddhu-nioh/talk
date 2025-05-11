@@ -1734,7 +1734,7 @@ const isOutgoing = msg.sender === currentUser?._id;
               onKeyPress={handleKeyPress}
               placeholder="Message..."
               style={{
-                width: '100%',
+                // width: '100%',
                 backgroundColor: 'transparent',
                 border: 'none',
                 color: 'white',

@@ -434,7 +434,7 @@ function Notifications() {
     // Do something...
     setSuccessMessage("message sent!!!!");
   };
-
+const [msg, setMsg] = useState("");
   // Fetch conversations
   const fetchConversations = async () => {
     if (!currentUser) return;

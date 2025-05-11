@@ -1533,7 +1533,7 @@ function Notifications() {
           }}>
             <textarea
               value={newMessage}
-              // className="BUTTON-1"
+              className="BUTTON-1"
               onChange={(e) => setNewMessage(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Message..."

@@ -1533,11 +1533,12 @@ function Notifications() {
           }}>
             <textarea
               value={newMessage}
+              className="BUTTON-1"
               onChange={(e) => setNewMessage(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Message..."
               style={{
-                width: '100%',
+                // width: '100%',
                 backgroundColor: 'transparent',
                 border: 'none',
                 color: 'white',
@@ -1557,7 +1558,7 @@ function Notifications() {
           {(newMessage.trim() || mediaData) && !mediaUploading ? (
             <button 
               onClick={sendMessage}
-              className="BUTTON-1"
+              // className="BUTTON-1"
               style={{
                 background: 'none',
                 border: 'none',
@@ -1572,6 +1573,7 @@ function Notifications() {
             </button>
           ) : (
             <button
+            className="BUTTON-1"
               style={{
                 background: 'none',
                 border: 'none',

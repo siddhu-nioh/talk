@@ -563,210 +563,1077 @@ function Notifications() {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
-  return (
-    <div className="chat-container">
-      {view === "conversations" ? (
-        // Conversations View
-        <div className="conversations-view">
-          <h1>Messages</h1>
+  // return (
+  //   <div className="chat-container">
+  //     {view === "conversations" ? (
+  //       // Conversations View
+  //       <div className="conversations-view">
+  //         <h1>Messages</h1>
           
-          {/* Search Bar */}
-          <div className="search-container">
-            <FaSearch className="search-icon" />
+  //         {/* Search Bar */}
+  //         <div className="search-container">
+  //           <FaSearch className="search-icon" />
+  //           <input
+  //             type="text"
+  //             placeholder="Search for users..."
+  //             className="search-bar"
+  //             value={searchTerm}
+  //             onChange={(e) => setSearchTerm(e.target.value)}
+  //           />
+  //         </div>
+          
+  //         {loadingUsers && <p className="loading">Searching...</p>}
+          
+  //         {/* Search results */}
+  //         {searchTerm && users.length > 0 && (
+  //           <div className="search-results">
+  //             <h3>Search Results</h3>
+  //             {users.map((user) => (
+  //               <div
+  //                 key={user._id}
+  //                 className="user-item"
+  //                 onClick={() => initializeChat(user)}
+  //               >
+  //                 <div className="user-avatar">{user.username.charAt(0).toUpperCase()}</div>
+  //                 <div className="user-details">
+  //                   <span className="username">{user.username}</span>
+  //                   <span className="email">{user.email}</span>
+  //                 </div>
+  //               </div>
+  //             ))}
+  //           </div>
+  //         )}
+          
+  //         {/* Conversations list */}
+  //         <div className="conversations-list">
+  //           <h3>Recent Conversations</h3>
+  //           {loadingConversations ? (
+  //             <p className="loading">Loading conversations...</p>
+  //           ) : conversations.length === 0 ? (
+  //             <p className="no-data">No conversations yet. Search for a user to start chatting!</p>
+  //           ) : (
+  //             conversations.map((convo) => (
+  //               <div 
+  //                 key={convo.conversationId} 
+  //                 className={`conversation-item ${convo.unreadCount > 0 ? 'unread' : ''}`}
+  //                 onClick={() => openConversation(convo)}
+  //               >
+  //                 <div className="user-avatar">
+  //                   {convo.otherUser.username.charAt(0).toUpperCase()}
+  //                 </div>
+  //                 <div className="conversation-details">
+  //                   <div className="conversation-header">
+  //                     <span className="username">{convo.otherUser.username}</span>
+  //                     <span className="timestamp">{formatTime(convo.lastMessage?.timestamp)}</span>
+  //                   </div>
+  //                   <div className="conversation-preview">
+  //                     <p className="preview-text">
+  //                       {convo.lastMessage?.media ? (
+  //                         <><FaFile /> Media attachment</>
+  //                       ) : (
+  //                         convo.lastMessage?.text || "No messages yet"
+  //                       )}
+  //                     </p>
+  //                     {convo.unreadCount > 0 && (
+  //                       <span className="unread-badge">{convo.unreadCount}</span>
+  //                     )}
+  //                   </div>
+  //                 </div>
+  //                 <div className="conversation-actions">
+  //                   <button 
+  //                     className="archive-btn" 
+  //                     onClick={(e) => archiveConversation(convo.conversationId, e)}
+  //                     title="Archive"
+  //                   >
+  //                     Archive
+  //                   </button>
+  //                   <button 
+  //                     className="delete-btn" 
+  //                     onClick={(e) => deleteConversation(convo.conversationId, e)}
+  //                     title="Delete"
+  //                   >
+  //                     Delete
+  //                   </button>
+  //                 </div>
+  //               </div>
+  //             ))
+  //           )}
+  //         </div>
+  //       </div>
+  //     ) : (
+  //       // Chat View
+  //       <div className="chat-view">
+  //         {/* Chat Header */}
+  //         <div className="chat-header">
+  //           <button className="back-button" onClick={() => setView("conversations")}>
+  //             <FaArrowLeft /> Back
+  //           </button>
+  //           {selectedUser && (
+  //             <div className="selected-user">
+  //               <div className="user-avatar">{selectedUser.username.charAt(0).toUpperCase()}</div>
+  //               <h2>{selectedUser.username}</h2>
+  //             </div>
+  //           )}
+  //         </div>
+          
+  //         {/* Messages Area */}
+  //         <div className="messages-container" onClick={markMessagesAsRead}>
+  //           {loadingMessages ? (
+  //             <p className="loading">Loading messages...</p>
+  //           ) : messages.length === 0 ? (
+  //             <div className="no-messages">
+  //               <p>No messages yet. Start the conversation!</p>
+  //             </div>
+  //           ) : (
+  //             <div className="messages">
+  //               {messages.map((msg, index) => (
+  //                 <div 
+  //                   key={msg._id || index} 
+  //                   className={`message-wrapper ${msg.sender === currentUser?._id ? 'outgoing' : 'incoming'}`}
+  //                 >
+  //                   <div className="message">
+  //                     {msg.media && renderMedia(msg.media)}
+  //                     <p className="message-text">{msg.text}</p>
+  //                     <div className="message-meta">
+  //                       <span className="message-time">{formatTime(msg.timestamp)}</span>
+  //                       {msg.sender === currentUser?._id && renderMessageStatus(msg.status)}
+  //                     </div>
+  //                   </div>
+  //                 </div>
+  //               ))}
+  //               <div ref={messagesEndRef} />
+  //             </div>
+  //           )}
+  //         </div>
+          
+  //         {/* Media Preview */}
+  //         {mediaPreview && (
+  //           <div className="media-preview">
+  //             {mediaPreview.type === 'image' ? (
+  //               <img src={mediaPreview.url} alt="Preview" />
+  //             ) : (
+  //               <div className="file-preview">
+  //                 <FaFile /> {mediaPreview.name}
+  //               </div>
+  //             )}
+  //             <button onClick={() => {
+  //               setMediaPreview(null);
+  //               setMediaData(null);
+  //             }}>Remove</button>
+  //             {mediaUploading && <span className="uploading">Uploading...</span>}
+  //           </div>
+  //         )}
+          
+  //         {/* Message Input Area */}
+  //         <div className="message-input-container">
+  //           <button 
+  //             className="attach-button" 
+  //             onClick={() => fileInputRef.current.click()}
+  //             title="Attach file"
+  //           >
+  //             <FaImage />
+  //           </button>
+  //           <input 
+  //             type="file" 
+  //             ref={fileInputRef} 
+  //             onChange={handleFileSelect} 
+  //             style={{ display: 'none' }} 
+  //             accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx,.txt"
+  //           />
+  //           <textarea
+  //             value={newMessage}
+  //             onChange={(e) => setNewMessage(e.target.value)}
+  //             onKeyPress={handleKeyPress}
+  //             placeholder="Type a message..."
+  //             rows={1}
+  //             disabled={mediaUploading}
+  //           />
+  //           <button 
+  //             className="send-button" 
+  //             onClick={sendMessage}
+  //             disabled={(!newMessage.trim() && !mediaData) || mediaUploading}
+  //           >
+  //             Send
+  //           </button>
+  //         </div>
+  //       </div>
+  //     )}
+      
+  //     {error && (
+  //       <div className="error-toast">
+  //         {error}
+  //         <button onClick={() => setError("")}>×</button>
+  //       </div>
+  //     )}
+  //   </div>
+  // );
+  return (
+  <div className="instagram-chat-container" style={{
+    backgroundColor: '#121212',
+    color: '#fff',
+    height: '100vh',
+    width: '100%',
+    maxWidth: '450px',
+    margin: '0 auto',
+    display: 'flex',
+    flexDirection: 'column',
+    fontFamily: 'Arial, sans-serif',
+    position: 'relative',
+    overflow: 'hidden',
+  }}>
+    {view === "conversations" ? (
+      // Conversations View
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        overflow: 'hidden',
+      }}>
+        {/* Header */}
+        <div style={{
+          padding: '15px',
+          borderBottom: '1px solid #262626',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          background: 'linear-gradient(45deg, #4F46E5, #7E22CE)',
+        }}>
+          <h1 style={{ 
+            margin: 0, 
+            fontSize: '20px', 
+            fontWeight: 'bold',
+            letterSpacing: '0.5px',
+          }}>Messages</h1>
+          <div style={{ display: 'flex', gap: '12px' }}>
+            <div style={{ fontSize: '20px', cursor: 'pointer' }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 4V20M20 12H4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            <div style={{ fontSize: '20px', cursor: 'pointer' }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 11.5C21.0034 12.8199 20.6951 14.1219 20.1 15.3C19.3944 16.7118 18.3098 17.8992 16.9674 18.7293C15.6251 19.5594 14.0782 19.9994 12.5 20C11.18 20.0035 9.87812 19.6951 8.7 19.1L3 21L4.9 15.3C4.30493 14.1219 3.99656 12.8199 4 11.5C4.00061 9.92179 4.44061 8.37488 5.27072 7.03258C6.10083 5.69028 7.28825 4.6056 8.7 3.90003C9.87812 3.30496 11.18 2.99659 12.5 3.00003H13C15.0843 3.11502 17.053 3.99479 18.5291 5.47089C20.0052 6.94699 20.885 8.91568 21 11V11.5Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        
+        {/* Search Bar */}
+        <div style={{
+          padding: '12px 15px',
+          position: 'relative',
+          borderBottom: '1px solid #262626',
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            backgroundColor: '#262626',
+            borderRadius: '10px',
+            padding: '8px 10px',
+            position: 'relative',
+          }}>
+            <div style={{ marginRight: '10px', opacity: 0.7 }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M21 21L16.65 16.65" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
             <input
               type="text"
-              placeholder="Search for users..."
-              className="search-bar"
+              placeholder="Search..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: 'white',
+                width: '100%',
+                outline: 'none',
+                fontSize: '14px',
+              }}
             />
+            {searchTerm && (
+              <button
+                onClick={() => setSearchTerm('')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#a8a8a8',
+                  cursor: 'pointer',
+                  padding: 0,
+                }}
+              >
+                ✕
+              </button>
+            )}
           </div>
+        </div>
+        
+        {/* Loading Indicator */}
+        {loadingConversations && (
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            padding: '20px',
+            alignItems: 'center',
+          }}>
+            <div style={{ 
+              width: '30px', 
+              height: '30px', 
+              borderRadius: '50%', 
+              border: '3px solid rgba(79, 70, 229, 0.3)', 
+              borderTop: '3px solid #4F46E5',
+              animation: 'spin 1s linear infinite',
+            }}></div>
+            <style>
+              {`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}
+            </style>
+          </div>
+        )}
+        
+        {/* Search Results */}
+        {searchTerm && users.length > 0 && (
+          <div style={{
+            padding: '5px 0',
+            backgroundColor: '#121212',
+            position: 'absolute',
+            top: '115px',
+            left: 0,
+            right: 0,
+            zIndex: 10,
+            maxHeight: '50vh',
+            overflowY: 'auto',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+            animation: 'slideDown 0.2s ease-out',
+          }}>
+            {users.map((user) => (
+              <div
+                key={user._id}
+                onClick={() => initializeChat(user)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '12px 15px',
+                  cursor: 'pointer',
+                  borderBottom: '1px solid #262626',
+                  transition: 'background-color 0.2s',
+                }}
+                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#1a1a1a'}
+                onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+              >
+                <div style={{
+                  width: '44px',
+                  height: '44px',
+                  borderRadius: '50%',
+                  backgroundColor: '#4F46E5',
+                  background: 'linear-gradient(45deg, #4F46E5, #7E22CE)',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginRight: '12px',
+                  color: 'white',
+                  fontWeight: 'bold',
+                  fontSize: '16px',
+                }}>
+                  {user.username.charAt(0).toUpperCase()}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{
+                    fontWeight: 'bold',
+                    marginBottom: '3px',
+                    fontSize: '14px',
+                  }}>
+                    {user.username}
+                  </div>
+                  <div style={{ color: '#a8a8a8', fontSize: '13px' }}>
+                    {user.email}
+                  </div>
+                </div>
+              </div>
+            ))}
+            <style>
+              {`@keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }`}
+            </style>
+          </div>
+        )}
+        
+        {/* Conversations List */}
+        <div style={{
+          flex: 1,
+          overflowY: 'auto',
+          padding: '0',
+        }}>
+          {loadingUsers && (
+            <div style={{ 
+              display: 'flex',
+              justifyContent: 'center',
+              padding: '20px',
+              color: '#a8a8a8',
+              fontSize: '14px',
+            }}>
+              Searching users...
+            </div>
+          )}
           
-          {loadingUsers && <p className="loading">Searching...</p>}
-          
-          {/* Search results */}
-          {searchTerm && users.length > 0 && (
-            <div className="search-results">
-              <h3>Search Results</h3>
-              {users.map((user) => (
-                <div
-                  key={user._id}
-                  className="user-item"
-                  onClick={() => initializeChat(user)}
+          {!loadingConversations && conversations.length === 0 ? (
+            <div style={{ 
+              padding: '30px 20px',
+              textAlign: 'center', 
+              color: '#a8a8a8',
+              fontSize: '14px',
+            }}>
+              <div style={{ marginBottom: '10px' }}>
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M21 11.5C21.0034 12.8199 20.6951 14.1219 20.1 15.3C19.3944 16.7118 18.3098 17.8992 16.9674 18.7293C15.6251 19.5594 14.0782 19.9994 12.5 20C11.18 20.0035 9.87812 19.6951 8.7 19.1L3 21L4.9 15.3C4.30493 14.1219 3.99656 12.8199 4 11.5C4.00061 9.92179 4.44061 8.37488 5.27072 7.03258C6.10083 5.69028 7.28825 4.6056 8.7 3.90003C9.87812 3.30496 11.18 2.99659 12.5 3.00003H13C15.0843 3.11502 17.053 3.99479 18.5291 5.47089C20.0052 6.94699 20.885 8.91568 21 11V11.5Z" stroke="#a8a8a8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              No conversations yet.<br />Search for users to start chatting!
+            </div>
+          ) : (
+            <div>
+              {conversations.map((convo) => (
+                <div 
+                  key={convo.conversationId} 
+                  onClick={() => openConversation(convo)}
+                  style={{
+                    display: 'flex',
+                    padding: '15px',
+                    borderBottom: '1px solid #262626',
+                    position: 'relative',
+                    cursor: 'pointer',
+                    transition: 'background-color 0.2s',
+                    backgroundColor: convo.unreadCount > 0 ? 'rgba(79, 70, 229, 0.05)' : 'transparent',
+                  }}
+                  onMouseOver={(e) => e.currentTarget.style.backgroundColor = convo.unreadCount > 0 ? 'rgba(79, 70, 229, 0.1)' : '#1a1a1a'}
+                  onMouseOut={(e) => e.currentTarget.style.backgroundColor = convo.unreadCount > 0 ? 'rgba(79, 70, 229, 0.05)' : 'transparent'}
                 >
-                  <div className="user-avatar">{user.username.charAt(0).toUpperCase()}</div>
-                  <div className="user-details">
-                    <span className="username">{user.username}</span>
-                    <span className="email">{user.email}</span>
+                  <div style={{
+                    position: 'relative',
+                    marginRight: '12px',
+                  }}>
+                    <div style={{
+                      width: '56px',
+                      height: '56px',
+                      borderRadius: '50%',
+                      backgroundColor: '#4F46E5',
+                      background: 'linear-gradient(45deg, #4F46E5, #7E22CE)',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      color: 'white',
+                      fontWeight: 'bold',
+                      fontSize: '20px',
+                    }}>
+                      {convo.otherUser.username.charAt(0).toUpperCase()}
+                    </div>
+                    {convo.otherUser.online && (
+                      <div style={{
+                        width: '14px',
+                        height: '14px',
+                        backgroundColor: '#00BA34',
+                        borderRadius: '50%',
+                        position: 'absolute',
+                        bottom: '0',
+                        right: '0',
+                        border: '2px solid #121212',
+                      }}></div>
+                    )}
+                  </div>
+                  
+                  <div style={{ flex: 1 }}>
+                    <div style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      marginBottom: '4px',
+                    }}>
+                      <span style={{
+                        fontWeight: convo.unreadCount > 0 ? 'bold' : 'normal',
+                        color: convo.unreadCount > 0 ? 'white' : '#f1f1f1',
+                        fontSize: '15px',
+                      }}>
+                        {convo.otherUser.username}
+                      </span>
+                      <span style={{
+                        fontSize: '12px',
+                        color: convo.unreadCount > 0 ? '#4F46E5' : '#a8a8a8',
+                      }}>
+                        {formatTime(convo.lastMessage?.timestamp)}
+                      </span>
+                    </div>
+                    
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}>
+                      <p style={{
+                        margin: 0,
+                        fontSize: '13px',
+                        color: convo.unreadCount > 0 ? '#f1f1f1' : '#a8a8a8',
+                        textOverflow: 'ellipsis',
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        maxWidth: '85%',
+                      }}>
+                        {convo.lastMessage?.media ? (
+                          <span style={{ display: 'flex', alignItems: 'center' }}>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ marginRight: '5px' }}>
+                              <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="#a8a8a8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                              <path d="M7 10L12 15L17 10" stroke="#a8a8a8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                              <path d="M12 15V3" stroke="#a8a8a8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                            Sent a file
+                          </span>
+                        ) : (
+                          convo.lastMessage?.text || "No messages yet"
+                        )}
+                      </p>
+                      
+                      {convo.unreadCount > 0 && (
+                        <span style={{
+                          backgroundColor: '#4F46E5',
+                          color: 'white',
+                          fontSize: '12px',
+                          fontWeight: 'bold',
+                          minWidth: '20px',
+                          height: '20px',
+                          borderRadius: '50%',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          padding: '0 5px',
+                        }}>
+                          {convo.unreadCount}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {/* Swipe actions - hidden by default */}
+                  <div style={{
+                    position: 'absolute',
+                    right: '-100px',
+                    top: 0,
+                    bottom: 0,
+                    display: 'flex',
+                    opacity: 0, // Hidden by default
+                    transition: 'all 0.3s',
+                  }}>
+                    <button style={{
+                      backgroundColor: '#7E22CE',
+                      color: 'white',
+                      border: 'none',
+                      padding: '0 15px',
+                      cursor: 'pointer',
+                    }} onClick={(e) => archiveConversation(convo.conversationId, e)}>
+                      Archive
+                    </button>
+                    <button style={{
+                      backgroundColor: '#EF4444',
+                      color: 'white',
+                      border: 'none',
+                      padding: '0 15px',
+                      cursor: 'pointer',
+                    }} onClick={(e) => deleteConversation(convo.conversationId, e)}>
+                      Delete
+                    </button>
                   </div>
                 </div>
               ))}
             </div>
           )}
+        </div>
+      </div>
+    ) : (
+      // Chat View
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        animation: 'slideInRight 0.2s forwards',
+      }}>
+        {/* Chat Header */}
+        <div style={{
+          padding: '10px 15px',
+          display: 'flex',
+          alignItems: 'center',
+          borderBottom: '1px solid #262626',
+          background: 'linear-gradient(45deg, #4F46E5, #7E22CE)',
+        }}>
+          <button 
+            onClick={() => setView("conversations")}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'white',
+              cursor: 'pointer',
+              padding: '5px',
+              marginRight: '10px',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
           
-          {/* Conversations list */}
-          <div className="conversations-list">
-            <h3>Recent Conversations</h3>
-            {loadingConversations ? (
-              <p className="loading">Loading conversations...</p>
-            ) : conversations.length === 0 ? (
-              <p className="no-data">No conversations yet. Search for a user to start chatting!</p>
-            ) : (
-              conversations.map((convo) => (
-                <div 
-                  key={convo.conversationId} 
-                  className={`conversation-item ${convo.unreadCount > 0 ? 'unread' : ''}`}
-                  onClick={() => openConversation(convo)}
-                >
-                  <div className="user-avatar">
-                    {convo.otherUser.username.charAt(0).toUpperCase()}
-                  </div>
-                  <div className="conversation-details">
-                    <div className="conversation-header">
-                      <span className="username">{convo.otherUser.username}</span>
-                      <span className="timestamp">{formatTime(convo.lastMessage?.timestamp)}</span>
+          {selectedUser && (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              flex: 1,
+            }}>
+              <div style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%',
+                backgroundColor: '#4F46E5',
+                background: 'linear-gradient(45deg, #4F46E5, #7E22CE)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: 'white',
+                fontWeight: 'bold',
+                marginRight: '12px',
+              }}>
+                {selectedUser.username.charAt(0).toUpperCase()}
+              </div>
+              <div>
+                <h2 style={{ 
+                  margin: 0, 
+                  fontSize: '16px', 
+                  fontWeight: 'bold' 
+                }}>
+                  {selectedUser.username}
+                </h2>
+                <span style={{ 
+                  fontSize: '12px', 
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  display: 'block',
+                }}>
+                  Active now
+                </span>
+              </div>
+              <div style={{ marginLeft: 'auto' }}>
+                <button style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'white',
+                  cursor: 'pointer',
+                  padding: '5px',
+                }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M3 5H21M3 12H21M3 19H21" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+        
+        {/* Messages Area */}
+        <div 
+          style={{
+            flex: 1,
+            overflowY: 'auto',
+            padding: '10px 15px',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+          onClick={markMessagesAsRead}
+        >
+          {loadingMessages ? (
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'center', 
+              alignItems: 'center',
+              height: '100%',
+            }}>
+              <div style={{ 
+                width: '40px', 
+                height: '40px', 
+                borderRadius: '50%', 
+                border: '3px solid rgba(79, 70, 229, 0.3)', 
+                borderTop: '3px solid #4F46E5',
+                animation: 'spin 1s linear infinite',
+              }}></div>
+            </div>
+          ) : messages.length === 0 ? (
+            <div style={{ 
+              display: 'flex', 
+              flexDirection: 'column',
+              justifyContent: 'center', 
+              alignItems: 'center',
+              height: '100%',
+              textAlign: 'center',
+              color: '#a8a8a8',
+            }}>
+              <div style={{
+                width: '70px',
+                height: '70px',
+                borderRadius: '50%',
+                backgroundColor: '#262626',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom: '15px',
+              }}>
+                <svg width="35" height="35" viewBox="0 0 24 24" fill="none">
+                  <path d="M21 11.5C21.0034 12.8199 20.6951 14.1219 20.1 15.3C19.3944 16.7118 18.3098 17.8992 16.9674 18.7293C15.6251 19.5594 14.0782 19.9994 12.5 20C11.18 20.0035 9.87812 19.6951 8.7 19.1L3 21L4.9 15.3C4.30493 14.1219 3.99656 12.8199 4 11.5C4.00061 9.92179 4.44061 8.37488 5.27072 7.03258C6.10083 5.69028 7.28825 4.6056 8.7 3.90003C9.87812 3.30496 11.18 2.99659 12.5 3.00003H13C15.0843 3.11502 17.053 3.99479 18.5291 5.47089C20.0052 6.94699 20.885 8.91568 21 11V11.5Z" stroke="#a8a8a8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <p style={{ margin: '0 0 10px', fontSize: '16px', fontWeight: 'bold' }}>
+                No messages yet
+              </p>
+              <p style={{ margin: 0, fontSize: '14px' }}>
+                Start the conversation with {selectedUser?.username}!
+              </p>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div style={{ 
+                textAlign: 'center', 
+                margin: '10px 0', 
+                fontSize: '12px', 
+                color: '#a8a8a8' 
+              }}>
+                {new Date().toDateString()}
+              </div>
+              
+              {messages.map((msg, index) => {
+                const isOutgoing = msg.sender === currentUser?._id;
+                return (
+                  <div 
+                    key={msg._id || index} 
+                    style={{
+                      alignSelf: isOutgoing ? 'flex-end' : 'flex-start',
+                      maxWidth: '80%',
+                      position: 'relative',
+                      animation: isOutgoing 
+                        ? 'slideInRight 0.2s forwards' 
+                        : 'slideInLeft 0.2s forwards',
+                    }}
+                  >
+                    <div style={{
+                      backgroundColor: isOutgoing 
+                        ? '#4F46E5' 
+                        : '#262626',
+                      borderRadius: '18px',
+                      padding: msg.media ? '2px' : '10px 15px',
+                      position: 'relative',
+                    }}>
+                      {msg.media && (
+                        <div style={{
+                          borderRadius: '18px',
+                          overflow: 'hidden',
+                          width: '200px',
+                          maxWidth: '100%',
+                        }}>
+                          <img 
+                            src={msg.media.url} 
+                            alt="Media" 
+                            style={{
+                              width: '100%',
+                              display: 'block',
+                            }}
+                          />
+                        </div>
+                      )}
+                      
+                      {msg.text && (
+                        <p style={{
+                          margin: msg.media ? '8px 12px' : 0,
+                          fontSize: '14px',
+                          lineHeight: '1.4',
+                          wordBreak: 'break-word',
+                        }}>
+                          {msg.text}
+                        </p>
+                      )}
                     </div>
-                    <div className="conversation-preview">
-                      <p className="preview-text">
-                        {convo.lastMessage?.media ? (
-                          <><FaFile /> Media attachment</>
-                        ) : (
-                          convo.lastMessage?.text || "No messages yet"
-                        )}
-                      </p>
-                      {convo.unreadCount > 0 && (
-                        <span className="unread-badge">{convo.unreadCount}</span>
+                    
+                    <div style={{
+                      fontSize: '11px',
+                      marginTop: '4px',
+                      textAlign: isOutgoing ? 'right' : 'left',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: isOutgoing ? 'flex-end' : 'flex-start',
+                      gap: '4px',
+                      color: '#a8a8a8',
+                      padding: '0 4px',
+                    }}>
+                      {formatTime(msg.timestamp)}
+                      {isOutgoing && (
+                        <span>
+                          {msg.status === 'sent' && (
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                              <path d="M5 13L9 17L19 7" stroke="#a8a8a8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                          )}
+                          {msg.status === 'delivered' && (
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                              <path d="M5 13L9 17L19 7M7 13L11 17L21 7" stroke="#a8a8a8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                          )}
+                          {msg.status === 'read' && (
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                              <path d="M5 13L9 17L19 7M7 13L11 17L21 7" stroke="#4F46E5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                          )}
+                        </span>
                       )}
                     </div>
                   </div>
-                  <div className="conversation-actions">
-                    <button 
-                      className="archive-btn" 
-                      onClick={(e) => archiveConversation(convo.conversationId, e)}
-                      title="Archive"
-                    >
-                      Archive
-                    </button>
-                    <button 
-                      className="delete-btn" 
-                      onClick={(e) => deleteConversation(convo.conversationId, e)}
-                      title="Delete"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-        </div>
-      ) : (
-        // Chat View
-        <div className="chat-view">
-          {/* Chat Header */}
-          <div className="chat-header">
-            <button className="back-button" onClick={() => setView("conversations")}>
-              <FaArrowLeft /> Back
-            </button>
-            {selectedUser && (
-              <div className="selected-user">
-                <div className="user-avatar">{selectedUser.username.charAt(0).toUpperCase()}</div>
-                <h2>{selectedUser.username}</h2>
-              </div>
-            )}
-          </div>
-          
-          {/* Messages Area */}
-          <div className="messages-container" onClick={markMessagesAsRead}>
-            {loadingMessages ? (
-              <p className="loading">Loading messages...</p>
-            ) : messages.length === 0 ? (
-              <div className="no-messages">
-                <p>No messages yet. Start the conversation!</p>
-              </div>
-            ) : (
-              <div className="messages">
-                {messages.map((msg, index) => (
-                  <div 
-                    key={msg._id || index} 
-                    className={`message-wrapper ${msg.sender === currentUser?._id ? 'outgoing' : 'incoming'}`}
-                  >
-                    <div className="message">
-                      {msg.media && renderMedia(msg.media)}
-                      <p className="message-text">{msg.text}</p>
-                      <div className="message-meta">
-                        <span className="message-time">{formatTime(msg.timestamp)}</span>
-                        {msg.sender === currentUser?._id && renderMessageStatus(msg.status)}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                <div ref={messagesEndRef} />
-              </div>
-            )}
-          </div>
-          
-          {/* Media Preview */}
-          {mediaPreview && (
-            <div className="media-preview">
-              {mediaPreview.type === 'image' ? (
-                <img src={mediaPreview.url} alt="Preview" />
-              ) : (
-                <div className="file-preview">
-                  <FaFile /> {mediaPreview.name}
-                </div>
-              )}
-              <button onClick={() => {
-                setMediaPreview(null);
-                setMediaData(null);
-              }}>Remove</button>
-              {mediaUploading && <span className="uploading">Uploading...</span>}
+                );
+              })}
+              <div ref={messagesEndRef} />
+              <style>
+                {`
+                  @keyframes slideInRight {
+                    from { opacity: 0; transform: translateX(20px); }
+                    to { opacity: 1; transform: translateX(0); }
+                  }
+                  @keyframes slideInLeft {
+                    from { opacity: 0; transform: translateX(-20px); }
+                    to { opacity: 1; transform: translateX(0); }
+                  }
+                `}
+              </style>
             </div>
           )}
+        </div>
+        
+        {/* Media Preview */}
+        {mediaPreview && (
+          <div style={{
+            padding: '10px 15px',
+            borderTop: '1px solid #262626',
+            backgroundColor: '#1a1a1a',
+            animation: 'slideUp 0.2s forwards',
+          }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+            }}>
+              {mediaPreview.type === 'image' ? (
+                <img 
+                  src={mediaPreview.url} 
+                  alt="Preview" 
+                  style={{
+                    height: '60px',
+                    width: 'auto',
+                    borderRadius: '8px',
+                  }}
+                />
+              ) : (
+                <div style={{
+                  backgroundColor: '#262626',
+                  padding: '10px',
+                  borderRadius: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="#a8a8a8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M7 10L12 15L17 10" stroke="#a8a8a8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M12 15V3" stroke="#a8a8a8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <span style={{ fontSize: '14px' }}>{mediaPreview.name}</span>
+                </div>
+              )}
+              
+              <div style={{ marginLeft: 'auto', display: 'flex', gap: '10px' }}>
+                {mediaUploading && (
+                  <span style={{ color: '#a8a8a8', fontSize: '13px', display: 'flex', alignItems: 'center' }}>
+                    <div style={{ 
+                      width: '14px', 
+                      height: '14px', 
+                      borderRadius: '50%', 
+                      border: '2px solid rgba(79, 70, 229, 0.3)', 
+                      borderTop: '2px solid #4F46E5',
+                      animation: 'spin 1s linear infinite',
+                      marginRight: '6px',
+                    }}></div>
+                    Uploading...
+                  </span>
+                )}
+                
+                <button 
+                  onClick={() => {
+                    setMediaPreview(null);
+                    setMediaData(null);
+                  }}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#EF4444',
+                    cursor: 'pointer',
+                    fontSize: '13px',
+                    padding: '5px 10px',
+                    borderRadius: '4px',
+                  }}
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+            <style>
+              {`@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }`}
+            </style>
+          </div>
+        )}
+        
+        {/* Message Input Area */}
+        <div style={{
+          padding: '12px 15px',
+          borderTop: '1px solid #262626',
+          backgroundColor: '#121212',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+        }}>
+          <button 
+            onClick={() => fileInputRef.current.click()}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#4F46E5',
+              cursor: 'pointer',
+              padding: '8px',
+              borderRadius: '50%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            disabled={mediaUploading}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M4 16L8.586 11.414C8.96121 11.0391 9.46985 10.8284 10 10.8284C10.5302 10.8284 11.0388 11.0391 11.414 11.414L16 16M14 14L15.586 12.414C15.9612 12.0391 16.4698 11.8284 17 11.8284C17.5302 11.8284 18.0388 12.0391 18.414 12.414L20 14M14 8H14.01M6 20H18C18.5304 20 19.0391 19.7893 19.4142 19.4142C19.7893 19.0391 20 18.5304 20 18V6C20 5.46957 19.7893 4.96086 19.4142 4.58579C19.0391 4.21071 18.5304 4 18 4H6C5.46957 4 4.96086 4.21071 4.58579 4.58579C4.21071 4.96086 4 5.46957 4 6V18C4 18.5304 4.21071 19.0391 4.58579 19.4142C4.96086 19.7893 5.46957 20 6 20Z" stroke="#4F46E5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
           
-          {/* Message Input Area */}
-          <div className="message-input-container">
-            <button 
-              className="attach-button" 
-              onClick={() => fileInputRef.current.click()}
-              title="Attach file"
-            >
-              <FaImage />
-            </button>
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              onChange={handleFileSelect} 
-              style={{ display: 'none' }} 
-              accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx,.txt"
-            />
+          <input 
+            type="file" 
+            ref={fileInputRef} 
+            onChange={handleFileSelect} 
+            style={{ display: 'none' }} 
+            accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx,.txt"
+          />
+          
+          <div style={{
+            flex: 1,
+            position: 'relative',
+            backgroundColor: '#262626',
+            borderRadius: '24px',
+            padding: '8px 12px',
+          }}>
             <textarea
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Type a message..."
-              rows={1}
+              placeholder="Message..."
+              style={{
+                width: '100%',
+                backgroundColor: 'transparent',
+                border: 'none',
+                color: 'white',
+                resize: 'none',
+                outline: 'none',
+                padding: '4px 0',
+                fontSize: '14px',
+                fontFamily: 'Arial, sans-serif',
+                height: '24px',
+                maxHeight: '80px',
+                overflow: 'auto',
+              }}
               disabled={mediaUploading}
             />
+          </div>
+          
+          {(newMessage.trim() || mediaData) && !mediaUploading ? (
             <button 
-              className="send-button" 
               onClick={sendMessage}
-              disabled={(!newMessage.trim() && !mediaData) || mediaUploading}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#4F46E5',
+                fontWeight: 'bold',
+                fontSize: '14px',
+                cursor: 'pointer',
+                padding: '8px',
+              }}
             >
               Send
             </button>
-          </div>
+          ) : (
+            <button
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#4F46E5',
+                cursor: 'pointer',
+                padding: '8px',
+                opacity: mediaUploading ? 0.5 : 1,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              disabled={mediaUploading}
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M19 10C19 11.1 19.9 12 21 12V8C19.9 8 19 8.9 19 10ZM7 11H17V9H7V11ZM12 16C14.21 16 16 14.21 16 12H8C8 14.21 9.79 16 12 16ZM14 19H10C9.45 19 9 19.45 9 20H15C15 19.45 14.55 19 14 19ZM3 10C3 8.9 2.1 8 1 8V12C2.1 12 3 11.1 3 10Z" fill="#4F46E5"/>
+                <path d="M18 6H17.08C16.45 4.19 14.86 2.86 12.93 2.23C12.6 1.3 11.76 0.64 10.75 0.64C9.61 0.64 8.69 1.47 8.55 2.55C6.41 3.29 4.67 4.89 4 6H3C1.34 6 0 7.34 0 9V11C0 12.66 1.34 14 3 14C3 17.31 5.69 20 9 20H15C18.31 20 21 17.31 21 14C22.66 14 24 12.66 24 11V9C24 7.34 22.66 6 21 6H18ZM16 12C16 14.21 14.21 16 12 16C9.79 16 8 14.21 8 12H16ZM7 11V9H17V11H7ZM14 19H10C9.45 19 9 19.45 9 20H15C15 19.45 14.55 19 14 19ZM21 12C19.9 12 19 11.1 19 10C19 8.9 19.9 8 21 8V12ZM3 12V8C1.9 8 1 8.9 1 10C1 11.1 1.9 12 3 12Z" fill="#4F46E5"/>
+              </svg>
+            </button>
+          )}
         </div>
-      )}
-      
-      {error && (
-        <div className="error-toast">
-          {error}
-          <button onClick={() => setError("")}>×</button>
-        </div>
-      )}
-    </div>
-  );
+      </div>
+    )}
+    
+    {/* Error Toast */}
+    {error && (
+      <div style={{
+        position: 'fixed',
+        bottom: '20px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        backgroundColor: 'rgba(220, 38, 38, 0.9)',
+        color: 'white',
+        padding: '12px 20px',
+        borderRadius: '8px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)',
+        zIndex: 100,
+        animation: 'fadeIn 0.3s forwards',
+        maxWidth: '90%',
+      }}>
+        <span style={{ marginRight: '15px', fontSize: '14px' }}>{error}</span>
+        <button 
+          onClick={() => setError("")}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'white',
+            cursor: 'pointer',
+            fontSize: '18px',
+            padding: '0 5px',
+          }}
+        >
+          ×
+        </button>
+        <style>
+          {`@keyframes fadeIn { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }`}
+        </style>
+      </div>
+    )}
+  </div>
+);
 }
 
 export default Notifications;

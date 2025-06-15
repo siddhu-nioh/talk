@@ -397,6 +397,7 @@ function Reels() {
       setHasMore(data.hasMore);
       setPage(data.currentPage);
       setIsInitialLoad(false);
+      console.log("Reels fetched successfully:", reelsData);
       
     } catch (err) {
       setError("Failed to fetch reels: " + (err.message || "Unknown error"));

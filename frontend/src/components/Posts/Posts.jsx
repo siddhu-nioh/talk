@@ -716,9 +716,9 @@ function TalkPosts() {
                   </div>
                   <span className="username-P">{post.owner.username}</span>
                 </div>
-                <button className="more-options">
+                {/* <button className="more-options">
                   <MoreHorizontal className="icon-more" />
-                </button>
+                </button> */}
               </div>
               
               {/* Post media */}

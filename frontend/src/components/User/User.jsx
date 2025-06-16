@@ -616,17 +616,17 @@ function Profile() {
                                 <button className="edit-profile-btn" onClick={() => document.getElementById("fileInput").click()}>
                                     Edit Profile
                                 </button>
-                                <button className="share-profile-btn">
+                                {/* <button className="share-profile-btn">
                                     <FaShare />
-                                </button>
+                                </button> */}
                                 <button className="more-options-btn" onClick={() => setShowProfileOptions(!showProfileOptions)}>
                                     <FaEllipsisH />
                                 </button>
                                 
                                 {showProfileOptions && (
                                     <div className="profile-options-dropdown">
-                                        <div className="option-item">QR Code</div>
-                                        <div className="option-item">Share Profile</div>
+                                        {/* <div className="option-item">QR Code</div>
+                                        <div className="option-item">Share Profile</div> */}
                                         <div className="option-item" onClick={handleLogout}>Logout</div>
                                     </div>
                                 )}

@@ -15,11 +15,11 @@ function Footer() {
           <FaPlusCircle />
         </div>
       </Link>
-      {/* <Link to="/reels" className="button-footer">
+      <Link to="/reels" className="button-footer">
         <div id="reels" className="footer-item">
           <FaVideo />
         </div>
-      </Link> */}
+      </Link>
       <Link to="/talk/search" className="button-footer">
         <div id="search" className="footer-item">
           <FaSearch />

@@ -763,16 +763,16 @@ function TalkPosts() {
                   >
                     <Heart className={`action-icon ${isLiked ? 'filled' : ''}`} />
                   </button>
-                  <button className="action-btn comment-btn" aria-label="Comment">
+                  {/* <button className="action-btn comment-btn" aria-label="Comment">
                     <MessageCircle className="action-icon" />
                   </button>
                   <button className="action-btn share-btn" aria-label="Share">
                     <Share2 className="action-icon" />
-                  </button>
+                  </button> */}
                 </div>
-                <button className="action-btn-1 save-btn" aria-label="Save">
+                {/* <button className="action-btn-1 save-btn" aria-label="Save">
                   <Bookmark className="action-icon" />
-                </button>
+                </button> */}
               </div>
               
               {/* Likes count */}

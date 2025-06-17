@@ -672,30 +672,30 @@ function Reels() {
                   <span>{formatCount(typeof reel.likes === 'number' ? reel.likes : reel.likes?.length || 0)}</span>
                 </button>
                 
-                <button 
+                {/* <button 
                   className="reel-action-button"
                   onClick={() => toggleComments(reelId)}
                 >
                   <div className="action-icon">💬</div>
                   <span>{formatCount(typeof reel.comments === 'number' ? reel.comments : reel.comments?.length || 0)}</span>
-                </button>
+                </button> */}
                 
-                <button 
+                {/* <button 
                   className="reel-action-button"
                   onClick={handleShare}
                 >
                   <div className="action-icon">↗️</div>
                   <span>{formatCount(reel.shares || 0)}</span>
-                </button>
+                </button> */}
                 
-                <button className="reel-action-button">
+                {/* <button className="reel-action-button">
                   <div className="action-icon">🔖</div>
                   <span>{formatCount(reel.savedBy || 0)}</span>
-                </button>
+                </button> */}
                 
-                <button className="reel-action-button more-options">
+                {/* <button className="reel-action-button more-options">
                   <div className="action-icon">•••</div>
-                </button>
+                </button> */}
               </div>
               
               {/* Comments section */}

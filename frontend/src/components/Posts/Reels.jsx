@@ -453,12 +453,12 @@ const fetchReels = useCallback(async () => {
   try {
     setLoading(true);
     let page = 1;
-    const maxPages = 100;
+    const maxPages = 1000;
     let collectedVideos = [];
 
     while (collectedVideos.length < 3 && page <= maxPages) {
       const response = await axios.get(`${Backend_Url}/talk`, {
-        params: { page, limit: 3 }
+        params: { page, limit: 10000 }
       });
 
       const data = response.data;

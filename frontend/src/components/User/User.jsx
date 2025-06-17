@@ -409,29 +409,57 @@ function Profile() {
         }
     };
 
-    const fetchUserPosts = async (userData) => {
-        try {
-            const currentUser = userData || user;
-            if (!currentUser) return;
+    // const fetchUserPosts = async (userData) => {
+    //     try {
+    //         const currentUser = userData || user;
+    //         if (!currentUser) return;
             
-            const response = await fetch(`${Backend_Url}/talk`);
-            if (!response.ok) throw new Error("Failed to fetch posts");
+    //         const response = await fetch(`${Backend_Url}/talk`);
+    //         if (!response.ok) throw new Error("Failed to fetch posts");
 
-            const data = await response.json();
-            const userPosts = data.filter(post => post.owner._id === currentUser._id);
+    //         const data = await response.json();
+    //         const userPosts = data.filter(post => post.owner._id === currentUser._id);
             
-            // Separate posts and reels
-            const postsArray = userPosts.filter(post => post.image);
-            const reelsArray = userPosts.filter(post => post.video);
+    //         // Separate posts and reels
+    //         const postsArray = userPosts.filter(post => post.image);
+    //         const reelsArray = userPosts.filter(post => post.video);
             
-            setPosts(postsArray);
-            setReels(reelsArray);
-        } catch (err) {
-            console.error("Error fetching posts:", err);
-            // If posts can't be fetched, don't block the whole UI
-            // Just show empty states instead
-        }
-    };
+    //         setPosts(postsArray);
+    //         setReels(reelsArray);
+    //     } catch (err) {
+    //         console.error("Error fetching posts:", err);
+    //         // If posts can't be fetched, don't block the whole UI
+    //         // Just show empty states instead
+    //     }
+    // };
+    const fetchUserPosts = async (userData) => {
+    try {
+        const currentUser = userData || user;
+        if (!currentUser) return;
+
+        const response = await fetch(`${Backend_Url}/talk`);
+        if (!response.ok) throw new Error("Failed to fetch posts");
+
+        const data = await response.json();
+
+        // Check if the response is an array or has a 'posts' property
+        const allPosts = Array.isArray(data) ? data : (Array.isArray(data.posts) ? data.posts : []);
+
+        const userPosts = allPosts.filter(post => post.owner?._id === currentUser._id);
+
+        // Separate posts and reels
+        const postsArray = userPosts.filter(post => post.image);
+        const reelsArray = userPosts.filter(post => post.video);
+
+        setPosts(postsArray);
+        setReels(reelsArray);
+    } catch (err) {
+        console.error("Error fetching posts:", err);
+        setPosts([]);
+        setReels([]);
+    }
+};
+
 
     const handleLogout = () => {
         localStorage.removeItem("token");

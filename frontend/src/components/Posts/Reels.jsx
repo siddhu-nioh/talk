@@ -407,48 +407,92 @@ function Reels() {
   //   }
   // }, [Backend_Url]);
 
-  const fetchReels = useCallback(async (pageNum) => {
+//   const fetchReels = useCallback(async (pageNum) => {
+//   try {
+//     setLoading(true);
+//     const response = await axios.get(`${Backend_Url}/talk`, {
+//       params: {
+//         page: pageNum,
+//         limit: 3
+//       }
+//     });
+
+//     const data = response.data;
+//     console.log("Fetched raw data:", data);
+
+//     const allPosts = Array.isArray(data) ? data : (data.posts || []);
+//     const reelsData = allPosts
+//       .filter(post => post.video)
+//       .map(post => ({
+//         ...post,
+//         likes: post.likes?.length || Math.floor(Math.random() * 10000),
+//         comments: post.comments?.length || Math.floor(Math.random() * 500),
+//         shares: Math.floor(Math.random() * 300),
+//         savedBy: Math.floor(Math.random() * 200)
+//       }));
+
+//     if (pageNum === 1) {
+//       setReels(reelsData);
+//     } else {
+//       setReels(prevReels => [...prevReels, ...reelsData]);
+//     }
+
+//     setHasMore(data.hasMore || reelsData.length > 0);
+//     setPage(data.currentPage || pageNum);
+//     setIsInitialLoad(false);
+//     console.log("Reels fetched successfully:", reelsData);
+
+//   } catch (err) {
+//     setError("Failed to fetch reels: " + (err.message || "Unknown error"));
+//     console.error("Error fetching reels:", err);
+//   } finally {
+//     setLoading(false);
+//   }
+// }, [Backend_Url]);
+const fetchReels = useCallback(async () => {
   try {
     setLoading(true);
-    const response = await axios.get(`${Backend_Url}/talk`, {
-      params: {
-        page: pageNum,
-        limit: 3
-      }
-    });
+    let page = 1;
+    const maxPages = 10;
+    let collectedVideos = [];
 
-    const data = response.data;
-    console.log("Fetched raw data:", data);
+    while (collectedVideos.length < 3 && page <= maxPages) {
+      const response = await axios.get(`${Backend_Url}/talk`, {
+        params: { page, limit: 3 }
+      });
 
-    const allPosts = Array.isArray(data) ? data : (data.posts || []);
-    const reelsData = allPosts
-      .filter(post => post.video)
-      .map(post => ({
-        ...post,
-        likes: post.likes?.length || Math.floor(Math.random() * 10000),
-        comments: post.comments?.length || Math.floor(Math.random() * 500),
-        shares: Math.floor(Math.random() * 300),
-        savedBy: Math.floor(Math.random() * 200)
-      }));
+      const data = response.data;
+      const posts = data.posts || [];
 
-    if (pageNum === 1) {
-      setReels(reelsData);
-    } else {
-      setReels(prevReels => [...prevReels, ...reelsData]);
+      const videoPosts = posts.filter(post => post.video);
+      collectedVideos = [...collectedVideos, ...videoPosts];
+
+      if (!data.hasMore) break; // No more pages to check
+      page++;
     }
 
-    setHasMore(data.hasMore || reelsData.length > 0);
-    setPage(data.currentPage || pageNum);
+    const reelsData = collectedVideos.map(post => ({
+      ...post,
+      likes: post.likes?.length || Math.floor(Math.random() * 10000),
+      comments: post.comments?.length || Math.floor(Math.random() * 500),
+      shares: Math.floor(Math.random() * 300),
+      savedBy: Math.floor(Math.random() * 200),
+    }));
+
+    setReels(reelsData);
+    setPage(page);
+    setHasMore(reelsData.length > 0);
     setIsInitialLoad(false);
     console.log("Reels fetched successfully:", reelsData);
 
   } catch (err) {
-    setError("Failed to fetch reels: " + (err.message || "Unknown error"));
     console.error("Error fetching reels:", err);
+    setError("Failed to fetch reels: " + (err.message || "Unknown error"));
   } finally {
     setLoading(false);
   }
 }, [Backend_Url]);
+
 
 
   // Load initial reels

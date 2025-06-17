@@ -713,11 +713,11 @@ const fetchReels = useCallback(async () => {
                 </video>
                 
                 {/* Pause/play indicator - only visible when paused */}
-                {videoRefs.current[reelId]?.paused && (
+                {/* {videoRefs.current[reelId]?.paused && (
                   <div className="video-status visible">
                     <div className="play-icon">▶</div>
                   </div>
-                )}
+                )} */}
               </div>
 
               {/* User info and description */}

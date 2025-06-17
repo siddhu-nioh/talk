@@ -365,47 +365,91 @@ function Reels() {
   };
 
   // Fetch reels with pagination
+  // const fetchReels = useCallback(async (pageNum) => {
+  //   try {
+  //     setLoading(true);
+  //     const response = await axios.get(`${Backend_Url}/talk`, {
+  //       params: {
+  //         page: pageNum,
+  //         limit: 3 // Load fewer reels at a time
+  //       }
+  //     });
+      
+  //     const data = response.data;
+      
+  //     // Filter only posts with videos and add engagement metrics
+  //     const reelsData = data.posts
+  //       .filter(post => post.video)
+  //       .map(post => ({
+  //         ...post,
+  //         likes: post.likes?.length || Math.floor(Math.random() * 10000),
+  //         comments: post.comments?.length || Math.floor(Math.random() * 500),
+  //         shares: Math.floor(Math.random() * 300),
+  //         savedBy: Math.floor(Math.random() * 200)
+  //       }));
+      
+  //     if (pageNum === 1) {
+  //       setReels(reelsData);
+  //     } else {
+  //       setReels(prevReels => [...prevReels, ...reelsData]);
+  //     }
+      
+  //     setHasMore(data.hasMore);
+  //     setPage(data.currentPage);
+  //     setIsInitialLoad(false);
+  //     console.log("Reels fetched successfully:", reelsData);
+      
+  //   } catch (err) {
+  //     setError("Failed to fetch reels: " + (err.message || "Unknown error"));
+  //     console.error("Error fetching reels:", err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }, [Backend_Url]);
+
   const fetchReels = useCallback(async (pageNum) => {
-    try {
-      setLoading(true);
-      const response = await axios.get(`${Backend_Url}/talk`, {
-        params: {
-          page: pageNum,
-          limit: 3 // Load fewer reels at a time
-        }
-      });
-      
-      const data = response.data;
-      
-      // Filter only posts with videos and add engagement metrics
-      const reelsData = data.posts
-        .filter(post => post.video)
-        .map(post => ({
-          ...post,
-          likes: post.likes?.length || Math.floor(Math.random() * 10000),
-          comments: post.comments?.length || Math.floor(Math.random() * 500),
-          shares: Math.floor(Math.random() * 300),
-          savedBy: Math.floor(Math.random() * 200)
-        }));
-      
-      if (pageNum === 1) {
-        setReels(reelsData);
-      } else {
-        setReels(prevReels => [...prevReels, ...reelsData]);
+  try {
+    setLoading(true);
+    const response = await axios.get(`${Backend_Url}/talk`, {
+      params: {
+        page: pageNum,
+        limit: 3
       }
-      
-      setHasMore(data.hasMore);
-      setPage(data.currentPage);
-      setIsInitialLoad(false);
-      console.log("Reels fetched successfully:", reelsData);
-      
-    } catch (err) {
-      setError("Failed to fetch reels: " + (err.message || "Unknown error"));
-      console.error("Error fetching reels:", err);
-    } finally {
-      setLoading(false);
+    });
+
+    const data = response.data;
+    console.log("Fetched raw data:", data);
+
+    const allPosts = Array.isArray(data) ? data : (data.posts || []);
+    const reelsData = allPosts
+      .filter(post => post.video)
+      .map(post => ({
+        ...post,
+        likes: post.likes?.length || Math.floor(Math.random() * 10000),
+        comments: post.comments?.length || Math.floor(Math.random() * 500),
+        shares: Math.floor(Math.random() * 300),
+        savedBy: Math.floor(Math.random() * 200)
+      }));
+
+    if (pageNum === 1) {
+      setReels(reelsData);
+    } else {
+      setReels(prevReels => [...prevReels, ...reelsData]);
     }
-  }, [Backend_Url]);
+
+    setHasMore(data.hasMore || reelsData.length > 0);
+    setPage(data.currentPage || pageNum);
+    setIsInitialLoad(false);
+    console.log("Reels fetched successfully:", reelsData);
+
+  } catch (err) {
+    setError("Failed to fetch reels: " + (err.message || "Unknown error"));
+    console.error("Error fetching reels:", err);
+  } finally {
+    setLoading(false);
+  }
+}, [Backend_Url]);
+
 
   // Load initial reels
   useEffect(() => {

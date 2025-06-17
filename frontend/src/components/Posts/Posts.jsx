@@ -682,9 +682,9 @@ function TalkPosts() {
     <div className="posts-container">
       <div className="posts-wrapper">
         {/* First ad at the top */}
-        <div className="ad-container">
+        {/* <div className="ad-container">
           <AdComponent />
-        </div>
+        </div> */}
         
         {/* Posts */}
         {posts.map((post, index) => {
@@ -849,11 +849,11 @@ function TalkPosts() {
               </div>
               
               {/* Show an ad after every few posts */}
-              {(index + 1) % 4 === 0 && (
+              {/* {(index + 1) % 4 === 0 && (
                 <div className="ad-container in-feed">
                   <AdComponent />
                 </div>
-              )}
+              )} */}
             </div>
           );
         })}
@@ -874,9 +874,9 @@ function TalkPosts() {
         )}
         
         {/* Another ad at the bottom */}
-        <div className="ad-container">
+        {/* <div className="ad-container">
           <AdComponent />
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -726,7 +726,7 @@ const fetchUserPosts = async (userData) => {
                     >
                         <RiMovie2Fill />
                     </div>
-                    <div 
+                    {/* <div 
                         className={`tab ${activeTab === 'saved' ? 'active' : ''}`} 
                         onClick={() => setActiveTab('saved')}
                     >
@@ -737,7 +737,7 @@ const fetchUserPosts = async (userData) => {
                         onClick={() => setActiveTab('tagged')}
                     >
                         <FaUsers />
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* Content sections based on active tab */}

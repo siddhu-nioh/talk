@@ -147,7 +147,7 @@ const handleDoubleTap = (postId) => {
               >
                 {likedPosts[currentPost._id] ? <FaHeart /> : <FaRegHeart />}
               </button>
-              <button className="action-btn">
+              {/* <button className="action-btn">
                 <FaRegComment />
               </button>
               <button className="action-btn">
@@ -155,7 +155,7 @@ const handleDoubleTap = (postId) => {
               </button>
               <button className="action-btn bookmark">
                 <FaRegBookmark />
-              </button>
+              </button> */}
             </div>
             
             <div className="post-likes">
@@ -173,15 +173,15 @@ const handleDoubleTap = (postId) => {
               })}
             </div>
             
-            <div className="post-comments">
+            {/* <div className="post-comments">
               {comments[currentPost._id]?.map(comment => (
                 <div key={comment.id} className="comment">
                   <span className="username">{comment.username}</span> {comment.text}
                 </div>
               ))}
-            </div>
+            </div> */}
             
-            <div className="add-comment">
+            {/* <div className="add-comment">
               <input 
                 type="text" 
                 placeholder="Add a comment..." 
@@ -195,7 +195,7 @@ const handleDoubleTap = (postId) => {
               >
                 Post
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

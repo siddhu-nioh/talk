@@ -464,7 +464,7 @@ const fetchUserPosts = async (userData) => {
         const currentUser = userData || user;
         if (!currentUser) return;
 
-        const response = await fetch(`${Backend_Url}/talk`);
+        const response = await fetch(`${Backend_Url}/talk/all`);
         if (!response.ok) throw new Error("Failed to fetch posts");
 
         const data = await response.json();

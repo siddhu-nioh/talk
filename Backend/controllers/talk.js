@@ -99,6 +99,20 @@ module.exports.renderIndex = async (req, res) => {
   }
 };
 
+// route for account page only 
+module.exports.getAllPosts = async (req, res) => {
+  try {
+    const posts = await Post.find({})
+      .sort({ createdAt: -1 }) // newest first
+      .populate("owner");
+
+    return res.status(200).json({ posts });
+  } catch (error) {
+    console.error("Error fetching all posts:", error);
+    return res.status(500).json({ error: "Failed to fetch posts" });
+  }
+};
+
 module.exports.renderNew = (req, res) => {
   res.render("main/new");
 };

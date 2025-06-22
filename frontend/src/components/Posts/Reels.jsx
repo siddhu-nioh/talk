@@ -453,7 +453,7 @@ const fetchReels = useCallback(async () => {
   try {
     setLoading(true);
     let page = 1;
-    const maxPages = 1000;
+    const maxPages = 1000  ;
     let collectedVideos = [];
 
     while (collectedVideos.length < 3 && page <= maxPages) {

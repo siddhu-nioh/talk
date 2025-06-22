@@ -192,6 +192,8 @@ module.exports.renderUser = (req, res) => {
 //     res.status(500).json({ error: "Failed to upload post" });
 //   }
 // };
+
+
 module.exports.postUpload = async (req, res) => {
   if (!req.user || !req.user._id) {
     console.error(" Missing req.user or req.user._id");
@@ -249,7 +251,7 @@ module.exports.searchUsers = async (req, res) => {
     ]
   }).limit(10);
   res.status(200).json(users);
-};
+};  
 
 // New route to like a post
 module.exports.likePost = async (req, res) => {

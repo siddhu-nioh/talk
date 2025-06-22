@@ -469,6 +469,7 @@ const fetchUserPosts = async (userData) => {
 
         const data = await response.json();
 
+          console.log("Fetched Posts:", data);
         const allPosts = Array.isArray(data) ? data : (Array.isArray(data.posts) ? data.posts : []);
         const userPosts = allPosts.filter(post => post.owner?._id === currentUser._id);
 

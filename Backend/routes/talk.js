@@ -21,7 +21,7 @@ const { ensureAuthenticated, validateMedia } = require('../middleware');
 router.get('/', wrapAsync(talkRouter.renderIndex));
 
 
-router.get("/all", postsController.getAllPosts);
+router.get("/all", talkRouter.getAllPosts);
 
 router.get('/new', ensureAuthenticated, talkRouter.renderNew);
 router.get('/search', ensureAuthenticated, talkRouter.renderSearch);

@@ -829,7 +829,7 @@ function TalkPosts() {
               </div>
               
               {/* Comment input */}
-              <div className="comment-input-container">
+              {/* <div className="comment-input-container">
                 <input
                   type="text"
                   placeholder="Add a comment..."
@@ -846,7 +846,7 @@ function TalkPosts() {
                     Post
                   </button>
                 )}
-              </div>
+              </div> */}
               
               {/* Show an ad after every few posts */}
               {/* {(index + 1) % 4 === 0 && (

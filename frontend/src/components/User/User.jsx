@@ -880,7 +880,7 @@ const fetchUserPosts = async (userData) => {
                 )}
                  */}
                 {/* Story Modal */}
-                {showStoryModal && (
+                {/* {showStoryModal && (
                     <div className="story-modal">
                         <div className="story-modal-content">
                             <button className="close-story" onClick={closeStoryModal}>
@@ -909,7 +909,7 @@ const fetchUserPosts = async (userData) => {
                             </div>
                         </div>
                     </div>
-                )}
+                )} */}
             </div>
             
             {/* Bottom Navigation */}

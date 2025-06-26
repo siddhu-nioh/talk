@@ -436,9 +436,6 @@ function TalkPosts() {
                     Post
                   </button>
                 )}
-<<<<<<< account-info
-              </div>
-=======
               </div> */}
               
               {/* Show an ad after every few posts */}
@@ -447,7 +444,6 @@ function TalkPosts() {
                   <AdComponent />
                 </div>
               )} */}
->>>>>>> main
             </div>
           );
         }) : (

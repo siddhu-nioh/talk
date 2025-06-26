@@ -534,9 +534,6 @@
 // };
 
 // export default InstagramProfile;
-
-
-
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -555,16 +552,12 @@ import {
   FiHeart,
   FiMessageCircle,
   FiSend,
-  FiCamera,
   FiPlay,
-  FiVideo,
-  FiImage,
-  FiX,
-  FiChevronLeft,
-  FiChevronRight,
-  FiDownload,
-  FiLink
+  FiCamera,
+  FiArrowLeft,
+  FiUser
 } from "react-icons/fi";
+import InstagramPostPage from "./InstagramPostPage"; // Import your existing post page component
 import "./InstagramProfile.css";
 
 const InstagramProfile = () => {
@@ -579,11 +572,9 @@ const InstagramProfile = () => {
   const [activeTab, setActiveTab] = useState('posts');
   const [isFollowingUser, setIsFollowingUser] = useState(false);
   
-  // New state for post page functionality
+  // Post page state
   const [showPostPage, setShowPostPage] = useState(false);
   const [selectedPostId, setSelectedPostId] = useState(null);
-  const [posts, setPosts] = useState([]);
-  const [reels, setReels] = useState([]);
 
   // Get authentication token
   const getAuthToken = () => localStorage.getItem("token");
@@ -618,14 +609,6 @@ const InstagramProfile = () => {
       });
       const userData = response.data;
       setProfileData(userData);
-      
-      // Separate posts and reels
-      const userPosts = userData.posts || [];
-      const normalPosts = userPosts.filter(post => !post.isReel);
-      const videoReels = userPosts.filter(post => post.isReel);
-      
-      setPosts(normalPosts);
-      setReels(videoReels);
       
       // Check if current user is following this profile
       const currentUser = await fetchCurrentUserData();
@@ -733,375 +716,234 @@ const InstagramProfile = () => {
   const isOwnProfile = currentUserData?._id === profileData._id;
 
   return (
-    <div className="instagram-profile-wrapper">
-      {/* Animated Background */}
-      <div className="profile-background">
-        <div className="gradient-orb orb-1"></div>
-        <div className="gradient-orb orb-2"></div>
-        <div className="gradient-orb orb-3"></div>
-      </div>
+    <>
+      <div className="instagram-profile-container">
+        {/* Enhanced Header with Gradient */}
+        <div className="profile-header-section">
+          <div className="header-backdrop"></div>
+          
+          {/* Navigation */}
+          <div className="profile-nav">
+            <button className="nav-back-btn" onClick={() => navigate(-1)}>
+              <FiArrowLeft />
+            </button>
+            <h2 className="nav-username">{profileData.username}</h2>
+            <button className="nav-menu-btn">
+              <FiMoreHorizontal />
+            </button>
+          </div>
 
-      {/* Profile Header */}
-      <div className="instagram-profile-header">
-        <div className="profile-avatar-section">
-          <div className="profile-avatar-container">
-            <div className="avatar-ring">
-              <div className="avatar-ring-inner">
+          {/* Profile Info Card */}
+          <div className="profile-info-card">
+            <div className="profile-avatar-wrapper">
+              <div className="avatar-ring">
                 <img
-                  src={profileData.profile || "/api/placeholder/150/150"}
+                  src={profileData.profile || "/api/placeholder/120/120"}
                   alt={`${profileData.username}'s profile`}
-                  className="profile-avatar-image"
+                  className="profile-avatar"
                 />
               </div>
+              {isOwnProfile && (
+                <button className="avatar-edit-btn">
+                  <FiCamera />
+                </button>
+              )}
             </div>
-            <div className="avatar-status-dot"></div>
+
+            <div className="profile-details">
+              <h1 className="profile-display-name">{profileData.name || profileData.username}</h1>
+              <p className="profile-handle">@{profileData.username}</p>
+              
+              {profileData.bio && (
+                <p className="profile-bio">{profileData.bio}</p>
+              )}
+
+              {/* Stats Row */}
+              <div className="profile-stats">
+                <div className="stat-item">
+                  <span className="stat-number">{profileData.posts?.length || 0}</span>
+                  <span className="stat-label">Posts</span>
+                </div>
+                <button className="stat-item" onClick={navigateToFollowers}>
+                  <span className="stat-number">{profileData.followers?.length || 0}</span>
+                  <span className="stat-label">Followers</span>
+                </button>
+                <button className="stat-item" onClick={navigateToFollowing}>
+                  <span className="stat-number">{profileData.following?.length || 0}</span>
+                  <span className="stat-label">Following</span>
+                </button>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="profile-actions">
+                {isOwnProfile ? (
+                  <>
+                    <button className="action-btn primary">
+                      <FiEdit2 />
+                      Edit Profile
+                    </button>
+                    <button className="action-btn secondary">
+                      <FiShare />
+                      Share
+                    </button>
+                    <button className="action-btn secondary">
+                      <FiUser />
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button 
+                      className={`action-btn ${isFollowingUser ? 'following' : 'primary'}`}
+                      onClick={handleFollowToggle}
+                    >
+                      {isFollowingUser ? (
+                        <>
+                          <FiUserMinus />
+                          Following
+                        </>
+                      ) : (
+                        <>
+                          <FiUserPlus />
+                          Follow
+                        </>
+                      )}
+                    </button>
+                    <button className="action-btn secondary">
+                      <FiSend />
+                      Message
+                    </button>
+                    <button className="action-btn secondary">
+                      <FiMail />
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="profile-info-section">
-          <div className="profile-username-row">
-            <h1 className="profile-username">
-              {profileData.username}
-              <div className="username-verified">✓</div>
-            </h1>
-            {isOwnProfile ? (
-              <div className="profile-actions">
-                <button className="profile-edit-btn">
-                  <FiEdit2 />
-                  Edit Profile
-                </button>
-                <button className="profile-settings-btn">
-                  <FiSettings />
-                </button>
-              </div>
-            ) : (
-              <div className="profile-actions">
-                <button 
-                  className={`profile-follow-btn ${isFollowingUser ? 'following' : ''}`}
-                  onClick={handleFollowToggle}
+        {/* Content Tabs */}
+        <div className="content-tabs-wrapper">
+          <div className="content-tabs">
+            <button 
+              className={`tab-btn ${activeTab === 'posts' ? 'active' : ''}`}
+              onClick={() => setActiveTab('posts')}
+            >
+              <FiGrid />
+              <span>Posts</span>
+              <div className="tab-indicator"></div>
+            </button>
+            <button 
+              className={`tab-btn ${activeTab === 'reels' ? 'active' : ''}`}
+              onClick={() => setActiveTab('reels')}
+            >
+              <FiPlay />
+              <span>Reels</span>
+              <div className="tab-indicator"></div>
+            </button>
+            <button 
+              className={`tab-btn ${activeTab === 'tagged' ? 'active' : ''}`}
+              onClick={() => setActiveTab('tagged')}
+            >
+              <FiTag />
+              <span>Tagged</span>
+              <div className="tab-indicator"></div>
+            </button>
+          </div>
+        </div>
+
+        {/* Posts Grid */}
+        <div className="posts-grid-container">
+          {profileData.posts && profileData.posts.length > 0 ? (
+            <div className="posts-grid">
+              {profileData.posts.map((post, index) => (
+                <div 
+                  key={post._id || index} 
+                  className="post-item"
+                  onClick={() => handlePostClick(post._id)}
                 >
-                  {isFollowingUser ? (
-                    <>
-                      <FiUserMinus />
-                      Following
-                    </>
-                  ) : (
-                    <>
-                      <FiUserPlus />
-                      Follow
-                    </>
+                  <div className="post-media-wrapper">
+                    {post.image ? (
+                      <img
+                        src={post.image}
+                        alt="Post content"
+                        className="post-media"
+                      />
+                    ) : post.video ? (
+                      <>
+                        <video className="post-media" muted>
+                          <source src={post.video} type="video/mp4" />
+                        </video>
+                        <div className="video-indicator">
+                          <FiPlay />
+                        </div>
+                      </>
+                    ) : (
+                      <div className="post-placeholder">
+                        <FiGrid />
+                      </div>
+                    )}
+                    
+                    <div className="post-overlay">
+                      <div className="post-stats">
+                        <span className="post-stat">
+                          <FiHeart />
+                          {post.likes?.length || 0}
+                        </span>
+                        <span className="post-stat">
+                          <FiMessageCircle />
+                          {post.comments?.length || 0}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {post.images && post.images.length > 1 && (
+                    <div className="multiple-indicator">
+                      <div className="dots">
+                        {Array.from({ length: Math.min(post.images.length, 3) }).map((_, i) => (
+                          <div key={i} className="dot"></div>
+                        ))}
+                      </div>
+                    </div>
                   )}
-                </button>
-                <button className="profile-message-btn">
-                  <FiSend />
-                  Message
-                </button>
-                <button className="profile-more-btn">
-                  <FiMoreHorizontal />
-                </button>
-              </div>
-            )}
-          </div>
-
-          <div className="profile-stats-row">
-            <div className="profile-stat">
-              <span className="stat-number">{(posts.length + reels.length) || 0}</span>
-              <span className="stat-label">posts</span>
-              <div className="stat-glow"></div>
+                </div>
+              ))}
             </div>
-            <button className="profile-stat" onClick={navigateToFollowers}>
-              <span className="stat-number">{profileData.followers?.length || 0}</span>
-              <span className="stat-label">followers</span>
-              <div className="stat-glow"></div>
-            </button>
-            <button className="profile-stat" onClick={navigateToFollowing}>
-              <span className="stat-number">{profileData.following?.length || 0}</span>
-              <span className="stat-label">following</span>
-              <div className="stat-glow"></div>
-            </button>
-          </div>
-
-          {profileData.bio && (
-            <div className="profile-bio">
-              <p>{profileData.bio}</p>
+          ) : (
+            <div className="no-posts-state">
+              <div className="no-posts-icon">
+                <FiCamera />
+              </div>
+              <h3>No Posts Yet</h3>
+              <p>
+                When {isOwnProfile ? 'you share' : `${profileData.username} shares`} photos and videos, 
+                they will appear on {isOwnProfile ? 'your' : 'their'} profile.
+              </p>
+              {isOwnProfile && (
+                <button className="create-post-btn">
+                  <FiCamera />
+                  Share your first photo
+                </button>
+              )}
             </div>
           )}
         </div>
       </div>
 
-      {/* Quick Actions */}
-      <div className="instagram-quick-actions">
-        <button className="quick-action-btn">
-          <div className="action-icon">
-            <FiCamera />
-          </div>
-          <span>Stories</span>
-        </button>
-        <button className="quick-action-btn" onClick={navigateToFollowers}>
-          <div className="action-icon">
-            <FiUsers />
-          </div>
-          <span>Friends</span>
-        </button>
-        {!isOwnProfile && (
-          <button className="quick-action-btn" onClick={handleFollowToggle}>
-            <div className="action-icon">
-              {isFollowingUser ? <FiUserMinus /> : <FiUserPlus />}
-            </div>
-            <span>{isFollowingUser ? 'Unfollow' : 'Follow'}</span>
-          </button>
-        )}
-        <button className="quick-action-btn">
-          <div className="action-icon">
-            <FiShare />
-          </div>
-          <span>Share</span>
-        </button>
-      </div>
-
-      {/* Content Tabs */}
-      <div className="instagram-content-tabs">
-        <button 
-          className={`content-tab ${activeTab === 'posts' ? 'active' : ''}`}
-          onClick={() => setActiveTab('posts')}
-        >
-          <FiGrid />
-          <span>POSTS</span>
-          <div className="tab-indicator"></div>
-        </button>
-        <button 
-          className={`content-tab ${activeTab === 'reels' ? 'active' : ''}`}
-          onClick={() => setActiveTab('reels')}
-        >
-          <FiVideo />
-          <span>REELS</span>
-          <div className="tab-indicator"></div>
-        </button>
-        <button 
-          className={`content-tab ${activeTab === 'saved' ? 'active' : ''}`}
-          onClick={() => setActiveTab('saved')}
-        >
-          <FiBookmark />
-          <span>SAVED</span>
-          <div className="tab-indicator"></div>
-        </button>
-      </div>
-
-      {/* Posts Grid */}
-      <div className="instagram-posts-grid">
-        {activeTab === 'posts' && posts.length > 0 ? (
-          posts.map((post, index) => (
-            <div 
-              key={post._id || index} 
-              className="instagram-post-item"
-              onClick={() => handlePostClick(post._id)}
-            >
-              <div className="post-media-container">
-                {post.image ? (
-                  <img
-                    src={post.image}
-                    alt="Post content"
-                    className="post-media"
-                    loading="lazy"
-                  />
-                ) : post.video ? (
-                  <div className="post-video-container">
-                    <video className="post-media" muted>
-                      <source src={post.video} type="video/mp4" />
-                    </video>
-                    <div className="video-play-icon">
-                      <FiPlay />
-                    </div>
-                  </div>
-                ) : (
-                  <div className="post-no-media">
-                    <FiImage />
-                  </div>
-                )}
-                <div className="post-overlay">
-                  <div className="post-stats">
-                    <span className="post-stat">
-                      <FiHeart />
-                      {post.likes?.length || 0}
-                    </span>
-                    <span className="post-stat">
-                      <FiMessageCircle />
-                      {post.comments?.length || 0}
-                    </span>
-                  </div>
-                </div>
-                <div className="post-type-indicator">
-                  {post.video ? <FiVideo /> : <FiImage />}
-                </div>
-              </div>
-            </div>
-          ))
-        ) : activeTab === 'reels' && reels.length > 0 ? (
-          reels.map((reel, index) => (
-            <div 
-              key={reel._id || index} 
-              className="instagram-post-item reel-item"
-              onClick={() => handlePostClick(reel._id)}
-            >
-              <div className="post-media-container">
-                <video className="post-media" muted>
-                  <source src={reel.video} type="video/mp4" />
-                </video>
-                <div className="reel-play-icon">
-                  <FiPlay />
-                </div>
-                <div className="post-overlay">
-                  <div className="post-stats">
-                    <span className="post-stat">
-                      <FiHeart />
-                      {reel.likes?.length || 0}
-                    </span>
-                    <span className="post-stat">
-                      <FiMessageCircle />
-                      {reel.comments?.length || 0}
-                    </span>
-                  </div>
-                </div>
-                <div className="reel-indicator">REEL</div>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="instagram-no-posts">
-            <div className="no-posts-animation">
-              <div className="no-posts-icon">
-                {activeTab === 'posts' ? <FiGrid /> : 
-                 activeTab === 'reels' ? <FiVideo /> : <FiBookmark />}
-              </div>
-            </div>
-            <h3>No {activeTab === 'posts' ? 'Posts' : activeTab === 'reels' ? 'Reels' : 'Saved Posts'} Yet</h3>
-            <p>
-              {activeTab === 'posts' 
-                ? `When ${isOwnProfile ? 'you share' : `${profileData.username} shares`} photos and videos, they will appear here.`
-                : activeTab === 'reels'
-                ? `When ${isOwnProfile ? 'you create' : `${profileData.username} creates`} reels, they will appear here.`
-                : 'Saved posts will appear here.'
-              }
-            </p>
-            {isOwnProfile && activeTab === 'posts' && (
-              <button className="share-first-photo-btn">
-                <FiCamera />
-                Share your first photo
-              </button>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* Post Page Modal */}
+      {/* Instagram Post Page Modal */}
       {showPostPage && (
-        <InstagramPostPage
-          posts={activeTab === 'posts' ? posts : activeTab === 'reels' ? reels : []}
+        <InstagramPostPage 
+          posts={profileData.posts || []}
           user={profileData}
           onClose={handleClosePostPage}
           initialPostId={selectedPostId}
           currentUser={currentUserData}
+          isOwnProfile={isOwnProfile}
+          Backend_Url={Backend_Url}
         />
       )}
-    </div>
-  );
-};
-
-// InstagramPostPage Component (you'll need to create this)
-const InstagramPostPage = ({ posts, user, onClose, initialPostId, currentUser }) => {
-  const [currentPostIndex, setCurrentPostIndex] = useState(0);
-
-  useEffect(() => {
-    if (initialPostId) {
-      const index = posts.findIndex(post => post._id === initialPostId);
-      if (index !== -1) {
-        setCurrentPostIndex(index);
-      }
-    }
-  }, [initialPostId, posts]);
-
-  const currentPost = posts[currentPostIndex];
-
-  const handleNextPost = () => {
-    setCurrentPostIndex((prev) => (prev + 1) % posts.length);
-  };
-
-  const handlePrevPost = () => {
-    setCurrentPostIndex((prev) => (prev - 1 + posts.length) % posts.length);
-  };
-
-  if (!currentPost) return null;
-
-  return (
-    <div className="instagram-post-page-overlay">
-      <div className="instagram-post-page">
-        <div className="post-page-header">
-          <button className="post-page-close" onClick={onClose}>
-            <FiX />
-          </button>
-          <div className="post-page-user">
-            <img src={user.profile || "/api/placeholder/40/40"} alt={user.username} />
-            <span>{user.username}</span>
-          </div>
-          <div className="post-page-actions">
-            <button><FiMoreHorizontal /></button>
-          </div>
-        </div>
-
-        <div className="post-page-content">
-          <div className="post-page-media">
-            {currentPost.image ? (
-              <img src={currentPost.image} alt="Post content" />
-            ) : (
-              <video controls>
-                <source src={currentPost.video} type="video/mp4" />
-              </video>
-            )}
-            
-            {posts.length > 1 && (
-              <>
-                <button className="post-nav-btn prev" onClick={handlePrevPost}>
-                  <FiChevronLeft />
-                </button>
-                <button className="post-nav-btn next" onClick={handleNextPost}>
-                  <FiChevronRight />
-                </button>
-              </>
-            )}
-          </div>
-
-          <div className="post-page-sidebar">
-            <div className="post-actions">
-              <button className="post-action-btn">
-                <FiHeart />
-              </button>
-              <button className="post-action-btn">
-                <FiMessageCircle />
-              </button>
-              <button className="post-action-btn">
-                <FiSend />
-              </button>
-            </div>
-
-            <div className="post-likes">
-              <span>{currentPost.likes?.length || 0} likes</span>
-            </div>
-
-            <div className="post-caption">
-              <strong>{user.username}</strong> {currentPost.caption}
-            </div>
-
-            <div className="post-comments">
-              {currentPost.comments?.map((comment, index) => (
-                <div key={index} className="post-comment">
-                  <strong>{comment.username}</strong> {comment.text}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 

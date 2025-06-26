@@ -517,7 +517,7 @@ const fetchUserPosts = async (userData) => {
     const uploadProfilePicture = async (file) => {
         const token = localStorage.getItem("token");
         const formData = new FormData();
-        formData.append("profilePicture", file);
+        formData.append("profile", file);
 
         try {
             const response = await fetch(`${Backend_Url}/user/profile/picture`, {
@@ -651,7 +651,24 @@ const fetchUserPosts = async (userData) => {
                             </div>
                             
                             <div className="story-ring" onClick={showAddStory}>
-                                <div className="add-story-button">+</div>
+                                <input
+                                type="file"
+                                id="fileInput"
+                                style={{ display: "none" }}
+                                accept="image/*"
+                                onChange={handleFileChange}
+                                disabled={uploading}
+                            />
+                                <div className="add-story-button">+
+                                    <input
+                                type="file"
+                                id="fileInput"
+                                style={{ display: "none" }}
+                                accept="image/*"
+                                onChange={handleFileChange}
+                                disabled={uploading}
+                            />
+                                </div>
                             </div>
 
                             <input

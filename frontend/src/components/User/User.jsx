@@ -655,7 +655,7 @@ console.log("All post owners:", allPosts.map(p => p.owner?._id));
                                 </div>}
                             </div>
                             
-                            <div className="story-ring" onClick={showAddStory}>
+                            <div className="story-ring" onClick={handleFileChange}>
                                 <input
                                 type="file"
                                 id="fileInput"

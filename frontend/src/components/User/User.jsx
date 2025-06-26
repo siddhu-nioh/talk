@@ -471,7 +471,12 @@ const fetchUserPosts = async (userData) => {
 
           console.log("Fetched Posts:", data);
         const allPosts = Array.isArray(data) ? data : (Array.isArray(data.posts) ? data.posts : []);
-        const userPosts = allPosts.filter(post => post.owner?._id === currentUser._id);
+       const userPosts = allPosts.filter(post => 
+    post.owner && String(post.owner._id) === String(currentUser._id)
+);
+        console.log("User Posts:", userPosts);
+console.log("Current user ID:", currentUser._id);
+console.log("All post owners:", allPosts.map(p => p.owner?._id));
 
         const postsArray = [];
         const reelsArray = [];

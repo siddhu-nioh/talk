@@ -655,24 +655,10 @@ console.log("All post owners:", allPosts.map(p => p.owner?._id));
                                 </div>}
                             </div>
                             
-                            <div className="story-ring" onClick={handleFileChange}>
-                                <input
-                                type="file"
-                                id="fileInput"
-                                style={{ display: "none" }}
-                                accept="image/*"
-                                onChange={handleFileChange}
-                                disabled={uploading}
-                            />
-                                <div className="add-story-button">+
-                                    <input
-                                type="file"
-                                id="fileInput"
-                                style={{ display: "none" }}
-                                accept="image/*"
-                                onChange={handleFileChange}
-                                disabled={uploading}
-                            />
+                            <div className="story-ring" onClick={() => document.getElementById("fileInput").click()}>
+                               
+                                <div className="add-story-button" onClick={() => document.getElementById("fileInput").click()}>+
+                                    
                                 </div>
                             </div>
 

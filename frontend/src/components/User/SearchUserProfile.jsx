@@ -1,19 +1,46 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import "./User.css";
-import { FaEdit, FaUsers, FaShare, FaEnvelope, FaUserMinus, FaUserPlus } from "react-icons/fa";
+import { useParams } from "react-router-dom";
+// import "./U ser.css";
+// import "./UserProfile.css";
+
+import {
+  FaEdit,
+  FaUsers,
+  FaShare,
+  FaEnvelope,
+  FaUserMinus,
+  FaUserPlus,
+} from "react-icons/fa";
 
 function UserProfile() {
   const Backend_Url = import.meta.env.VITE_BACKEND_URL;
   const { id } = useParams();
-  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentUserId, setCurrentUserId] = useState(null);
 
   const getAuthToken = () => {
-    return localStorage.getItem('token');
+    return localStorage.getItem("token");
+  };
+
+  const fetchCurrentUserId = async (token) => {
+    try {
+      const res = await fetch(`${Backend_Url}/user/me`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+      console.log(data);
+      
+      setCurrentUserId(data._id);
+    } catch (err) {
+      console.error("Failed to fetch current user ID:", err);
+    }
   };
 
   useEffect(() => {
@@ -22,20 +49,19 @@ function UserProfile() {
       if (!token) {
         setError("You need to be logged in to view this profile");
         setLoading(false);
-        // Optionally redirect to login
-        // navigate('/login');
         return;
       }
 
       try {
-        // Fetch logged-in user details and user profile in one request
+        await fetchCurrentUserId(token);
+
         const authResponse = await fetch(`${Backend_Url}/user/${id}`, {
           method: "GET",
           credentials: "include",
           headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         });
 
         if (!authResponse.ok) {
@@ -43,14 +69,7 @@ function UserProfile() {
         }
 
         const userData = await authResponse.json();
-        setCurrentUserId(userData._id);
-
-        // Check if we need to make a second request or if the API returns
-        // both current user info and profile user info in one response
-        // If your API doesn't return this info in one call, keep the second fetch
-        const isFollowing = userData.followers?.includes(userData._id) || false;
-        setUser({ ...userData, isFollowing });
-        
+        setUser(userData);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -59,11 +78,9 @@ function UserProfile() {
     };
 
     fetchUser();
-  }, [id, navigate]);
+  }, [id]);
 
   const handleFollow = async () => {
-    if (user.isFollowing) return;
-
     const token = getAuthToken();
     if (!token) {
       setError("You need to be logged in to follow users");
@@ -71,8 +88,7 @@ function UserProfile() {
     }
 
     try {
-      // Optimistic update
-      setUser(prev => ({
+      setUser((prev) => ({
         ...prev,
         followers: [...prev.followers, currentUserId],
         isFollowing: true,
@@ -82,9 +98,9 @@ function UserProfile() {
         method: "POST",
         credentials: "include",
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       });
 
       if (!response.ok) {
@@ -92,10 +108,9 @@ function UserProfile() {
       }
     } catch (error) {
       console.error(error);
-      // Revert on error
-      setUser(prev => ({
+      setUser((prev) => ({
         ...prev,
-        followers: prev.followers.filter(f => f !== currentUserId),
+        followers: prev.followers.filter((f) => f !== currentUserId),
         isFollowing: false,
       }));
     }
@@ -109,10 +124,9 @@ function UserProfile() {
     }
 
     try {
-      // Optimistic update
-      setUser(prev => ({
+      setUser((prev) => ({
         ...prev,
-        followers: prev.followers.filter(f => f !== currentUserId),
+        followers: prev.followers.filter((f) => f !== currentUserId),
         isFollowing: false,
       }));
 
@@ -120,9 +134,9 @@ function UserProfile() {
         method: "POST",
         credentials: "include",
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       });
 
       if (!response.ok) {
@@ -130,8 +144,7 @@ function UserProfile() {
       }
     } catch (error) {
       console.error(error);
-      // Revert on error
-      setUser(prev => ({
+      setUser((prev) => ({
         ...prev,
         followers: [...prev.followers, currentUserId],
         isFollowing: true,
@@ -144,24 +157,38 @@ function UserProfile() {
   if (!user) return <p>User not found</p>;
 
   return (
+    // <div>hii</div>
+    
     <div className="profile-container">
       <div className="profile-picture-container">
-                    <img src={user.profile || "default-profile.png"} alt="Profile" className="profile-picture" />
-</div>
-      {/* <img src={user.profile || "default-profile.png"} alt="Profile" /> */}
+        <img
+          src={user.profile || "default-profile.png"}
+          alt="Profile"
+          className="profile-picture"
+        />
+      </div>
       <h2>{user.username || "Unknown User"}</h2>
 
       <div className="stats">
-        <div>{(user.posts && user.posts.length) || 0} Posts</div>
-        <div>{(user.followers && user.followers.length) || 0} Followers</div>
-        <div>{(user.following && user.following.length) || 0} Following</div>
+        <div>{user.posts?.length || 0} Posts</div>
+        <div>{user.followers?.length || 0} Followers</div>
+        <div>{user.following?.length || 0} Following</div>
       </div>
 
       <div className="action-buttons">
-        <div className="btn-actions"><FaEdit /></div>
-        <div className="btn-actions"><FaShare /></div>
-        <div className="btn-actions"><FaEnvelope /></div>
-        <button className="btn-actionsa" onClick={() => window.location.href = `/user/followers/${user._id}`}>
+        <div className="btn-actions">
+          <FaEdit />
+        </div>
+        <div className="btn-actions">
+          <FaShare />
+        </div>
+        <div className="btn-actions">
+          <FaEnvelope />
+        </div>
+        <button
+          className="btn-actionsa"
+          onClick={() => window.location.href = `/user/followers/${user._id}`}
+        >
           <FaUsers />
         </button>
         {user.isFollowing ? (
@@ -175,7 +202,6 @@ function UserProfile() {
         )}
       </div>
 
-      {/* Display User Posts */}
       <div className="user-posts">
         <h3>User Posts</h3>
         {user.posts && user.posts.length > 0 ? (
@@ -183,15 +209,22 @@ function UserProfile() {
             {user.posts.map((post, index) => (
               <div key={index} className="post-card">
                 {post.image ? (
-                  <img src={post.image} alt="Post" className="media-content" />
+                  <img
+                    src={post.image}
+                    alt="Post"
+                    className="media-content"
+                  />
                 ) : post.video ? (
                   <video className="media-content" autoPlay loop muted>
                     <source src={post.video} type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>
-                ) : null}
-                {post.caption && <p className="description">{post.description}</p>}
-                {/* <span className="likes">Likes: {post.likes || 0}</span> */}
+                ) : (
+                  <p>No media</p>
+                )}
+                {post.description && (
+                  <p className="description">{post.description}</p>
+                )}
               </div>
             ))}
           </div>

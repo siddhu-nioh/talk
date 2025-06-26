@@ -3,14 +3,12 @@ const router = express.Router();
 const userRouter = require("../controllers/user");
 const { ensureAuthenticated } = require("../middleware");
 const upload = require("../cloudConfig");
-const wrapAsync=require('../utils/wrapAsync');
+const wrapAsync = require('../utils/wrapAsync');
 
 // Signup
-router.get("/signup", userRouter.renderSignup);
 router.post("/signup", upload, userRouter.signup);
 
 // Login
-router.get("/login", userRouter.renderLogin);
 router.post("/login", userRouter.login);
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
@@ -42,8 +40,23 @@ router.get("/auth/check", async (req, res) => {
 // Logout
 router.get("/logout", userRouter.logout);
 
+router.get("/user/me", ensureAuthenticated, async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id).populate("posts"); // populate if needed
+        if (!user) return res.status(404).json({ error: "User not found" });
+        res.json(user);
+    } catch (err) {
+        console.error("Error in /user/me:", err);
+        res.status(500).json({ error: "Server error" });
+    }
+});
 // User Profile
+
 router.get("/user/:id", ensureAuthenticated, userRouter.showUsers);
+
+
+
+
 
 // Follow/Unfollow
 router.post("/user/follow/:id", ensureAuthenticated, userRouter.followUser);

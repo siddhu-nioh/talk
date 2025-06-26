@@ -453,7 +453,7 @@ const InstagramProfile = () => {
             </button>
           </div>
 
-          <div className="profile-bio-section">
+          {/* <div className="profile-bio-section">
             <div className="profile-display-name">{profileData.fullName || profileData.username}</div>
             {profileData.bio && <div className="profile-bio">{profileData.bio}</div>}
             {profileData.website && (
@@ -461,12 +461,12 @@ const InstagramProfile = () => {
                 {profileData.website}
               </a>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
 
       {/* Quick Actions (Mobile) */}
-      <div className="instagram-quick-actions">
+      {/* <div className="instagram-quick-actions">
         <button className="quick-action-btn">
           <FiEdit2 />
         </button>
@@ -484,17 +484,17 @@ const InstagramProfile = () => {
             {isFollowingUser ? <FiUserMinus /> : <FiUserPlus />}
           </button>
         )}
-      </div>
+      </div> */}
 
       {/* Highlights Section */}
-      <div className="instagram-highlights">
+      {/* <div className="instagram-highlights">
         <div className="highlight-item">
           <div className="highlight-circle">
             <span>+</span>
           </div>
           <span className="highlight-label">New</span>
         </div>
-      </div>
+      </div> */}
 
       {/* Content Tabs */}
       <div className="instagram-content-tabs">
@@ -505,7 +505,7 @@ const InstagramProfile = () => {
           <FiGrid />
           <span>POSTS</span>
         </button>
-        <button 
+        {/* <button 
           className={`content-tab ${activeTab === 'saved' ? 'active' : ''}`}
           onClick={() => setActiveTab('saved')}
         >
@@ -518,7 +518,7 @@ const InstagramProfile = () => {
         >
           <FiTag />
           <span>TAGGED</span>
-        </button>
+        </button> */}
       </div>
 
       {/* Posts Grid */}

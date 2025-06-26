@@ -137,18 +137,18 @@ export default function Authmodals() {
                                 {loading ? "Logging in..." : "Login"}
                             </button>
 
-                            <label>
+                            {/* <label>
                                 <input type="checkbox" name="remember" /> Remember me
-                            </label>
+                            </label> */}
                         </div>
 
                         <div className="container" style={{ backgroundColor: "#f1f1f1" }}>
                             <button type="button" className="cancelbtn" onClick={() => setLoginOpen(false)}>
                                 Cancel
                             </button>
-                            <span className="psw">
+                            {/* <span className="psw">
                                 Forgot <a href="#">password?</a>
-                            </span>
+                            </span> */}
                             <span className="psw">
                                 No account?{" "}
                                 <a href="#" onClick={() => { setLoginOpen(false); setSignupOpen(true); }}>

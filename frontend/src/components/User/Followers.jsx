@@ -8,12 +8,17 @@ const Followers = () => {
       const [followers, setFollowers] = useState([]);
       const [loading, setLoading] = useState(true);
       const [error, setError] = useState(null);
+      const token= localStorage.getItem("token");
 
       const fetchFollowers = useCallback(async () => {
             try {
                   const response = await fetch(`${Backend_Url}/user/followers/${id}`, {
                         method: "GET",
                         credentials: "include",
+                        headers: {
+                              Authorization: `Bearer ${token}`,
+                              "Content-Type": "application/json",
+                        },
                   });
 
                   if (!response.ok) {

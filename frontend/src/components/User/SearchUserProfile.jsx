@@ -417,10 +417,10 @@ const InstagramProfile = () => {
             <h1 className="profile-username">{profileData.username}</h1>
             {isOwnProfile ? (
               <>
-                <button className="profile-edit-btn">Edit profile</button>
+                {/* <button className="profile-edit-btn">Edit profile</button>
                 <button className="profile-settings-btn">
                   <FiSettings />
-                </button>
+                </button> */}
               </>
             ) : (
               <>

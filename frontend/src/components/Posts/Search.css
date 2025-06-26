@@ -52,7 +52,7 @@ body {
       /* border-radius: 5vw; */
       color: white;
       font-size: 16px;
-      padding: 0 12px;
+      /* padding: 0 12px; */
   }
   .search-bar-s .search-input-s{
       flex-grow: 1;
@@ -67,7 +67,7 @@ body {
       /* border-radius: 5vw; */
       color: white;
       font-size: 16px;
-      padding: 0 12px;
+      /* padding: 0 12px; */
   }
   
   .search-bar-s input::placeholder {

@@ -49,9 +49,10 @@ function SearchBar() {
                         placeholder="Search"
                         autoComplete="off"
                         value={query}
-                        style={{border:"none", borderBottom: "1px solid gray"}}
+                        style={{border:"none", borderBottom: "1px solid indigo",width:"90%", borderRadius:"0px", backgroundColor:"transparent"}}
                         onChange={handleSearch}
                         className='search-input-s'
+
                     />
 
                     {/* Clear Icon (visible only when there's a query) */}

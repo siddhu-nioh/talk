@@ -51,6 +51,7 @@ function SearchBar() {
                         value={query}
                         style={{border:"none", borderBottom: "1px solid gray"}}
                         onChange={handleSearch}
+                        className='search-input-s'
                     />
 
                     {/* Clear Icon (visible only when there's a query) */}

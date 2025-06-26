@@ -39,7 +39,22 @@ body {
       transition: background-color 0.3s ease;
   }
   
-  .search-bar-s input{
+  .search-bar-s .search-input-s input{
+      flex-grow: 1;
+      background-color: transparent;
+      border: none;
+      width: 80%;
+     
+      outline: transparent;
+      border-collapse: collapse;
+      border: none;
+      outline: none;
+      /* border-radius: 5vw; */
+      color: white;
+      font-size: 16px;
+      padding: 0 12px;
+  }
+  .search-bar-s .search-input-s{
       flex-grow: 1;
       background-color: transparent;
       border: none;
@@ -73,7 +88,13 @@ body {
   .search-bar-s .search-icon-s:hover {
       color: #007bff; /* Blue hover effect */
   }
-  
+  @media screen and (max-width: 600px) {
+      .search-bar-s .search-icon-s{
+            height: 5vw;
+            width: 4.5vw;
+      }
+    
+  }
   /* Clear Icon */
   .search-bar-s .clear-icon {
       color: white;

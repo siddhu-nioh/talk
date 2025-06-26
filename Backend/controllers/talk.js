@@ -99,6 +99,20 @@ module.exports.renderIndex = async (req, res) => {
   }
 };
 
+// route for account page only 
+module.exports.getAllPosts = async (req, res) => {
+  try {
+    const posts = await Post.find({})
+      .sort({ createdAt: -1 }) // newest first
+      .populate("owner");
+
+    return res.status(200).json({ posts });
+  } catch (error) {
+    console.error("Error fetching all posts:", error);
+    return res.status(500).json({ error: "Failed to fetch posts" });
+  }
+};
+
 module.exports.renderNew = (req, res) => {
   res.render("main/new");
 };
@@ -192,6 +206,8 @@ module.exports.renderUser = (req, res) => {
 //     res.status(500).json({ error: "Failed to upload post" });
 //   }
 // };
+
+
 module.exports.postUpload = async (req, res) => {
   if (!req.user || !req.user._id) {
     console.error(" Missing req.user or req.user._id");
@@ -249,7 +265,7 @@ module.exports.searchUsers = async (req, res) => {
     ]
   }).limit(10);
   res.status(200).json(users);
-};
+};  
 
 // New route to like a post
 module.exports.likePost = async (req, res) => {

@@ -453,7 +453,7 @@ const fetchReels = useCallback(async () => {
   try {
     setLoading(true);
     let page = 1;
-    const maxPages = 1000;
+    const maxPages = 1000  ;
     let collectedVideos = [];
 
     while (collectedVideos.length < 3 && page <= maxPages) {
@@ -760,30 +760,30 @@ const fetchReels = useCallback(async () => {
                   <span>{formatCount(typeof reel.likes === 'number' ? reel.likes : reel.likes?.length || 0)}</span>
                 </button>
                 
-                {/* <button 
+                <button 
                   className="reel-action-button"
                   onClick={() => toggleComments(reelId)}
                 >
-                  <div className="action-icon">💬</div>
-                  <span>{formatCount(typeof reel.comments === 'number' ? reel.comments : reel.comments?.length || 0)}</span>
-                </button> */}
+                  {/* <div className="action-icon">💬</div>
+                  <span>{formatCount(typeof reel.comments === 'number' ? reel.comments : reel.comments?.length || 0)}</span> */}
+                </button>
                 
-                {/* <button 
+                <button 
                   className="reel-action-button"
                   onClick={handleShare}
                 >
-                  <div className="action-icon">↗️</div>
-                  <span>{formatCount(reel.shares || 0)}</span>
-                </button> */}
+                  {/* <div className="action-icon">↗️</div> */}
+                  {/* <span>{formatCount(reel.shares || 0)}</span> */}
+                </button>
                 
-                {/* <button className="reel-action-button">
-                  <div className="action-icon">🔖</div>
-                  <span>{formatCount(reel.savedBy || 0)}</span>
-                </button> */}
+                <button className="reel-action-button">
+                  {/* <div className="action-icon">🔖</div> */}
+                  {/* <span>{formatCount(reel.savedBy || 0)}</span> */}
+                </button>
                 
-                {/* <button className="reel-action-button more-options">
-                  <div className="action-icon">•••</div>
-                </button> */}
+                <button className="reel-action-button more-options">
+                  {/* <div className="action-icon">•••</div> */}
+                </button>
               </div>
               
               {/* Comments section */}

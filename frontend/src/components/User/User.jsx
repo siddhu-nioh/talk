@@ -432,24 +432,57 @@ function Profile() {
     //         // Just show empty states instead
     //     }
     // };
-    const fetchUserPosts = async (userData) => {
+//     const fetchUserPosts = async (userData) => {
+//     try {
+//         const currentUser = userData || user;
+//         if (!currentUser) return;
+
+//         const response = await fetch(`${Backend_Url}/talk`);
+//         if (!response.ok) throw new Error("Failed to fetch posts");
+
+//         const data = await response.json();
+
+//         // Check if the response is an array or has a 'posts' property
+//         const allPosts = Array.isArray(data) ? data : (Array.isArray(data.posts) ? data.posts : []);
+
+//         const userPosts = allPosts.filter(post => post.owner?._id === currentUser._id);
+
+//         // Separate posts and reels
+//         const postsArray = userPosts.filter(post => post.image);
+//         const reelsArray = userPosts.filter(post => post.video);
+
+//         setPosts(postsArray);
+//         setReels(reelsArray);
+//     } catch (err) {
+//         console.error("Error fetching posts:", err);
+//         setPosts([]);
+//         setReels([]);
+//     }
+// };
+const fetchUserPosts = async (userData) => {
     try {
         const currentUser = userData || user;
         if (!currentUser) return;
 
-        const response = await fetch(`${Backend_Url}/talk`);
+        const response = await fetch(`${Backend_Url}/talk/all`);
         if (!response.ok) throw new Error("Failed to fetch posts");
 
         const data = await response.json();
 
-        // Check if the response is an array or has a 'posts' property
+          console.log("Fetched Posts:", data);
         const allPosts = Array.isArray(data) ? data : (Array.isArray(data.posts) ? data.posts : []);
-
         const userPosts = allPosts.filter(post => post.owner?._id === currentUser._id);
 
-        // Separate posts and reels
-        const postsArray = userPosts.filter(post => post.image);
-        const reelsArray = userPosts.filter(post => post.video);
+        const postsArray = [];
+        const reelsArray = [];
+
+        userPosts.forEach(post => {
+            if (post.image) postsArray.push(post);
+            if (post.video) reelsArray.push(post);
+        });
+
+        console.log("Fetched Posts:", postsArray.length);
+        console.log("Fetched Reels:", reelsArray.length);
 
         setPosts(postsArray);
         setReels(reelsArray);
@@ -459,6 +492,7 @@ function Profile() {
         setReels([]);
     }
 };
+
 
 
     const handleLogout = () => {
@@ -692,7 +726,7 @@ function Profile() {
                     >
                         <RiMovie2Fill />
                     </div>
-                    <div 
+                    {/* <div 
                         className={`tab ${activeTab === 'saved' ? 'active' : ''}`} 
                         onClick={() => setActiveTab('saved')}
                     >
@@ -703,7 +737,7 @@ function Profile() {
                         onClick={() => setActiveTab('tagged')}
                     >
                         <FaUsers />
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* Content sections based on active tab */}

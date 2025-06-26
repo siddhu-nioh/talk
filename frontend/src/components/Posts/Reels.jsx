@@ -724,12 +724,12 @@ const fetchReels = useCallback(async () => {
               {/* User info and description */}
               <div className="reel-details">
                 <div className="user-info">
-                  <img
+                  {/* <img
                     src={reel.owner.profile || "https://via.placeholder.com/40"}
                     alt={reel.owner.username}
                     className="reel-avatar"
                   />
-                  <p className="reel-username">{reel.owner.username}</p>
+                  <p className="reel-username">{reel.owner.username}</p> */}
                   <Link to={`/user/${reel.owner?._id}`} className="user-info" style={{ textDecoration: 'none' }}>
                                       <img
                                         src={reel.owner?.profile || "/default-avatar.png"}

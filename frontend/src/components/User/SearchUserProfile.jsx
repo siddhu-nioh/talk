@@ -270,7 +270,33 @@ const InstagramProfile = () => {
   const [currentUserData, setCurrentUserData] = useState(null);
   const [activeTab, setActiveTab] = useState('posts');
   const [isFollowingUser, setIsFollowingUser] = useState(false);
-
+ const [user, setUser] = useState(null);
+ const [selectedPostId, setSelectedPostId] = useState(null);
+  const handleClosePostPage = () => {
+      setShowPostPage(false);
+    };
+     const handleClosePost = () => {
+        setSelectedPost(null);
+        document.body.style.overflow = 'auto';
+    };
+     useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (selectedPost && !event.target.closest(".expanded-media") && !event.target.closest(".post-actions-expanded")) {
+                handleClosePost();
+            }
+        };
+    
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [selectedPost]);
+     const handlePostClick = (post) => {
+        setSelectedPost(post);
+        setSelectedPostId(post._id);
+        setShowPostPage(true);
+    };
+    
   // Get authentication token
   const getAuthToken = () => localStorage.getItem("token");
 
@@ -289,6 +315,10 @@ const InstagramProfile = () => {
         withCredentials: true
       });
       setCurrentUserData(response.data);
+       const data = await response.json();
+
+      setUser(data.user);
+       localStorage.setItem("user", JSON.stringify(data.user));
       return response.data;
     } catch (error) {
       console.error("Failed to fetch current user:", error);
@@ -520,6 +550,15 @@ const InstagramProfile = () => {
           <span>TAGGED</span>
         </button> */}
       </div>
+        {showPostPage && (
+  <InstagramPostPage
+    posts={activeTab === 'posts' ? posts : activeTab === 'reels' ? reels : []}
+    user={user}
+    onClose={handleClosePostPage}
+    initialPostId={selectedPostId}
+  />
+)}
+
 
       {/* Posts Grid */}
       <div className="instagram-posts-grid">

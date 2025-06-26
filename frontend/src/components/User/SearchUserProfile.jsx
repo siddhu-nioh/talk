@@ -428,9 +428,9 @@ const InstagramProfile = () => {
                   {isFollowingUser ? 'Following' : 'Follow'}
                 </button>
                 <button className="profile-message-btn">Message</button>
-                <button className="profile-more-btn">
+                {/* <button className="profile-more-btn">
                   <FiMoreHorizontal />
-                </button>
+                </button> */}
               </>
             )}
           </div>

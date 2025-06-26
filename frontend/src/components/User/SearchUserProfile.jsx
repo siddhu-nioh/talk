@@ -159,8 +159,8 @@ function UserProfile() {
   return (
     // <div>hii</div>
     
-    <div className="profile-container">
-      <div className="profile-picture-container">
+    <div className="profile-container-s">
+      <div className="profile-picture-container-s">
         <img
           src={user.profile || "default-profile.png"}
           alt="Profile"

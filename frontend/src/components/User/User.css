@@ -260,7 +260,25 @@ body {
   z-index: 1;
   position: relative;
 }
+.profile-page-s {
+  padding-top: 60px; /* Make room for fixed header */
+  color: var(--light-text);
+  /* background-color: var(--darker-bg); */
+}
 
+.profile-container-s {
+  width: 100%;
+  max-width: 975px;
+  margin: 0 auto;
+  /* background-color: var(--darker-bg); */
+  border-radius: 0;
+  opacity: 1; /* Force visibility */
+  transform: none; /* Remove transform */
+  transition: none; /* Remove transition that might be causing issues */
+  padding-bottom: 70px; /* Give space for bottom navigation */
+  z-index: 1;
+  position: relative;
+}
 /* Ensure content is visible */
 .profile-header,
 .content-tabs,

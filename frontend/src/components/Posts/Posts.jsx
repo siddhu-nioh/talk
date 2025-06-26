@@ -307,14 +307,14 @@ function TalkPosts() {
               {/* Post header */}
               <div className="post-header">
                 <div className="user-info">
-                  <Link to={`/user/${post.owner?._id}`} className="avatar-container">
+                  <Link to={`/user/${post.owner?._id}`} className="avatar-container" style={{ textDecoration: 'none' }}>
                     <img
                       src={post.owner?.profile || "/default-avatar.png"}
                       alt={post.owner?.username || "User"}
                       className="avatar-image"
                     />
                   </Link>
-                  <Link to={`/user/${post.owner?._id}`} className="username-P">
+                  <Link to={`/user/${post.owner?._id}`} className="username-P" style={{ textDecoration: 'none' }}>
                     {post.owner?.username || "Unknown User"}
                   </Link>
                 </div>

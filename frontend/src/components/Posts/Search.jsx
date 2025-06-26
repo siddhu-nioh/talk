@@ -39,9 +39,9 @@ function SearchBar() {
     return (
         <div className="main">
             <div className="search-container">
-                <div className="search-bar">
+                <div className="search-bar-s">
                     {/* Search Icon */}
-                    <FaSearch className="search-icon" />
+                    <FaSearch className="search-icon-s" />
 
                     {/* Search Input */}
                     <input

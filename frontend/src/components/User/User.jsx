@@ -610,7 +610,7 @@ console.log("All post owners:", allPosts.map(p => p.owner?._id));
                             <FaEdit /> <span>Edit Profile</span>
                         </div>
                         <div className="sidebar-item" onClick={() => window.location.href = "/talk/notifications"}>
-                            <FaEnvelope /> <span>Notifications</span>
+                            <FaEnvelope /> <span>Messages</span>
                         </div>
                         <div className="sidebar-item" onClick={() => window.location.href = "/talk/about-us"}>
                             <FaInfoCircle /> <span>About Us</span>

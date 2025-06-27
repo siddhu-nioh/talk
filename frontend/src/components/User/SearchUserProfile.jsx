@@ -427,7 +427,7 @@ const InstagramProfile = () => {
                 >
                   {isFollowingUser ? 'Following' : 'Follow'}
                 </button>
-                <button className="profile-message-btn">Message</button>
+                <button className="profile-message-btn" onClick={() => window.location.href = "/talk/notifications"} >Message</button>
                 {/* <button className="profile-more-btn">
                   <FiMoreHorizontal />
                 </button> */}
@@ -484,7 +484,10 @@ const InstagramProfile = () => {
       <div className="instagram-posts-grid">
         {profileData.posts && profileData.posts.length > 0 ? (
           profileData.posts.map((post, index) => (
-            <div key={post._id || index} className="instagram-post-item">
+            <div key={post._id || index} className="instagram-post-item"
+            onClick={() => navigate(`/posts/${id}?index=${index}`)} // Add this line
+  style={{ cursor: 'pointer' }} // Add this line
+  >
               <div className="post-media-container">
                 {post.image ? (
                   <img

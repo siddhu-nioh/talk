@@ -16,6 +16,7 @@ import Reels from './components/Posts/Reels';
 import TermsAndConditions from './components/User/TermsAndConditions'; // Add this component
 import TalkPosts from './components/Posts/Posts';
 import Notifications from './components/User/Notifications';
+import PostsViewPage from './components/User/PostViewPage';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
                   <Route path="/talk/privacy-policy" element={<PrivacyPolicy />} />
                   <Route path="/talk/terms-and-conditions" element={<TermsAndConditions />} />
                   <Route path="/talk/notifications" element={<Notifications />} />
+                  <Route path="/posts/:id" element={<PostsViewPage />} />
         {/* Protected Routes */}
         <Route
           path="/*"

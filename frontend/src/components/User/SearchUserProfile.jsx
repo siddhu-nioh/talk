@@ -238,25 +238,17 @@
 
 // export default UserProfile;
 
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import {
-  FiEdit2,
-  FiShare,
-  FiMail,
-  FiUserMinus,
-  FiUserPlus,
-  FiUsers,
   FiGrid,
-  FiBookmark,
-  FiTag,
-  FiMoreHorizontal,
-  FiSettings,
   FiHeart,
   FiMessageCircle,
-  FiSend
+  FiUserMinus,
+  FiUserPlus,
+  FiUsers
 } from "react-icons/fi";
+import { useNavigate, useParams } from "react-router-dom";
 import "./InstagramProfile.css";
 
 const InstagramProfile = () => {

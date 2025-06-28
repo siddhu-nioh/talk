@@ -152,7 +152,7 @@ img.post-media-full,video.post-media-full {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 1s ease;
   color: white;
 }
 
@@ -168,7 +168,7 @@ img.post-media-full,video.post-media-full {
 .like-button-s svg {
   width: 12vw;
   height: 12vw;
-  transition: all 0.2s ease;
+  transition: all 1s ease;
 }
 
 .like-button-s svg.filled {
@@ -317,5 +317,5 @@ img.post-media-full,video.post-media-full {
 }
 
 .like-button.liked svg {
-  animation: heartPulse 0.3s ease;
+  animation: heartPulse 1s ease;
 }

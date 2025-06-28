@@ -233,12 +233,12 @@ const PostsViewPage = () => {
               </div>
 
               {/* Post Caption */}
-              {post.caption && (
+              
                 <div className="post-caption">
                   <span className="caption-username">{profileData?.username}</span>
                   <span className="caption-text">{post.description}</span>
                 </div>
-              )}
+
             </div>
           );
         })}

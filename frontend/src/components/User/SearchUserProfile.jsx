@@ -480,7 +480,8 @@ const InstagramProfile = () => {
             onClick={() => navigate(`/posts/${id}?index=${index}`)} // Add this line
   style={{ cursor: 'pointer' }} // Add this line
   >
-              <div className="post-media-container">
+              <div className="post-media-container" onClick={() => navigate(`/posts/${id}?index=${index}`)} // Add this line
+  style={{ cursor: 'pointer' }} >
                 {post.image ? (
                   <img
                     src={post.image}

@@ -67,7 +67,7 @@ const PostsViewPage = () => {
       setIsLoading(false);
     }
   };
-const handleDoubleTap = (event, reelId) => {
+const handleDoubleTap = (event, reelId,index) => {
     event.stopPropagation();
     
     if (!likedReels[reelId]) {
@@ -83,7 +83,7 @@ const handleDoubleTap = (event, reelId) => {
       }, 1000);
       
       // Toggle like
-      handleLike(reelId);
+      handleLikePost(reelId,index);
     }
   };
   useEffect(() => {
@@ -211,7 +211,7 @@ const handleDoubleTap = (event, reelId) => {
           
           return (
             <div key={post._id} className="post-view-item">
-              <div className="post-media-wrapper" onDoubleClick={(e) => handleDoubleTap(e, reelId)} >
+              <div className="post-media-wrapper" onDoubleClick={(e) => handleDoubleTap(e, post._id,index)} >
                 {post.image ? (
                   <img
                     src={post.image}

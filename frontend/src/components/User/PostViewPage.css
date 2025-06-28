@@ -134,7 +134,7 @@ img.post-media-full,video.post-media-full {
 
 .post-actions-overlay {
   position: absolute;
-  bottom: 20vw;
+  bottom: 24vw;
   right: 8vw;
   display: flex;
   flex-direction: column;

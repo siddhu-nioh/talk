@@ -170,7 +170,7 @@ const PostsViewPage = () => {
     <div className="posts-view-container">
       {/* Sticky Header */}
       <div className="posts-view-header">
-        <button onClick={() => navigate(-1)} className="back-button">
+        <button onClick={() => navigate(-1)} className="back-button-s">
           <FiArrowLeft />
         </button>
         <div className="header-user-info">

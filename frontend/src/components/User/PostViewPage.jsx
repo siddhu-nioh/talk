@@ -67,7 +67,25 @@ const PostsViewPage = () => {
       setIsLoading(false);
     }
   };
-
+const handleDoubleTap = (event, reelId) => {
+    event.stopPropagation();
+    
+    if (!likedReels[reelId]) {
+      const heart = document.createElement('div');
+      heart.className = 'heart-animation';
+      heart.style.left = `${event.clientX - 50}px`;
+      heart.style.top = `${event.clientY - 50}px`;
+      document.body.appendChild(heart);
+      
+      // Remove the heart element after animation completes
+      setTimeout(() => {
+        document.body.removeChild(heart);
+      }, 1000);
+      
+      // Toggle like
+      handleLike(reelId);
+    }
+  };
   useEffect(() => {
     const token = getAuthToken();
     if (!token) {
@@ -193,7 +211,7 @@ const PostsViewPage = () => {
           
           return (
             <div key={post._id} className="post-view-item">
-              <div className="post-media-wrapper">
+              <div className="post-media-wrapper" onDoubleClick={(e) => handleDoubleTap(e, reelId)} >
                 {post.image ? (
                   <img
                     src={post.image}

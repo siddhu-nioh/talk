@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import './Followers.css';
+import { Link } from "react-router-dom";
 
 const Followers = () => {
       const Backend_Url = import.meta.env.VITE_BACKEND_URL;
@@ -59,8 +60,10 @@ const Followers = () => {
                   <ul className="followers-list">
                         {followers.map((follower, index) => (
                               <li key={follower._id + index} className="follower-item">
+                                      <Link to={`/user/${follower._id}`}  style={{ textDecoration: 'none' }}>
                                     <img src={follower.profile || "default-profile.png"} alt={follower.username} className="follower-avatar" />
                                     <span className="followers-name">{follower.username}</span>
+                                    </Link>
                               </li>
                         ))}
                   </ul>

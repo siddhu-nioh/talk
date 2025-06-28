@@ -44,8 +44,8 @@
 }
 
 .back-button-s svg {
-  width: 4vw;
-  height: 4vw;
+  width: 20vw;
+  height: 20vw;
   transition: all 0.2s ease;
 }
 
@@ -163,8 +163,8 @@
 }
 
 .like-button-s svg {
-  width: 8vw;
-  height: 8vw;
+  width: 12vw;
+  height: 12vw;
   transition: all 0.2s ease;
 }
 
@@ -251,8 +251,8 @@
   }
   
   .back-button-s {
-    width: 14vw;
-    height: 14vw;
+    width: 12vw;
+    height: 12vw;
   }
   
   /* .header-avatar {
@@ -270,8 +270,8 @@
   } */
   
    .like-button-s {
-    width: 11vw;
-    height: 11vw;
+    width: 15vw;
+    height: 15vw;
   } 
   .like-count{
     font-size: 6vw;

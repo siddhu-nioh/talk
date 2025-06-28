@@ -67,7 +67,7 @@ const PostsViewPage = () => {
       setIsLoading(false);
     }
   };
-const handleDoubleTap = (event, reelId,index) => {
+const handleDoubleTap = (event, reelId) => {
     event.stopPropagation();
     
     if (!likedReels[reelId]) {
@@ -82,8 +82,7 @@ const handleDoubleTap = (event, reelId,index) => {
         document.body.removeChild(heart);
       }, 1000);
       
-      // Toggle like
-      handleLikePost(reelId,index);
+     
     }
   };
   useEffect(() => {
@@ -210,14 +209,15 @@ const handleDoubleTap = (event, reelId,index) => {
           const isLiked = post.likes?.includes(currentUserData?._id);
           
           return (
-            <div key={post._id} className="post-view-item">
-              <div className="post-media-wrapper" onDoubleClick={(e) => handleDoubleTap(e, post._id,index)} >
+            <div key={post._id} className="post-view-item" >
+              <div className="post-media-wrapper" 
+              onDoubleClick={(e) => handleDoubleTap(e, post._id)} >
                 {post.image ? (
                   <img
                     src={post.image}
                     alt="Post content"
                     className="post-media-full"
-                    onDoubleClick={() => handleDoubleClick(post._id, index)} onClick={(e) => handleDoubleTap(e, post._id,index)}
+                    onDoubleClick={() => handleDoubleClick(post._id, index)} 
                   />
                 ) : post.video ? (
                   <video
@@ -226,7 +226,7 @@ const handleDoubleTap = (event, reelId,index) => {
                     
                     loop
                     playsInline
-                    onDoubleClick={() => handleDoubleClick(post._id, index)} onClick={(e) => handleDoubleTap(e, post._id,index)}
+                    onDoubleClick={() => handleDoubleClick(post._id, index)} 
                   >
                     <source src={post.video} type="video/mp4" />
                   </video>

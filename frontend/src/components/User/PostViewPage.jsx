@@ -217,7 +217,7 @@ const handleDoubleTap = (event, reelId,index) => {
                     src={post.image}
                     alt="Post content"
                     className="post-media-full"
-                    onDoubleClick={() => handleDoubleClick(post._id, index)}
+                    onDoubleClick={() => handleDoubleClick(post._id, index)} onClick={(e) => handleDoubleTap(e, post._id,index)}
                   />
                 ) : post.video ? (
                   <video
@@ -226,7 +226,7 @@ const handleDoubleTap = (event, reelId,index) => {
                     
                     loop
                     playsInline
-                    onDoubleClick={() => handleDoubleClick(post._id, index)}
+                    onDoubleClick={() => handleDoubleClick(post._id, index)} onClick={(e) => handleDoubleTap(e, post._id,index)}
                   >
                     <source src={post.video} type="video/mp4" />
                   </video>

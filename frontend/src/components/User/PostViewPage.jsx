@@ -205,7 +205,7 @@ const PostsViewPage = () => {
                   <video
                     ref={el => videoRefs.current[index] = el}
                     className="post-media-full"
-                    muted
+                    
                     loop
                     playsInline
                     onDoubleClick={() => handleDoubleClick(post._id, index)}
@@ -236,7 +236,7 @@ const PostsViewPage = () => {
               {post.caption && (
                 <div className="post-caption">
                   <span className="caption-username">{profileData?.username}</span>
-                  <span className="caption-text">{post.caption}</span>
+                  <span className="caption-text">{post.description}</span>
                 </div>
               )}
             </div>

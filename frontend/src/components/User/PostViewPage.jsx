@@ -9,13 +9,14 @@ const PostsViewPage = () => {
   const { id } = useParams(); // user id
   const navigate = useNavigate();
   const location = useLocation();
-  
+   const [likedReels, setLikedReels] = useState({});
   const [posts, setPosts] = useState([]);
   const [currentPostIndex, setCurrentPostIndex] = useState(0);
   const [profileData, setProfileData] = useState(null);
   const [currentUserData, setCurrentUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const videoRefs = useRef([]);
+  const [reels, setReels] = useState([]);
 
   // Get initial post index from URL params or state
   useEffect(() => {
@@ -84,6 +85,31 @@ const handleDoubleTap = (event, reelId) => {
       
      
     }
+    handleLike(reelId);
+  };
+  const handleLike = (reelId) => {
+    setLikedReels(prev => {
+      const newState = { ...prev };
+      newState[reelId] = !prev[reelId];
+      
+      // Update like count in reels
+      setReels(prevReels => 
+        prevReels.map(reel => 
+          reel._id === reelId 
+            ? { 
+                ...reel, 
+                likes: typeof reel.likes === 'number'
+                  ? (newState[reelId] ? reel.likes + 1 : reel.likes - 1)
+                  : (newState[reelId] 
+                    ? [...(reel.likes || []), "currentUserId"]
+                    : (reel.likes || []).filter(id => id !== "currentUserId"))
+              } 
+            : reel
+        )
+      );
+      
+      return newState;
+    });
   };
   useEffect(() => {
     const token = getAuthToken();

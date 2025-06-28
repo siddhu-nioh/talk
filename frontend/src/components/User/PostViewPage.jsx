@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { FiArrowLeft, FiHeart } from "react-icons/fi";
-import "./PostsViewPage.css";
+import "./PostViewPage.css"; 
 
 const PostsViewPage = () => {
   const Backend_Url = import.meta.env.VITE_BACKEND_URL;

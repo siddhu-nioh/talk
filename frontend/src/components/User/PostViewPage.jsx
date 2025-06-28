@@ -221,7 +221,7 @@ const PostsViewPage = () => {
                 {/* Post Actions */}
                 <div className="post-actions-overlay">
                   <button
-                    className={`like-button ${isLiked ? 'liked' : ''}`}
+                    className={`like-button-s ${isLiked ? 'liked' : ''}`}
                     onClick={() => handleLikePost(post._id, index)}
                   >
                     <FiHeart className={isLiked ? 'filled' : ''} />

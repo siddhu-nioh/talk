@@ -230,14 +230,15 @@ const PostsViewPage = () => {
                     {post.likes?.length || 0}
                   </span>
                 </div>
+                <div className="post-caption">
+                  {/* <span className="caption-username">{profileData?.username}</span> */}
+                  <span className="caption-text">{post.description}</span>
+                </div>
               </div>
 
               {/* Post Caption */}
               
-                <div className="post-caption">
-                  <span className="caption-username">{profileData?.username}</span>
-                  <span className="caption-text">{post.description}</span>
-                </div>
+                
 
             </div>
           );

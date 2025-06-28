@@ -134,7 +134,7 @@ img.post-media-full,video.post-media-full {
 
 .post-actions-overlay {
   position: absolute;
-  bottom: 34vw;
+  bottom: 4vw;
   right: 8vw;
   display: flex;
   flex-direction: column;
@@ -267,10 +267,10 @@ img.post-media-full,video.post-media-full {
     font-size: 15px;
   } */
   
-  /* .post-actions-overlay {
-    bottom: 15px;
-    right: 15px;
-  } */
+  .post-actions-overlay {
+    bottom: 35vw;
+    right: 8vw;
+  }
   
    .like-button-s {
     width: 15vw;

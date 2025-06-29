@@ -169,6 +169,7 @@ body {
   position: fixed;
   top: 0;
   right: -300px;
+  padding: 5px;
   width: 300px;
   height: 100vh;
   border-bottom: 1px solid rgba(139, 92, 246, 0.3);
@@ -187,7 +188,7 @@ body {
 }
 
 .sidebar-content {
-  padding: 0;
+  padding: 20px;
   height: 100%;
   display: flex;
   border-bottom: 1px solid rgba(139, 92, 246, 0.3);

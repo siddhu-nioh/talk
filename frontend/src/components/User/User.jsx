@@ -278,6 +278,8 @@ import {
     FaEllipsisH, FaRegComment, FaBars, FaCamera
 } from "react-icons/fa";
 import { CgMediaLive } from "react-icons/cg";
+
+import { useNavigate, useParams } from "react-router-dom";
 import { RiLayoutGridFill, RiMovie2Fill, RiBookmarkFill } from "react-icons/ri";
 // Add this import statement at the top of your Profile.js file
 import InstagramPostPage from './InstagramPage'; // Adjust the path according to where you've saved the component
@@ -555,6 +557,10 @@ console.log("All post owners:", allPosts.map(p => p.owner?._id));
     const closeStoryModal = () => {
         setShowStoryModal(false);
     };
+    const navigate= useNavigate();
+    const navigateToFollowers = () => navigate(`/user/followers/${id}`);
+  const navigateToFollowing = () => navigate(`/user/following/${id}`);
+
 
     if (loading) return (
         <div className="loading-screen">
@@ -709,11 +715,11 @@ console.log("All post owners:", allPosts.map(p => p.owner?._id));
                             <div className="stat-count">{posts.length + reels.length}</div>
                             <div className="stat-label">Posts</div>
                         </div>
-                        <div className="stat-item">
-                            <div className="stat-count">{(user.followers && user.followers.length) || 0}</div>
+                        <div className="stat-item" onClick={navigateToFollowers}>
+                            <div className="stat-count" >{(user.followers && user.followers.length) || 0}</div>
                             <div className="stat-label">Followers</div>
                         </div>
-                        <div className="stat-item">
+                        <div className="stat-item" onClick={navigateToFollowing}>
                             <div className="stat-count">{(user.following && user.following.length) || 0}</div>
                             <div className="stat-label">Following</div>
                         </div>

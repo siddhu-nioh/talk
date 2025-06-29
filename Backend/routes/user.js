@@ -65,6 +65,8 @@ router.post("/user/unfollow/:id", ensureAuthenticated, userRouter.unFollowUser);
 // Followers
 router.get("/user/followers/:id", ensureAuthenticated, userRouter.allFollowers);
 //update user profile picture
+//following 
+router.get("/user/following/:id", ensureAuthenticated, userRouter.allFollowing);
 
 router.post("/user/profile/picture", ensureAuthenticated, upload, wrapAsync(userRouter.updateProfile));
 

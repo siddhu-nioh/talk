@@ -125,6 +125,17 @@ module.exports.allFollowers = async (req, res) => {
     res.json({ followers: user.followers });
 };
 
+module.exports.allFollowing = async (req, res) => {
+    const { id } = req.params;
+    const user = await User.findById(id).populate("following");
+
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ followers: user.followers });
+};
+
 //update user profile picture
 // module.exports.updateProfile = async (req, res) => {
 //         if (!req.files || !req.files.profilePicture || req.files.profilePicture.length === 0) {

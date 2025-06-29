@@ -17,6 +17,7 @@ import TermsAndConditions from './components/User/TermsAndConditions'; // Add th
 import TalkPosts from './components/Posts/Posts';
 import Notifications from './components/User/Notifications';
 import PostsViewPage from './components/User/PostViewPage';
+import FOllowing from './components/User/Following';
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
                 <Routes>
                   <Route path="/user/:id" element={<ShowUser />} />
                   <Route path="/user/followers/:id" element={<Followers />} />
+                   <Route path="/user/following/:id" element={<FOllowing />} />
                   <Route path="/talk/search" element={<SearchBar />} />
                   <Route path="/talk/user" element={<User />} />
                   <Route path="/talk/new" element={<NewPost />} />

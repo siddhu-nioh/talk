@@ -33,7 +33,7 @@ console.log("Response Data:",response)
 
       const data = await response.json();
       console.log("Fetched following data:", data);
-      setFollowers(data.followers);
+      setFollowers(data.following);
     } catch (err) {
       setError(err.message);
     } finally {

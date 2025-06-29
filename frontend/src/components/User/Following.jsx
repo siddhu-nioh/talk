@@ -98,7 +98,7 @@ console.log("Response Data:",response)
                   <Users size={20} />
                 </div>
                 <div className="header-text">
-                  <h1 className="page-title">Followers</h1>
+                  <h1 className="page-title">Following</h1>
                   <p className="followers-count">
                     {followers.length} {followers.length === 1 ? 'following' : 'Following'}
                   </p>

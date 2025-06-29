@@ -301,7 +301,8 @@ function Profile() {
     const profileRef = useRef(null);
     const [showPostPage, setShowPostPage] = useState(false);
     const [selectedPostId, setSelectedPostId] = useState(null);
-    
+    const { id } = useParams();
+    const navigate = useNavigate();
    
     
     const handleClosePostPage = () => {
@@ -557,7 +558,7 @@ console.log("All post owners:", allPosts.map(p => p.owner?._id));
     const closeStoryModal = () => {
         setShowStoryModal(false);
     };
-    const navigate= useNavigate();
+    // const navigate= useNavigate();
     const navigateToFollowers = () => navigate(`/user/followers/${id}`);
   const navigateToFollowing = () => navigate(`/user/following/${id}`);
 
@@ -716,12 +717,12 @@ console.log("All post owners:", allPosts.map(p => p.owner?._id));
                             <div className="stat-label">Posts</div>
                         </div>
                         <div className="stat-item" onClick={navigateToFollowers}>
-                            <div className="stat-count" >{(user.followers && user.followers.length) || 0}</div>
-                            <div className="stat-label">Followers</div>
+                            <div className="stat-count"  onClick={navigateToFollowers}>{(user.followers && user.followers.length) || 0}</div>
+                            <div className="stat-label"  onClick={navigateToFollowers}>Followers</div>
                         </div>
                         <div className="stat-item" onClick={navigateToFollowing}>
-                            <div className="stat-count">{(user.following && user.following.length) || 0}</div>
-                            <div className="stat-label">Following</div>
+                            <div className="stat-count" onClick={navigateToFollowing}>{(user.following && user.following.length) || 0}</div>
+                            <div className="stat-label"  onClick={navigateToFollowing}>Following</div>
                         </div>
                     </div>
                 </div>

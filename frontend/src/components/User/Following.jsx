@@ -24,12 +24,15 @@ const FOllowing = () => {
           "Content-Type": "application/json",
         },
       });
-
+      console.log("Fetching following from:", `${Backend_Url}/user/following/${id}`);
+console.log("Response status:", response.status);
+console.log("Response Data:",response)
       if (!response.ok) {
-        throw new Error("Failed to fetch followers");
+        throw new Error("Failed to fetch following");
       }
 
       const data = await response.json();
+      console.log("Fetched following data:", data);
       setFollowers(data.followers);
     } catch (err) {
       setError(err.message);
@@ -97,7 +100,7 @@ const FOllowing = () => {
                 <div className="header-text">
                   <h1 className="page-title">Followers</h1>
                   <p className="followers-count">
-                    {followers.length} {followers.length === 1 ? 'follower' : 'followers'}
+                    {followers.length} {followers.length === 1 ? 'following' : 'Following'}
                   </p>
                 </div>
               </div>
@@ -113,8 +116,8 @@ const FOllowing = () => {
             <div className="empty-icon">
               <UserCheck size={48} />
             </div>
-            <h3 className="empty-title">No followers yet</h3>
-            <p className="empty-message">Start connecting with people to see your followers here!</p>
+            <h3 className="empty-title">No following yet</h3>
+            <p className="empty-message">Start connecting with people to see who are you following  here!</p>
           </div>
         ) : (
           <div className="followers-grid">

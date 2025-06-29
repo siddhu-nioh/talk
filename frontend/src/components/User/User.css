@@ -8,7 +8,7 @@
   --darker-bg: #000000;
   --light-text: #ffffff;
   --light-grey: #8e8e8e;
-  --border-color: linear-gradient(90deg, #6d28d9, #7e22ce);
+  --border-color:rgba(0, 0, 0, 0.6);
   --overlay-color: rgba(0, 0, 0, 0.6);
   --animation-speed: 0.8s;
 }
@@ -171,7 +171,7 @@ body {
   right: -300px;
   width: 300px;
   height: 100vh;
-  background: var(--border-color);
+  background:  linear-gradient(90deg, #6d28d9, #7e22ce);
   backdrop-filter: blur(10px);
   box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
   transition: right 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);

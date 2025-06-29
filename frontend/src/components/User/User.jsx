@@ -362,34 +362,34 @@ function Profile() {
     const fetchUserData = async () => {
         try {
             const token = localStorage.getItem("token");
-            if (!token) {
-                // For development/testing - create dummy user when no token is available
-                const dummyUser = {
-                    _id: "dummy123",
-                    username: "profile_user",
-                    profile: "https://via.placeholder.com/150",
-                    bio: "This is a test profile bio",
-                    followers: [],
-                    following: []
-                };
-                setUser(dummyUser);
+            // if (!token) {
+            //     // For development/testing - create dummy user when no token is available
+            //     const dummyUser = {
+            //         _id: "dummy123",
+            //         username: "profile_user",
+            //         profile: "https://via.placeholder.com/150",
+            //         bio: "This is a test profile bio",
+            //         followers: [],
+            //         following: []
+            //     };
+            //     setUser(dummyUser);
                 
-                // Also set some dummy posts for testing display
-                const dummyPosts = Array(6).fill().map((_, i) => ({
-                    _id: `post${i}`,
-                    image: `https://via.placeholder.com/300`,
-                    description: `Test post ${i}`,
-                    likes: Math.floor(Math.random() * 100),
-                    comments: Math.floor(Math.random() * 20),
-                    createdAt: new Date().toISOString(),
-                    owner: dummyUser
-                }));
+            //     // Also set some dummy posts for testing display
+            //     const dummyPosts = Array(6).fill().map((_, i) => ({
+            //         _id: `post${i}`,
+            //         image: `https://via.placeholder.com/300`,
+            //         description: `Test post ${i}`,
+            //         likes: Math.floor(Math.random() * 100),
+            //         comments: Math.floor(Math.random() * 20),
+            //         createdAt: new Date().toISOString(),
+            //         owner: dummyUser
+            //     }));
                 
-                setPosts(dummyPosts);
-                setReels([]);
-                setLoading(false);
-                return;
-            }
+            //     setPosts(dummyPosts);
+            //     setReels([]);
+            //     setLoading(false);
+            //     return;
+            // }
 
             const response = await fetch(`${Backend_Url}/auth/check`, {
                 method: "GET",
@@ -559,8 +559,8 @@ console.log("All post owners:", allPosts.map(p => p.owner?._id));
         setShowStoryModal(false);
     };
     // const navigate= useNavigate();
-    const navigateToFollowers = () => navigate(`/user/followers/${id}`);
-  const navigateToFollowing = () => navigate(`/user/following/${id}`);
+    const navigateToFollowers = () => navigate(`/user/followers/${user._id}`);
+  const navigateToFollowing = () => navigate(`/user/following/${user._id}`);
 
 
     if (loading) return (

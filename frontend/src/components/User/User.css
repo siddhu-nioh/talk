@@ -232,6 +232,7 @@ body {
   padding: 16px;
   transition: all 0.3s ease;
   transform: scale(1);
+  margin-top: 2vw;
   transition: background 0.2s ease;
 }
 

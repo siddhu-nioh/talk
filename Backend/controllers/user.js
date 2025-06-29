@@ -133,7 +133,7 @@ module.exports.allFollowing = async (req, res) => {
         return res.status(404).json({ message: "User not found" });
     }
 
-    res.json({ followers: user.followers });
+    res.json({ following: user.following });
 };
 
 //update user profile picture

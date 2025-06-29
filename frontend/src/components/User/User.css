@@ -191,7 +191,8 @@ body {
   padding: 20px;
   height: 100%;
   display: flex;
-  column-gap: 1vw;
+  column-gap: 2vw;
+  gap: 2vw;
   border-bottom: 1px solid rgba(139, 92, 246, 0.3);
   border-radius: 25%;
   flex-direction: column;
@@ -218,6 +219,8 @@ body {
 .sidebar-items {
   padding: 10px 0;
   flex: 1;
+  gap: 2vw;
+  column-gap: 2vw;
 }
 
 .sidebar-item {

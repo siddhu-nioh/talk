@@ -45,7 +45,7 @@
   margin: 0 10px; 
   cursor: pointer;
   font-size: 14px; /* Smaller text for navbar items */
-  color: white;
+  color: black;
   transition: color 0.3s ease;
 }
 
@@ -63,7 +63,7 @@
   height: 5%;
   cursor: pointer;
   margin-left: 20px;
-  border: 1px solid #8995a1; 
+  border: 1px solid #000000; 
   font-size: 14px; /* Smaller text */
   transition: background-color 0.3s ease, color 0.3s ease;
 }

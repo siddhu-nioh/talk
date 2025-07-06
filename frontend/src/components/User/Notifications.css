@@ -2,8 +2,8 @@
 
 /* Global styles */
 :root {
-  --primary-color: #4a6fa5;
-  --primary-dark: #3a5a8c;
+  --primary-color: #23306b;
+  --primary-dark: #204b8f;
   --primary-light: #e1e9f5;
   --secondary-color: #6c757d;
   --success-color: #28a745;
@@ -19,7 +19,7 @@
 button .BUTTON-1{
       /* background-color: #25D366; */
       /* Green background */
-      color: white;
+      color: rgb(0, 0, 0);
       /* padding: 14px 20px; */
       margin: 8px 0;
       border: none;
@@ -32,7 +32,7 @@ button .BUTTON-1{
   height: 100vh;
   max-width: 1200px;
   margin: 0 auto;
-  background-color: #fff;
+  background-color: #ffffff;
   box-shadow: var(--box-shadow);
   border-radius: var(--border-radius);
   overflow: hidden;
@@ -212,8 +212,8 @@ button .BUTTON-1{
 }
 
 .unread-badge {
-  background-color: var(--primary-color);
-  color: white;
+  background-color: white;
+  color: rgb(0, 0, 0);
   border-radius: 50%;
   width: 20px;
   height: 20px;
@@ -365,7 +365,7 @@ button .BUTTON-1{
 
 .message-wrapper.outgoing .message {
   background-color: var(--primary-color);
-  color: white;
+  color: rgb(218, 218, 218);
   border-bottom-right-radius: 5px;
 }
 
@@ -408,7 +408,7 @@ button .BUTTON-1{
 }
 
 .message-status .read {
-  color: #34b7f1;
+  color: #def134;
 }
 
 /* Media in messages */
@@ -547,7 +547,7 @@ textarea:focus {
 .error-toast button {
   background: none;
   border: none;
-  color: white;
+  color: rgb(0, 0, 0);
   margin-left: 10px;
   cursor: pointer;
   font-size: 16px;

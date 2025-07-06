@@ -1,9 +1,9 @@
 .about-us-container {
     padding: 20px;
-    background-color: #000000;
+    background-color: #f5f3f3;
     min-height: 100vh;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    color: #ffffff;
+    color: #000000;
     text-align: center;
 }
 
@@ -19,12 +19,12 @@
     line-height: 1.6;
     margin: 10px auto;
     max-width: 600px;
-    color: #ffffff;
+    color: #000000;
 }
 
 .about-us-container p:first-of-type {
     font-weight: 500;
-    color: #ffffff;
+    color: #0e0d0d;
 }
 @media (max-width: 768px) {
     .about-us-container {
@@ -43,7 +43,7 @@
     display: flex;
     align-items: center;
     background-color: #fff;
-    border: 1px solid #ddd;
+    border: 1px solid #535353;
     border-radius: 8px;
     padding: 10px 15px;
     font-size: 1rem;

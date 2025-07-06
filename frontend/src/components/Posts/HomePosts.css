@@ -1,7 +1,7 @@
 
 .header {
-  background-color: #000000; /* Dark background for the header */
-  color: white;
+  background-color: #ffffff; /* Dark background for the header */
+  color: Black;
   padding: 10px 0px;
   display: flex;
   justify-content: space-around;
@@ -55,7 +55,7 @@
 
 .login-button {
   background-color: transparent; /* Transparent background */
-  color: white; /* White text */
+  color: Black; /* White text */
   /* border: 1px solid white; White border */
   padding: 20px 15px; /* Smaller padding */
   border-radius: 4px;
@@ -63,6 +63,7 @@
   height: 5%;
   cursor: pointer;
   margin-left: 20px;
+  border: 1px solid #8995a1; 
   font-size: 14px; /* Smaller text */
   transition: background-color 0.3s ease, color 0.3s ease;
 }

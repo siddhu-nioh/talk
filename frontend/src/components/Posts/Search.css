@@ -1,13 +1,13 @@
 /* Page Background */
 body {
-      background-color: black;
+      background-color: rgb(255, 255, 255);
       margin: 0;
       font-family: Arial, sans-serif;
   }
   
   /* Main Container */
   .main {
-      background-color: black;
+      background-color: rgb(255, 255, 255);
       padding: 1rem;
   }
   
@@ -50,7 +50,7 @@ body {
       border: none;
       outline: none;
       /* border-radius: 5vw; */
-      color: white;
+      color: black;
       font-size: 16px;
       /* padding: 0 12px; */
   }
@@ -65,7 +65,7 @@ body {
       border: none;
       outline: none;
       /* border-radius: 5vw; */
-      color: white;
+      color: black;
       font-size: 16px;
       /* padding: 0 12px; */
   }
@@ -76,7 +76,7 @@ body {
   
   /* Search Icon */
   .search-bar-s .search-icon-s {
-      color: white;
+      color: black;
       margin-right: 10px;
       cursor: pointer;
       height: 1.5vw;
@@ -86,7 +86,7 @@ body {
   }
   
   .search-bar-s .search-icon-s:hover {
-      color: #007bff; /* Blue hover effect */
+      color: #d0ff00; /* Blue hover effect */
   }
   @media screen and (max-width: 600px) {
       .search-bar-s .search-icon-s{
@@ -115,7 +115,7 @@ body {
       transform: translateX(-50%);
       width: 90%;
       max-width: 500px;
-      background-color: #333; /* Dark gray background */
+      background-color: #ffffff; /* Dark gray background */
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
       z-index: 999;
@@ -129,12 +129,12 @@ body {
       align-items: center;
       padding: 10px 15px;
       text-decoration: none;
-      color: white;
+      color: black;
       transition: background-color 0.3s ease;
   }
   
   .suggestions a:hover {
-      background-color: #444; /* Slightly lighter gray on hover */
+      background-color: #f7f0b5; /* Slightly lighter gray on hover */
   }
   
   /* Profile Picture in Suggestion */
@@ -150,7 +150,7 @@ body {
   .suggestions div {
       text-align: center;
       font-size: 14px;
-      color: #999; /* Light gray text */
+      color: #363636; /* Light gray text */
       padding: 10px 0;
       font-style: italic;
   }

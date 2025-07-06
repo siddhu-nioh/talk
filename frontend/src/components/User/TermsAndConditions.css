@@ -6,10 +6,10 @@
     font-family: Arial, sans-serif;
     line-height: 1.6;
     /* padding: 20px; */
-    background-color: #000000;
+    background-color: #fffcfc;
     min-height: 100vh;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    color: #ffffff;
+    color: #0e0d0d;
     text-align: center;
 }
 
@@ -38,14 +38,14 @@
 h1 {
     font-size: 2.5rem;
     margin-bottom: 20px;
-    color: #e9e9e9;
+    color: #525151;
 }
 
 h3 {
     font-size: 1.5rem;
     margin-top: 20px;
     margin-bottom: 10px;
-    color: #d1d1d1;
+    color: #424242;
 }
 
 p {
@@ -53,7 +53,7 @@ p {
     line-height: 1.6;
     margin: 10px auto;
     max-width: 600px;
-    color: #ffffff;
+    color: #070606;
 }
 
 ul {
@@ -63,5 +63,5 @@ ul {
 
 ul li {
     margin-bottom: 10px;
-    color: #555;
+    color: #252525;
 }

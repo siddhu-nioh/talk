@@ -21,8 +21,8 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: var(--darker-bg);
-  color: var(--light-text);
+  background-color: var(--light-text);
+  color: var(--dark-bg);
   line-height: 1.5;
 }
 
@@ -45,9 +45,9 @@ body {
 }
 
 @keyframes pulseGlow {
-  0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
-  50% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.8); }
-  100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+  0% { box-shadow: 0 0 5px rgba(49, 49, 49, 0.5); }
+  50% { box-shadow: 0 0 15px rgba(78, 78, 78, 0.8); }
+  100% { box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); }
 }
 
 @keyframes gradientBorder {
@@ -67,8 +67,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: var(--darker-bg);
-  color: var(--light-text);
+  background-color: white;
+  color: black;
   z-index: 9999;
 }
 
@@ -77,7 +77,7 @@ body {
   height: 50px;
   border: 3px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
-  border-top-color: var(--light-text);
+  border-top-color: yellow;
   animation: spin 1s infinite linear;
   margin-bottom: 20px;
 }
@@ -105,7 +105,7 @@ body {
   margin-top: 16px;
   padding: 10px 20px;
   background-color: var(--primary-color);
-  color: white;
+  color: rgb(0, 0, 0);
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -124,7 +124,7 @@ body {
   left: 0;
   width: 100%;
   padding: 15px 20px;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
@@ -135,7 +135,7 @@ body {
 }
 
 .header.scrolled {
-  background: rgba(0, 0, 0, 0.95);
+  background: rgba(255, 255, 255, 0.95);
   padding: 10px 20px;
 }
 
@@ -157,7 +157,7 @@ body {
   font-size: 22px;
   cursor: pointer;
   transition: transform var(--animation-speed) ease;
-  color: var(--light-text);
+  color: black;
 }
 
 .settings-icon:hover {
@@ -262,15 +262,15 @@ body {
 /* Fix for profile container visibility */
 .profile-page {
   padding-top: 60px; /* Make room for fixed header */
-  color: var(--light-text);
-  background-color: var(--darker-bg);
+  color:black;
+  background-color: white;
 }
 
 .profile-container {
   width: 100%;
   max-width: 975px;
   margin: 0 auto;
-  background-color: var(--darker-bg);
+  background-color: white;
   border-radius: 0;
   opacity: 1; /* Force visibility */
   transform: none; /* Remove transform */
@@ -281,7 +281,7 @@ body {
 }
 .profile-page-s {
   padding-top: 60px; /* Make room for fixed header */
-  color: var(--light-text);
+  color: black;
   /* background-color: var(--darker-bg); */
 }
 
@@ -319,7 +319,7 @@ body {
 
 /* Fix for profile picture display */
 .profile-picture-container {
-  background-color: #333;
+  background-color: #ffffff;
   border: 2px solid var(--border-color);
 }
 
@@ -337,13 +337,13 @@ body {
   aspect-ratio: 1 / 1;
   overflow: hidden;
   cursor: pointer;
-  background-color: #333;
+  background-color: #ffffff;
   border-radius: 4px;
 }
 
 /* Improve empty state visibility */
 .empty-state {
-  color: var(--light-grey);
+  color: black;
   padding: 40px 0;
   text-align: center;
 }
@@ -359,15 +359,15 @@ body {
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: var(--darker-bg);
+  background-color: white;
   border-top: 1px solid var(--border-color);
   z-index: 90;
 }
 
 /* Improve loading visibility */
 .loading-screen {
-  background-color: var(--darker-bg);
-  color: white;
+  background-color: white;
+  color: black;
 }
 
 /* Force visibility for critical elements */
@@ -385,7 +385,7 @@ body {
   width: 100%;
   max-width: 975px;
   margin: 60px auto 0;
-  background-color: var(--darker-bg);
+  background-color: white;
   border-radius: 0;
   opacity: 0;
   transform: translateY(20px);
@@ -422,7 +422,7 @@ body {
   border-radius: 50%;
   overflow: hidden;
   cursor: pointer;
-  background-color: var(--dark-bg);
+  background-color: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
@@ -446,7 +446,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgb(255, 255, 255);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -461,7 +461,7 @@ body {
 
 .camera-icon {
   font-size: 24px;
-  color: white;
+  color: black;
 }
 /* Continued from where the CSS left off */
 .uploading-overlay {
@@ -470,7 +470,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(255, 255, 255, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -512,7 +512,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
+  color: black;
   font-size: 18px;
   font-weight: bold;
   transition: transform 0.2s ease;
@@ -545,7 +545,7 @@ body {
 
 .bio-section {
   margin-bottom: 15px;
-  color: var(--light-text);
+  color: black;
   font-size: 14px;
   max-width: 350px;
   line-height: 1.4;
@@ -574,10 +574,10 @@ body {
 
 .edit-profile-btn {
   padding: 8px 16px;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.877);
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  color: var(--light-text);
+  color: black;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
@@ -585,7 +585,7 @@ body {
 }
 
 .edit-profile-btn:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.979);
 }
 
 .share-profile-btn, .more-options-btn {
@@ -593,10 +593,10 @@ body {
   align-items: center;
   justify-content: center;
   width: 6vw;
-  background-color: rgb(3, 3, 53);
+  background-color: rgb(255, 255, 255);
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  color: white;
+  color: black;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -629,7 +629,7 @@ body {
 }
 
 .option-item:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(255, 255, 255, 0.767);
 }
 
 /* Stats Container */
@@ -662,7 +662,7 @@ body {
 
 .stat-label {
   font-size: 14px;
-  color: var(--light-grey);
+  color: black;
 }
 
 /* Content Tabs */
@@ -673,7 +673,7 @@ body {
   margin-bottom: 2px;
   position: sticky;
   top: 60px;
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(245, 245, 245, 0.9);
   backdrop-filter: blur(10px);
   z-index: 20;
 }
@@ -692,7 +692,7 @@ body {
 }
 
 .tab.active {
-  color: var(--light-text);
+  color: black;
 }
 
 .tab.active::after {
@@ -754,7 +754,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 50%);
+  background: linear-gradient(to top, rgba(247, 247, 247, 0.7) 0%, transparent 50%);
   opacity: 0;
   transition: opacity 0.3s ease;
   display: flex;
@@ -786,14 +786,14 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(255, 255, 255, 0.6);
   width: 40px;
   height: 40px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
+  color: black;
   font-size: 16px;
 }
 
@@ -821,7 +821,7 @@ body {
   left: 0;
   width: 100%;
   height: 70%;
-  background-color: rgba(0, 0, 0, 0.95);
+  background-color: rgba(248, 243, 243, 0.95);
   z-index: 1000;
   display: flex;
   flex-direction: column;justify-content: center;align-items: center;
@@ -853,7 +853,7 @@ body {
 .close-post {
   background: none;
   border: none;
-  color: white;
+  color: black;
   font-size: 20px;
   cursor: pointer;
 }
@@ -887,7 +887,7 @@ body {
 .action-btn {
   background: none;
   border: none;
-  color: white;
+  color: black;
   font-size: 24px;
   cursor: pointer;
   padding: 5px;
@@ -937,10 +937,10 @@ body {
 .add-comment input {
   flex: 1;
   padding: 10px 15px;
-  background-color: var(--dark-bg);
+  background-color: var(--light-text);
   border: 1px solid var(--border-color);
   border-radius: 20px;
-  color: white;
+  color: black;
   font-size: 14px;
 }
 
@@ -959,7 +959,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(255, 255, 255, 0.9);
   z-index: 2000;
   display: flex;
   justify-content: center;
@@ -970,7 +970,7 @@ body {
 .story-modal-content {
   width: 90%;
   max-width: 400px;
-  background-color: var(--dark-bg);
+  background-color: white;
   border-radius: 12px;
   overflow: hidden;
   position: relative;
@@ -983,7 +983,7 @@ body {
   right: 15px;
   background: none;
   border: none;
-  color: white;
+  color: black;
   font-size: 20px;
   cursor: pointer;
   z-index: 1;
@@ -1010,7 +1010,7 @@ body {
 }
 
 .story-option:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(255, 255, 255, 0.562);
 }
 
 .story-option-icon {
@@ -1042,7 +1042,7 @@ body {
   left: 0;
   width: 100%;
   height: 50px;
-  background-color: var(--darker-bg);
+  background-color: white;
   border-top: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;

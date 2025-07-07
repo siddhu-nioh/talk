@@ -38,7 +38,7 @@ function SearchBar() {
 
     return (
         <div className="main">
-            <div className="search-container">
+            <div className="search-container-s">
                 <div className="search-bar-s">
                     {/* Search Icon */}
                     <FaSearch className="search-icon-s" />
@@ -49,7 +49,7 @@ function SearchBar() {
                         placeholder="Search"
                         autoComplete="off"
                         value={query}
-                        style={{border:"none", borderBottom: "1px solid indigo",width:"90%", borderRadius:"0px", backgroundColor:"transparent"}}
+                        style={{border:"none",width:"90%", borderRadius:"0px", backgroundColor:"transparent"}}
                         onChange={handleSearch}
                         className='search-input-s'
 

@@ -18,7 +18,7 @@
     /* Post item styling with animations */
     .post-item-P {
       background-color: white;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 0.5mm ridge rgba(212, 220, 50, 0.733);
       border-radius: 4px;
       margin-bottom: 16px;
       /* overflow: hidden; */
@@ -27,10 +27,10 @@
       transition: transform 0.4s ease-out, opacity 0.4s ease-out, box-shadow 0.3s ease;
     }
     
-    .post-item-P.post-visible {
+    /* .post-item-P.post-visible {
       transform: translateY(0);
       opacity: 1;
-    }
+    } */
     
     .post-item-P:hover {
       box-shadow: 0 2px 12px rgba(255, 255, 255, 0.05);
@@ -43,7 +43,7 @@
       justify-content: space-between;
       padding: 12px 16px;
       color: balck;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.74);
+      border-bottom: 1px solid rgb(0, 0, 0);
     }
     
     .user-info {

@@ -310,6 +310,7 @@ const PostViewPage = () => {
   const [currentUserData, setCurrentUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [theme, setTheme] = useState("light");
+  const [heartVisible, setHeartVisible] = useState(null);
   const postRefs = useRef([]);
 
   useEffect(() => {
@@ -370,6 +371,14 @@ const PostViewPage = () => {
     }
   };
 
+  const handleDoubleTap = (postId, index) => {
+    if (!posts[index].likes?.includes(currentUserData?._id)) {
+      handleLikePost(postId, index);
+    }
+    setHeartVisible(postId);
+    setTimeout(() => setHeartVisible(null), 1000);
+  };
+
   const handleShare = (post) => {
     const shareData = {
       title: "Check out this post",
@@ -419,7 +428,7 @@ const PostViewPage = () => {
           const isLiked = post.likes?.includes(currentUserData?._id);
           return (
             <div key={post._id} ref={el => postRefs.current[index] = el} className="post-view-item">
-              <div className="post-media-wrapper">
+              <div className="post-media-wrapper" onDoubleClick={() => handleDoubleTap(post._id, index)}>
                 {/* Post Header */}
                 <div className="post-item-header">
                   <img src={profileData?.profile} className="post-avatar" alt="avatar" />
@@ -428,13 +437,20 @@ const PostViewPage = () => {
 
                 {/* Post Media */}
                 {post.image ? (
-                  <img src={post.image} alt="Post" className="post-media-full" onDoubleClick={() => handleLikePost(post._id, index)} />
+                  <img src={post.image} alt="Post" className="post-media-full" />
                 ) : post.video ? (
-                  <video className="post-media-full" playsInline loop>
+                  <video className="post-media-full" playsInline loop autoPlay muted={false}>
                     <source src={post.video} type="video/mp4" />
                   </video>
                 ) : (
                   <div className="post-no-media-full">No Media</div>
+                )}
+
+                {/* Heart Animation */}
+                {heartVisible === post._id && (
+                  <div className="heart-float-animation">
+                    <FiHeart />
+                  </div>
                 )}
 
                 {/* Footer */}
@@ -443,7 +459,7 @@ const PostViewPage = () => {
                     <button className={`like-button-s ${isLiked ? "liked" : ""}`} onClick={() => handleLikePost(post._id, index)}>
                       <FiHeart />
                     </button>
-                    <span className="like-count">{post.likes?.length || 0} likes</span>
+                    <div className="like-count">{post.likes?.length || 0} likes</div>
                     <button className="share-btn" onClick={() => handleShare(post)}>
                       <FiShare2 />
                     </button>

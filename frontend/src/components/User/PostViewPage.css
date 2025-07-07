@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
 :root {
   --bg-color: #ffffff;
   --text-color: #000000;
@@ -20,7 +19,7 @@ body.dark-theme {
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
-   font-family: 'Poppins', 'Segoe UI', sans-serif;
+  font-family: 'Poppins', sans-serif;
   margin: 0;
 }
 
@@ -142,6 +141,37 @@ body {
   font-size: 14px;
 }
 
+.heart-float-animation {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 80px;
+  color: var(--accent-color);
+  opacity: 0;
+  animation: heart-pop 1s ease-out forwards;
+  pointer-events: none;
+  z-index: 5;
+}
+
+@keyframes heart-pop {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 0;
+  }
+  30% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+  }
+  60% {
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0;
+  }
+}
+
 .post-footer {
   width: 100%;
   padding: 12px 16px;
@@ -149,8 +179,10 @@ body {
 
 .footer-actions {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 6px;
+  margin-bottom: 6px;
 }
 
 .like-button-s {
@@ -160,7 +192,6 @@ body {
   color: var(--text-color);
   cursor: pointer;
 }
-
 .like-button-s.liked {
   color: var(--accent-color);
 }
@@ -176,10 +207,10 @@ body {
 .like-count {
   font-weight: 600;
   font-size: 14px;
+  text-align: center;
 }
 
 .footer-caption {
-  margin-top: 6px;
   font-size: 14px;
   line-height: 1.4;
 }

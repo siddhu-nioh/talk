@@ -40,7 +40,7 @@ body.dark-theme {
 .post-page-header {
   display: flex;
   align-items: center;
-  padding: 12px 16px;
+  /* padding: 12px 16px; */
   border-bottom: 1px solid var(--separator-color);
   background-color: var(--bg-color);
   position: sticky;
@@ -262,7 +262,7 @@ body.dark-theme {
   font-size: 14px;
 }
 
-.post-caption {
+.post-caption-s {
   margin-bottom: 4px;
   line-height: 1.5;
   word-break: break-word;

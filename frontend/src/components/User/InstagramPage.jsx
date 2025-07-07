@@ -343,7 +343,7 @@ const InstagramPage = ({ posts, user, onClose, initialPostId }) => {
               {(currentPost.likes || 0) + (likedPosts[currentPost._id] ? 1 : 0)} likes
             </div>
 
-            <div className="post-caption">
+            <div className="post-caption-s">
               <span className="username">{user.username}</span> {currentPost.description || "No caption"}
             </div>
 

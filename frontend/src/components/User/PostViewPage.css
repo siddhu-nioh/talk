@@ -226,6 +226,8 @@ body {
   font-size: 12px;
   color: #999;
   margin-top: 4px;
+  margin: auto;
+  padding: 0 16px;
 }
 
 .footer-divider {

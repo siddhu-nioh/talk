@@ -338,7 +338,7 @@ const InstagramPage = ({ posts, user, onClose, initialPostId }) => {
               <button className="action-btn" onClick={handleShare}><FaShare /></button>
               {/* <button className="action-btn bookmark"><FaRegBookmark /></button> */}
             </div>
-
+ <div className="post-action-buttons">
             <div className="post-likes">
               {(currentPost.likes || 0) + (likedPosts[currentPost._id] ? 1 : 0)} likes
             </div>
@@ -351,6 +351,7 @@ const InstagramPage = ({ posts, user, onClose, initialPostId }) => {
               {new Date(currentPost.createdAt || Date.now()).toLocaleDateString('en-US', {
                 month: 'long', day: 'numeric'
               })}
+            </div>
             </div>
 
             {/* <div className="post-comments">

@@ -71,7 +71,7 @@ body {
   }
   
   .search-bar-s input::placeholder {
-      color: #dadada; /* Light gray placeholder */
+      color: #bebebe; /* Light gray placeholder */
   }
   
   /* Search Icon */

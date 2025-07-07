@@ -229,7 +229,7 @@ body.dark-theme {
 
 .post-action-buttons {
   display: flex;
-  margin-bottom: 8px;
+  /* margin-bottom: 8px; */
 }
 .post-action-buttons-s {
   display: flex;

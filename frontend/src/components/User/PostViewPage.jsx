@@ -293,12 +293,10 @@
 // };
 
 // export default PostsViewPage;
-
-// // ✅ Updated JSX for Instagram-style Post View Page
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import { FiArrowLeft, FiHeart, FiMoon, FiSun } from "react-icons/fi";
+import { FiArrowLeft, FiHeart, FiMoon, FiSun, FiShare2 } from "react-icons/fi";
 import "./PostViewPage.css";
 
 const PostViewPage = () => {
@@ -306,7 +304,6 @@ const PostViewPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const [likedPosts, setLikedPosts] = useState({});
   const [posts, setPosts] = useState([]);
   const [currentPostIndex, setCurrentPostIndex] = useState(0);
   const [profileData, setProfileData] = useState(null);
@@ -322,8 +319,7 @@ const PostViewPage = () => {
   const toggleTheme = () => setTheme(prev => prev === "light" ? "dark" : "light");
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const postIndex = searchParams.get("index");
+    const postIndex = new URLSearchParams(location.search).get("index");
     if (postIndex) setCurrentPostIndex(parseInt(postIndex));
   }, [location]);
 
@@ -337,14 +333,9 @@ const PostViewPage = () => {
   }, []);
 
   const fetchCurrentUserData = async () => {
-    try {
-      const response = await axios.get(`${Backend_Url}/user/me`, { withCredentials: true });
-      setCurrentUserData(response.data);
-      return response.data;
-    } catch (error) {
-      console.error("Failed to fetch current user:", error);
-      throw error;
-    }
+    const res = await axios.get(`${Backend_Url}/user/me`, { withCredentials: true });
+    setCurrentUserData(res.data);
+    return res.data;
   };
 
   const fetchData = async () => {
@@ -353,15 +344,14 @@ const PostViewPage = () => {
       await fetchCurrentUserData();
       setProfileData(profileRes.data);
       setPosts(profileRes.data.posts || []);
-    } catch (error) {
-      console.error("Fetch error:", error);
+    } catch (err) {
+      console.error("Error:", err);
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleLikePost = async (postId, postIndex) => {
-    if (!currentUserData) return;
     const post = posts[postIndex];
     const isLiked = post.likes?.includes(currentUserData._id);
 
@@ -374,16 +364,32 @@ const PostViewPage = () => {
     });
 
     try {
-      const endpoint = isLiked ? "unlike" : "like";
-      await axios.post(`${Backend_Url}/post/${endpoint}/${postId}`, {}, { withCredentials: true });
+      await axios.post(`${Backend_Url}/post/${isLiked ? "unlike" : "like"}/${postId}`, {}, { withCredentials: true });
     } catch (error) {
       console.error("Like update failed:", error);
     }
   };
 
-  const handleDoubleClick = (postId, index) => {
-    if (!posts[index].likes?.includes(currentUserData._id)) {
-      handleLikePost(postId, index);
+  const handleShare = (post) => {
+    const shareData = {
+      title: "Check out this post",
+      text: post.description || "Amazing post",
+      url: post.image || post.video || window.location.href
+    };
+
+    if (navigator.share) {
+      navigator.share(shareData).catch(err => console.log("Share failed:", err));
+    } else {
+      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareData.text + "\n" + shareData.url)}`;
+      window.open(whatsappUrl, "_blank");
+    }
+  };
+
+  const handleScroll = e => {
+    const scrollTop = e.target.scrollTop;
+    const newIndex = Math.round(scrollTop / window.innerHeight);
+    if (newIndex !== currentPostIndex && newIndex >= 0 && newIndex < posts.length) {
+      setCurrentPostIndex(newIndex);
     }
   };
 
@@ -392,15 +398,6 @@ const PostViewPage = () => {
     if (!token) navigate(-1);
     fetchData();
   }, [id]);
-
-  const handleScroll = e => {
-    const scrollTop = e.target.scrollTop;
-    const viewHeight = window.innerHeight;
-    const newIndex = Math.round(scrollTop / viewHeight);
-    if (newIndex !== currentPostIndex && newIndex >= 0 && newIndex < posts.length) {
-      setCurrentPostIndex(newIndex);
-    }
-  };
 
   if (isLoading) return <div className="posts-view-loading"><div className="loading-spinner"></div></div>;
 
@@ -418,30 +415,51 @@ const PostViewPage = () => {
       </div>
 
       <div className="posts-scroll-container" onScroll={handleScroll}>
-        {posts.map((post, index) => (
-          <div key={post._id} ref={el => postRefs.current[index] = el} className="post-view-item">
-            <div className="post-media-wrapper" onDoubleClick={() => handleDoubleClick(post._id, index)}>
-              {post.image ? (
-                <img src={post.image} alt="Post" className="post-media-full" />
-              ) : post.video ? (
-                <video className="post-media-full" playsInline loop>
-                  <source src={post.video} type="video/mp4" />
-                </video>
-              ) : <div className="post-no-media-full">No Media</div>}
+        {posts.map((post, index) => {
+          const isLiked = post.likes?.includes(currentUserData?._id);
+          return (
+            <div key={post._id} ref={el => postRefs.current[index] = el} className="post-view-item">
+              <div className="post-media-wrapper">
+                {/* Post Header */}
+                <div className="post-item-header">
+                  <img src={profileData?.profile} className="post-avatar" alt="avatar" />
+                  <span className="post-username">{profileData?.username}</span>
+                </div>
 
-              <div className="post-actions-overlay">
-                <button className={`like-button-s ${post.likes?.includes(currentUserData?._id) ? 'liked' : ''}`} onClick={() => handleLikePost(post._id, index)}>
-                  <FiHeart />
-                </button>
-                <span className="like-count">{post.likes?.length || 0}</span>
-              </div>
-              <div className="post-caption">
-                <span className="caption-text">{post.description}</span>
+                {/* Post Media */}
+                {post.image ? (
+                  <img src={post.image} alt="Post" className="post-media-full" onDoubleClick={() => handleLikePost(post._id, index)} />
+                ) : post.video ? (
+                  <video className="post-media-full" playsInline loop>
+                    <source src={post.video} type="video/mp4" />
+                  </video>
+                ) : (
+                  <div className="post-no-media-full">No Media</div>
+                )}
+
+                {/* Footer */}
+                <div className="post-footer">
+                  <div className="footer-actions">
+                    <button className={`like-button-s ${isLiked ? "liked" : ""}`} onClick={() => handleLikePost(post._id, index)}>
+                      <FiHeart />
+                    </button>
+                    <span className="like-count">{post.likes?.length || 0} likes</span>
+                    <button className="share-btn" onClick={() => handleShare(post)}>
+                      <FiShare2 />
+                    </button>
+                  </div>
+
+                  <div className="footer-caption">{post.description}</div>
+                  <div className="footer-date">
+                    {new Date(post.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                  </div>
+                  <div className="footer-divider"></div>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-        <div style={{ height: "100px" }}></div> {/* Margin for bottom spacing */}
+          );
+        })}
+        <div style={{ height: "80px" }}></div>
       </div>
     </div>
   );

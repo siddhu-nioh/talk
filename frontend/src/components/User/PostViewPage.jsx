@@ -301,7 +301,7 @@ import axios from "axios";
 import { FiArrowLeft, FiHeart, FiMoon, FiSun } from "react-icons/fi";
 import "./PostViewPage.css";
 
-const PostsViewPage = () => {
+const PostViewPage = () => {
   const Backend_Url = import.meta.env.VITE_BACKEND_URL;
   const { id } = useParams();
   const navigate = useNavigate();
@@ -447,7 +447,7 @@ const PostsViewPage = () => {
   );
 };
 
-export default PostsViewPage;
+export default PostViewPage;
 
 // ✅ Updated PostsViewPage.jsx (Instagram-style structured layout with theme, scroll-snapping, like, spacing)
 

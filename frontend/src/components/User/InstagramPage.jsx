@@ -208,10 +208,10 @@ import React, { useState, useEffect } from 'react';
 import {
   FaHeart, FaRegHeart, FaArrowLeft, FaMoon, FaSun, FaShare
 } from 'react-icons/fa';
-import './InstagramPostPage.css';
+import './InstagramPage.css';
 import axios from 'axios'; // Add axios
 
-const InstagramPostPage = ({ posts, user, onClose, initialPostId }) => {
+const InstagramPage = ({ posts, user, onClose, initialPostId }) => {
   const [currentPostIndex, setCurrentPostIndex] = useState(0);
   const [likedPosts, setLikedPosts] = useState({});
   const [theme, setTheme] = useState('light');
@@ -378,4 +378,4 @@ const InstagramPostPage = ({ posts, user, onClose, initialPostId }) => {
   );
 };
 
-export default InstagramPostPage;
+export default InstagramPage;

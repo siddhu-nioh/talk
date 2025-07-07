@@ -231,7 +231,12 @@ body.dark-theme {
   display: flex;
   margin-bottom: 8px;
 }
-
+.post-action-buttons-s {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 8px;
+  gap: 20px;
+}
 .action-btn {
   background: none;
   border: none;

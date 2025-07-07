@@ -40,7 +40,7 @@ body {
   top: 0;
   background: var(--header-bg);
   backdrop-filter: blur(8px);
-  padding: 10px 16px;
+  /* padding: 10px 16px; */
   display: flex;
   align-items: center;
   justify-content: space-between;

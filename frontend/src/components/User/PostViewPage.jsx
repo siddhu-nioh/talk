@@ -456,10 +456,12 @@ const PostViewPage = () => {
                 {/* Footer */}
                 <div className="post-footer">
                   <div className="footer-actions">
+                    <div>
                     <button className={`like-button-s ${isLiked ? "liked" : ""}`} onClick={() => handleLikePost(post._id, index)}>
                       <FiHeart />
                     </button>
                     <div className="like-count">{post.likes?.length || 0} likes</div>
+                    </div>
                     <button className="share-btn" onClick={() => handleShare(post)}>
                       <FiShare2 />
                     </button>

@@ -30,7 +30,7 @@ body {
   .search-bar-s {
       display: flex;
       align-items: center;
-      background-color: #e2e2e2; /* Dark gray background for input */
+      background-color: #dadada; /* Dark gray background for input */
       border-radius: 20px;
       
       padding: 6px 30px;
@@ -71,12 +71,12 @@ body {
   }
   
   .search-bar-s input::placeholder {
-      color: #999; /* Light gray placeholder */
+      color: #080808; /* Light gray placeholder */
   }
   
   /* Search Icon */
   .search-bar-s .search-icon-s {
-      color: #f0f0f0;
+      color: white;
       margin-right: 10px;
       cursor: pointer;
       height: 1.5vw;

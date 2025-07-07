@@ -439,7 +439,7 @@ const PostViewPage = () => {
                 {post.image ? (
                   <img src={post.image} alt="Post" className="post-media-full" />
                 ) : post.video ? (
-                  <video className="post-media-full" playsInline loop autoPlay muted={false}>
+                  <video className="post-media-full" playsInline loop autoPlay muted={false} controls>
                     <source src={post.video} type="video/mp4" />
                   </video>
                 ) : (

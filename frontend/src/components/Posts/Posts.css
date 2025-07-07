@@ -20,7 +20,7 @@
       background-color: white;
       border: 0.5mm ridge rgba(212, 220, 50, 0.733);
       border-radius: 4px;
-      margin-bottom: 16px;
+      /* margin-bottom: 16px; */
       /* overflow: hidden; */
       /* transform: translateY(20px); */
       opacity: 0;

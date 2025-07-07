@@ -227,16 +227,16 @@ body {
 }
 
 .sidebar-item {
- background: rgba(245, 245, 245, 0.4);
+ /* background: rgba(245, 245, 245, 0); */
   backdrop-filter: blur(20px);
   display: flex;
-  border: 1px solid rgba(139, 92, 246, 0.2);
+  border: 3px solid rgba(139, 92, 246, 0.2);
   border-radius: 16px;
   color: white;
   padding: 16px;
   transition: all 0.3s ease;
   transform: scale(1);
-  margin-top: clamp(2vw, 2vw, 20px);
+  margin-top: clamp(4vw,3vw,30px));
   transition: background 0.2s ease;
 }
 

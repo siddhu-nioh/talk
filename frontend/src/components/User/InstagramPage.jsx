@@ -341,17 +341,14 @@ const InstagramPage = ({ posts, user, onClose, initialPostId }) => {
             <div className="post-likes">
               {(currentPost.likes || 0) + (likedPosts[currentPost._id] ? 1 : 0)} likes
             </div>
- <div className="post-action-buttons">
-            
 
-            
 
             <div className="post-date">
               {new Date(currentPost.createdAt || Date.now()).toLocaleDateString('en-US', {
                 month: 'long', day: 'numeric'
               })}
             </div>
-            </div>
+         
             <div className="post-caption-s">
               <span className="username">{user.username}</span> {currentPost.description || "No caption"}
             </div>

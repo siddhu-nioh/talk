@@ -628,7 +628,7 @@ console.log("All post owners:", allPosts.map(p => p.owner?._id));
                         <div className="sidebar-item" onClick={() => window.location.href = "/talk/privacy-policy"}>
                             <FaShieldAlt /> <span>Privacy Policy</span>
                         </div>
-                        <div className="sidebar-item logout" onClick={handleLogout}>
+                        <div className="sidebar-item logout" style={{marginTop:"2vw"}} onClick={handleLogout}>
                             <FaSignOutAlt /> <span>Logout</span>
                         </div>
                     </div>

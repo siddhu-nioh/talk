@@ -159,7 +159,7 @@ body {
   font-size: 22px;
   cursor: pointer;
   transition: transform var(--animation-speed) ease;
-  color: white;
+  color: rgb(5, 5, 5);
 }
 
 .settings-icon:hover {
@@ -596,7 +596,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 6vw;
+  width: 20vw;
   background-color: rgb(255, 255, 255);
   border: 1px solid var(--border-color);
   border-radius: 8px;
@@ -617,9 +617,10 @@ body {
   width: 180px;
   /* background-color: var(--dark-bg); */
   border: 1px solid var(--border-color);
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(230, 230, 230, 0.9);
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.9);
+  
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.199);
   z-index: 10;
   overflow: hidden;
   animation: fadeIn 0.2s ease forwards;

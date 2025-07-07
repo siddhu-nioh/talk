@@ -124,7 +124,7 @@ body {
 }
 
 .post-media-full {
-  max-height: 75vh;
+  max-height: 60vh;
   max-width: 100%;
   object-fit: contain;
   cursor: pointer;

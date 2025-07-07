@@ -124,10 +124,10 @@ body {
   left: 0;
   width: 100%;
   color: white;
-  padding: 15px 20px;
+  /* padding: 15px 20px; */
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(54, 54, 54, 0.719);
   display: flex;
   justify-content: space-between;
   align-items: center;

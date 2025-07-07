@@ -298,6 +298,11 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { FiArrowLeft, FiHeart, FiMoon, FiSun, FiShare2 } from "react-icons/fi";
 import "./PostViewPage.css";
+import {
+    FaEdit, FaTrash, FaUsers, FaShare, FaEnvelope, FaSignOutAlt, FaCog, FaTimes,
+    FaInfoCircle, FaShieldAlt, FaRegBookmark, FaRegHeart, FaHeart, FaPlay,
+    FaEllipsisH, FaRegComment, FaBars, FaCamera
+} from "react-icons/fa";
 
 const PostViewPage = () => {
   const Backend_Url = import.meta.env.VITE_BACKEND_URL;
@@ -458,7 +463,7 @@ const PostViewPage = () => {
                   <div className="footer-actions">
                     <div>
                     <button className={`like-button-s ${isLiked ? "liked" : ""}`} onClick={() => handleLikePost(post._id, index)}>
-                      <FiHeart />
+                      <FaHeart />
                     </button>
                     <div className="like-count">{post.likes?.length || 0} likes</div>
                     </div>

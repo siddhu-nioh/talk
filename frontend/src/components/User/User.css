@@ -105,7 +105,7 @@ body {
   margin-top: 16px;
   padding: 10px 20px;
   background-color: var(--primary-color);
-  color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -123,6 +123,7 @@ body {
   top: 0;
   left: 0;
   width: 100%;
+  color: white;
   padding: 15px 20px;
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(10px);
@@ -141,6 +142,7 @@ body {
 
 .header-content {
   width: 100%;
+  color: white;
   max-width: 975px;
   margin: 0 auto;
   display: flex;
@@ -157,7 +159,7 @@ body {
   font-size: 22px;
   cursor: pointer;
   transition: transform var(--animation-speed) ease;
-  color: black;
+  color: white;
 }
 
 .settings-icon:hover {
@@ -171,6 +173,7 @@ body {
   right: -300px;
   padding: 5px;
   width: 300px;
+  color: white;
   height: 100vh;
   border-bottom: 1px solid rgba(139, 92, 246, 0.3);
   background:  linear-gradient(135deg, #000000 0%, #4c1d95 50%, #000000 100%);;
@@ -224,11 +227,12 @@ body {
 }
 
 .sidebar-item {
- background: rgba(0, 0, 0, 0.4);
+ background: rgba(245, 245, 245, 0.4);
   backdrop-filter: blur(20px);
   display: flex;
   border: 1px solid rgba(139, 92, 246, 0.2);
   border-radius: 16px;
+  color: white;
   padding: 16px;
   transition: all 0.3s ease;
   transform: scale(1);

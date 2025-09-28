@@ -16,8 +16,8 @@ function ContactUs() {
             <h1>Contact Us</h1>
             <p>Have questions? We’re here to help!</p>
             <div className="contact-info">
-                <p>Email: support@talk.rog.in</p>
-                <p>Phone: +1 234 567 890</p>
+                <p>Email: sivaplaurisiva@gmail.com</p>
+                <p>Phone: +91 6300929711</p>
             </div>
         </div>
     );
